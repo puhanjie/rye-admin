@@ -1,12 +1,12 @@
 import { Divider, Popconfirm, Space, message } from 'antd';
 import { useState } from 'react';
-import EditUserModal, { type EditUserInfo } from '../EditUserModal';
+import EditRoleModal, { type EditRoleInfo } from '../EditRoleModal';
 
 type Props = {
-  data: EditUserInfo;
+  data: EditRoleInfo;
 };
 
-const TableOperation: React.FC<Props> = ({ data }) => {
+const RoleTableAction: React.FC<Props> = ({ data }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   return (
@@ -35,9 +35,9 @@ const TableOperation: React.FC<Props> = ({ data }) => {
           <a>删除</a>
         </Popconfirm>
       </Space>
-      <EditUserModal initData={data} open={isEditOpen} setIsOpen={setIsEditOpen} />
+      <EditRoleModal initData={data} open={isEditOpen} setIsOpen={setIsEditOpen} />
     </div>
   );
 };
 
-export default TableOperation;
+export default RoleTableAction;

@@ -1,12 +1,14 @@
+import { getRoleSelectOptions } from '@/utils/general';
 import { Form, Input, Modal, Select } from 'antd';
 
 type Props = {
   className?: string;
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  roleList: API.RoleInfo[];
 };
 
-const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen }) => {
+const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen, roleList }) => {
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -44,10 +46,7 @@ const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen }) => {
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
-              options={[
-                { label: '管理员', value: 'admin' },
-                { label: '访客', value: 'guest' }
-              ]}
+              options={getRoleSelectOptions(roleList)}
             />
           </Form.Item>
           <Form.Item label="密码" name="password">

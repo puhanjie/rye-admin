@@ -7,7 +7,7 @@ type Props = {
   className?: string;
 };
 
-const Operation: React.FC<Props> = ({ className }) => {
+const PermissionAction: React.FC<Props> = ({ className }) => {
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   return (
@@ -38,4 +38,4 @@ const Operation: React.FC<Props> = ({ className }) => {
   );
 };
 
-export default Operation;
+export default PermissionAction;

@@ -2,8 +2,8 @@ import { Input, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getUserList } from '@/services/user';
-import TableOperation from './components/TableOperation';
-import Operation from './components/Operation';
+import UserTableAction from './components/UserTableAction';
+import UserAction from './components/UserAction';
 import Query from '@/components/Query';
 import PageContainer from '@/components/PageContainer';
 import { getRoleList } from '@/services/role';
@@ -84,7 +84,7 @@ const User: React.FC = () => {
         const { id, username, phone, avatar, email } = record;
         const data = { id, username, phone, avatar, email, roles, roleList: roleData };
         // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
-        return <TableOperation data={data} />;
+        return <UserTableAction data={data} />;
       }
     }
   ];
@@ -115,7 +115,7 @@ const User: React.FC = () => {
   return (
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} />
-      <Operation />
+      <UserAction roleList={roleData} />
       <Table
         bordered
         columns={tableColumns}

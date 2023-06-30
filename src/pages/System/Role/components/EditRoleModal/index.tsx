@@ -1,4 +1,5 @@
 import { routeConfig } from '@/router';
+import { getPermissionTreeData } from '@/utils/general';
 import { Form, Input, Modal, TreeSelect } from 'antd';
 
 export type EditRoleInfo = {
@@ -14,13 +15,6 @@ type Props = {
   initData: EditRoleInfo;
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-type SelectTreeOptions = {
-  key?: string;
-  value?: string;
-  title?: string;
-  children?: SelectTreeOptions[];
 };
 
 const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }) => {
@@ -39,41 +33,6 @@ const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
       }
     }
     return formInitData;
-  };
-
-  const getMenuPermissions = (routeName: string | undefined, permissions: API.PermissionInfo[]) => {
-    const data = permissions.filter((item) => item.menu === routeName);
-    const menuPermission: SelectTreeOptions[] = data.map((item) => {
-      return {
-        key: item.id.toString(),
-        value: item.id.toString(),
-        title: item.info
-      };
-    });
-    return menuPermission;
-  };
-
-  const getPermissionTreeData = (
-    routeConfig: RouteConfig[] | undefined,
-    permissions: API.PermissionInfo[]
-  ) => {
-    const treeData: SelectTreeOptions[] = [];
-    if (routeConfig) {
-      routeConfig.map((item) => {
-        let tmp: SelectTreeOptions = {
-          key: item.path,
-          value: item.path,
-          title: item.meta?.title
-        };
-        if (item?.children) {
-          tmp.children = getPermissionTreeData(item.children, permissions);
-        } else {
-          tmp.children = getMenuPermissions(item.name, permissions);
-        }
-        treeData.push(tmp);
-      });
-    }
-    return treeData;
   };
 
   const handleOk = () => {
@@ -129,7 +88,7 @@ const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
           <Form.Item label="权限" name="permissions">
             <TreeSelect
               treeData={getPermissionTreeData(menuData, initData.permissionList)}
-              maxTagCount={2}
+              maxTagCount={3}
               treeCheckable={true}
               showCheckedStrategy="SHOW_CHILD"
               placeholder="Please select"

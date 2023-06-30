@@ -1,8 +1,8 @@
 import PageContainer from '@/components/PageContainer';
 import Query from '@/components/Query';
 import { Input, Table } from 'antd';
-import Operation from './components/Operation';
-import TableOperation from './components/TableOperation';
+import RoleAction from './components/RoleAction';
+import RoleTableAction from './components/RoleTableAction';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
@@ -72,7 +72,7 @@ const Role: React.FC = () => {
           record?.permissions && record.permissions.map((item) => item.id.toString());
         const { id, name, info } = record;
         const data = { id, name, info, permissions, permissionList: permissionData };
-        return <TableOperation data={data} />;
+        return <RoleTableAction data={data} />;
       }
     }
   ];
@@ -98,7 +98,7 @@ const Role: React.FC = () => {
   return (
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} />
-      <Operation />
+      <RoleAction permissionList={permissionData} />
       <Table
         bordered
         columns={tableColumns}

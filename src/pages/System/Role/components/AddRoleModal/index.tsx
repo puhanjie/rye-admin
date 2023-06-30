@@ -1,13 +1,17 @@
-import { Form, Input, Modal } from 'antd';
+import { routeConfig } from '@/router';
+import { getPermissionTreeData } from '@/utils/general';
+import { Form, Input, Modal, TreeSelect } from 'antd';
 
 type Props = {
   className?: string;
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  permissionList: API.PermissionInfo[];
 };
 
-const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen }) => {
+const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionList }) => {
   const [form] = Form.useForm();
+  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = () => {
     console.log(form.getFieldsValue());
@@ -40,6 +44,15 @@ const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen }) => {
           </Form.Item>
           <Form.Item label="角色信息" name="info">
             <Input />
+          </Form.Item>
+          <Form.Item label="权限" name="permissions">
+            <TreeSelect
+              treeData={getPermissionTreeData(menuData, permissionList)}
+              maxTagCount={3}
+              treeCheckable={true}
+              showCheckedStrategy="SHOW_CHILD"
+              placeholder="Please select"
+            />
           </Form.Item>
         </Form>
       </Modal>

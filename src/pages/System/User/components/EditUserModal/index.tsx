@@ -1,3 +1,4 @@
+import { getRoleSelectOptions } from '@/utils/general';
 import { Form, Input, Modal, Select } from 'antd';
 
 export type EditUserInfo = {
@@ -17,20 +18,8 @@ type Props = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type SelectOptions = {
-  label?: string;
-  value?: number | string;
-};
-
 const EditUserModal: React.FC<Props> = ({ className, initData, open, setIsOpen }) => {
   const [form] = Form.useForm();
-
-  const getRoleSelectOptions = (roles: API.RoleInfo[]) => {
-    const options: SelectOptions[] = roles.map((item) => {
-      return { label: item.info, value: item.id };
-    });
-    return options;
-  };
 
   const handleOk = () => {
     console.log(form.getFieldsValue());

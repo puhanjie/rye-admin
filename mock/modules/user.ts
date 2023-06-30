@@ -47,12 +47,12 @@ const userData = [
       {
         id: 2,
         name: 'analysis:view',
-        info: '分析页:查看'
+        info: '查看'
       },
       {
-        id: 15,
+        id: 19,
         name: 'settings:view',
-        info: '个人设置:查看'
+        info: '查看'
       }
     ]
   }

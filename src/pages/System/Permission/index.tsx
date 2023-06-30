@@ -1,9 +1,9 @@
 import PageContainer from '@/components/PageContainer';
 import Query from '@/components/Query';
 import { Input, Table } from 'antd';
-import Operation from './components/Operation';
+import PermissionAction from './components/PermissionAction';
 import type { ColumnsType } from 'antd/es/table';
-import TableOperation from './components/TableOperation';
+import PermissionTableAction from './components/PermissionTableAction';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
 import { getPermissionList } from '@/services/permission';
@@ -76,7 +76,7 @@ const Permission: React.FC = () => {
       render: (_text, record) => {
         const { id, name, info, menu, menuName } = record;
         const data = { id, name, info, menu, menuName };
-        return <TableOperation data={data} />;
+        return <PermissionTableAction data={data} />;
       }
     }
   ];
@@ -112,7 +112,7 @@ const Permission: React.FC = () => {
   return (
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} />
-      <Operation />
+      <PermissionAction />
       <Table
         bordered
         columns={tableColumns}

@@ -6,7 +6,7 @@ type Props = {
   data: EditPermissionInfo;
 };
 
-const TableOperation: React.FC<Props> = ({ data }) => {
+const PermissionTableAction: React.FC<Props> = ({ data }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   return (
@@ -40,4 +40,4 @@ const TableOperation: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TableOperation;
+export default PermissionTableAction;

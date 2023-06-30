@@ -1,25 +1,21 @@
 import { Button, Popconfirm, Space, message } from 'antd';
 import { useState } from 'react';
-import { DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import AddUserModal from '../AddUserModal';
-import ResetPasswordModal from '../ResetPasswordModal';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import AddRoleModal from '../AddRoleModal';
 
 type Props = {
   className?: string;
+  permissionList: API.PermissionInfo[];
 };
 
-const Operation: React.FC<Props> = ({ className }) => {
+const RoleAction: React.FC<Props> = ({ className, permissionList }) => {
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isResetOpen, setIsResetOpen] = useState(false);
 
   return (
     <div className={className}>
       <Space style={{ width: '100%', marginBottom: '10px' }}>
         <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsAddOpen(true)}>
           新增
-        </Button>
-        <Button icon={<ReloadOutlined />} onClick={() => setIsResetOpen(true)}>
-          重置密码
         </Button>
         <Popconfirm
           title="批量删除提醒"
@@ -38,10 +34,9 @@ const Operation: React.FC<Props> = ({ className }) => {
           </Button>
         </Popconfirm>
       </Space>
-      <AddUserModal open={isAddOpen} setIsOpen={setIsAddOpen} />
-      <ResetPasswordModal open={isResetOpen} setIsOpen={setIsResetOpen} />
+      <AddRoleModal open={isAddOpen} setIsOpen={setIsAddOpen} permissionList={permissionList} />
     </div>
   );
 };
 
-export default Operation;
+export default RoleAction;
