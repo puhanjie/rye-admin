@@ -9,12 +9,27 @@ type Props = {
   permissionList: API.PermissionInfo[];
 };
 
+export type AddRoleInfo = {
+  name: string;
+  info: string;
+  permissions?: string[];
+};
+
 const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionList }) => {
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = () => {
-    console.log(form.getFieldsValue());
+    // console.log(form.getFieldsValue());
+    const formData: AddRoleInfo = form.getFieldsValue();
+    // 提交到后台处理需要把权限id值转为number类型
+    const permissions = formData.permissions?.map((item) => Number(item));
+    const data = {
+      name: formData.name,
+      info: formData.info,
+      permissions: permissions
+    };
+    console.log(data);
     // 新增角色
     setIsOpen(false);
     form.resetFields();
