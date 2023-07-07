@@ -36,17 +36,8 @@ export async function editUser(data: API.UserBasicInfo) {
 }
 
 export async function updatePassword(data: API.Password) {
-  const res = await request<boolean>({
+  const res = await request<number>({
     url: '/api/v1/user/password',
-    method: 'put',
-    data
-  });
-  return res;
-}
-
-export async function resetPassword(data: API.Password) {
-  const res = await request<boolean>({
-    url: '/api/v1/user/reset-password',
     method: 'put',
     data
   });
@@ -63,7 +54,7 @@ export async function getUserList() {
 
 export async function getCurrentUser() {
   const res = await request<API.UserBasicInfo>({
-    url: '/api/v1/user',
+    url: '/api/v1/user/myself',
     method: 'get'
   });
   return res;

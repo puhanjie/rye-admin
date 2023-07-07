@@ -14,13 +14,14 @@ type QueryParams = {
   email?: string;
 };
 
-type TableUserInfo = {
+export type TableUserInfo = {
   key?: number;
 } & API.UserInfo;
 
 const User: React.FC = () => {
   const [tableData, setTableData] = useState<TableUserInfo[]>([]);
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
+  const [selectedData, setSelectData] = useState<TableUserInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ const User: React.FC = () => {
   return (
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} />
-      <UserAction roleList={roleData} />
+      <UserAction roleList={roleData} selectedData={selectedData} />
       <Table
         bordered
         columns={tableColumns}
@@ -126,6 +127,7 @@ const User: React.FC = () => {
           type: 'checkbox',
           onChange: (_selectedRowKeys, selectedRows) => {
             console.log(selectedRows);
+            setSelectData(selectedRows);
           }
         }}
         scroll={{ x: 'max-content' }}

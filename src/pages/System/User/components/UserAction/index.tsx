@@ -3,15 +3,25 @@ import { useState } from 'react';
 import { DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import AddUserModal from '../AddUserModal';
 import ResetPasswordModal from '../ResetPasswordModal';
+import type { TableUserInfo } from '../..';
 
 type Props = {
   className?: string;
   roleList: API.RoleInfo[];
+  selectedData: TableUserInfo[];
 };
 
-const UserAction: React.FC<Props> = ({ className, roleList }) => {
+const UserAction: React.FC<Props> = ({ className, roleList, selectedData }) => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isResetOpen, setIsResetOpen] = useState(false);
+
+  const handleReset = () => {
+    if (selectedData.length > 1) {
+      message.warning('请选择单条记录!');
+      return;
+    }
+    setIsResetOpen(true);
+  };
 
   return (
     <div className={className}>
@@ -19,7 +29,7 @@ const UserAction: React.FC<Props> = ({ className, roleList }) => {
         <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsAddOpen(true)}>
           新增
         </Button>
-        <Button icon={<ReloadOutlined />} onClick={() => setIsResetOpen(true)}>
+        <Button icon={<ReloadOutlined />} onClick={handleReset}>
           重置密码
         </Button>
         <Popconfirm
@@ -40,7 +50,13 @@ const UserAction: React.FC<Props> = ({ className, roleList }) => {
         </Popconfirm>
       </Space>
       <AddUserModal open={isAddOpen} setIsOpen={setIsAddOpen} roleList={roleList} />
-      <ResetPasswordModal open={isResetOpen} setIsOpen={setIsResetOpen} />
+      {selectedData.length === 1 && (
+        <ResetPasswordModal
+          open={isResetOpen}
+          setIsOpen={setIsResetOpen}
+          selectedData={selectedData}
+        />
+      )}
     </div>
   );
 };

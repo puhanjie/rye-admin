@@ -6,25 +6,30 @@ import { useAppSelector } from '@/store';
 
 type PasswordForm = {
   userId: number;
-  currpwd: string;
-  newpwd: string;
-  cfmpwd: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 };
 
 const Password: React.FC = () => {
   const { id } = useAppSelector((state) => state.user);
 
   const handleFinish = async (values: PasswordForm) => {
-    const { userId, currpwd, newpwd, cfmpwd } = values;
-    if (newpwd !== cfmpwd) {
+    console.log(values);
+    const { userId, currentPassword, newPassword, confirmPassword } = values;
+    if (newPassword !== confirmPassword) {
       console.log('两次输入密码不一致!');
       return;
     }
-    await updatePassword({
+    const res = await updatePassword({
+      type: 2,
       userId,
-      currpwd,
-      newpwd
+      currentPassword: currentPassword,
+      newPassword: newPassword
     });
+    if (res?.data && res?.data <= 0) {
+      console.log('密码修改失败!');
+    }
   };
 
   return (
@@ -39,13 +44,13 @@ const Password: React.FC = () => {
           <Form.Item label="用户id" name="userId" initialValue={id} hidden>
             <Input />
           </Form.Item>
-          <Form.Item label="当前密码" name="currpwd">
+          <Form.Item label="当前密码" name="currentPassword">
             <Input.Password />
           </Form.Item>
-          <Form.Item label="新密码" name="newpwd">
+          <Form.Item label="新密码" name="newPassword">
             <Input.Password />
           </Form.Item>
-          <Form.Item label="确认密码" name="cfmpwd">
+          <Form.Item label="确认密码" name="confirmPassword">
             <Input.Password />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8 }}>

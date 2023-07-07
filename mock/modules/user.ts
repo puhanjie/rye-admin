@@ -83,11 +83,7 @@ Mock.mock(url('/api/v1/user'), 'put', () => {
 });
 
 Mock.mock(url('/api/v1/user/password'), 'put', () => {
-  return success<boolean>(true);
-});
-
-Mock.mock(url('/api/v1/user/reset-password'), 'put', () => {
-  return success<boolean>(true);
+  return success<number>(1);
 });
 
 Mock.mock(url('/api/v1/user/list'), 'get', () => {
@@ -104,10 +100,10 @@ Mock.mock(url('/api/v1/user/list'), 'get', () => {
       permissions: item.permissions
     };
   });
-  return success<API.UserBasicInfo[]>(userList);
+  return success<API.UserInfo[]>(userList);
 });
 
-Mock.mock(url('/api/v1/user'), 'get', () => {
+Mock.mock(url('/api/v1/user/myself'), 'get', () => {
   const token = getToken();
   if (token) {
     const username = token.split('-')[0];

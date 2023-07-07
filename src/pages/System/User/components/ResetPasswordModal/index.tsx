@@ -1,19 +1,34 @@
-import { useAppSelector } from '@/store';
+import { updatePassword } from '@/services/user';
 import { Form, Input, Modal } from 'antd';
+import { TableUserInfo } from '../..';
 
 type Props = {
   className?: string;
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedData: TableUserInfo[];
 };
 
-const ResetPasswordModal: React.FC<Props> = ({ className, open, setIsOpen }) => {
-  const [form] = Form.useForm();
-  const { id } = useAppSelector((state) => state.user);
+type ResetPassword = {
+  userId?: number;
+  newPassword?: string;
+};
 
-  const handleOk = () => {
-    console.log(form.getFieldsValue());
+const ResetPasswordModal: React.FC<Props> = ({ className, open, setIsOpen, selectedData }) => {
+  const [form] = Form.useForm();
+
+  const handleOk = async () => {
+    const formData: ResetPassword = form.getFieldsValue();
+    console.log(formData);
     // 重置密码
+    const res = await updatePassword({
+      userId: formData.userId,
+      newPassword: formData.newPassword
+    });
+    if (res?.data && res?.data <= 0) {
+      // 密码重置失败
+      console.log('密码重置失败!');
+    }
     setIsOpen(false);
     form.resetFields();
   };
@@ -37,7 +52,7 @@ const ResetPasswordModal: React.FC<Props> = ({ className, open, setIsOpen }) => 
         }}
       >
         <Form name="addUser" form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-          <Form.Item label="用户id" name="userId" initialValue={id} hidden>
+          <Form.Item label="用户id" name="userId" initialValue={selectedData[0].id} hidden>
             <Input />
           </Form.Item>
           <Form.Item label="新密码" name="newPassword">

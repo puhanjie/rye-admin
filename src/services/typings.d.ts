@@ -23,8 +23,6 @@ declare namespace API {
     phone?: string;
     avatar?: string;
     email?: string;
-    createTime?: string;
-    updateTime?: string;
     roles?: {
       id: number;
       name: string;
@@ -38,9 +36,10 @@ declare namespace API {
   };
 
   type Password = {
-    userId: number;
-    currpwd?: string;
-    newpwd: string;
+    type?: number = 1; // 默认重置密码(1:重置密码;2:修改密码)
+    userId?: number;
+    currentPassword?: string;
+    newPassword?: string;
   };
 
   type UserInfo = {
