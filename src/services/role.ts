@@ -26,10 +26,11 @@ export async function editRole(data: API.RoleInfo) {
   return res;
 }
 
-export async function getRoleList() {
-  const res = await request<API.RoleInfo[]>({
+export async function getRoleList(params?: API.RolePageQuery) {
+  const res = await request<API.PageInfo<API.RoleInfo[]>>({
     url: '/api/v1/role/list',
-    method: 'get'
+    method: 'get',
+    params
   });
   return res;
 }

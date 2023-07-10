@@ -1,7 +1,7 @@
 import Mock from 'mockjs';
 import { url, success } from '../utils';
 
-Mock.mock(url('/api/v1/file/upload'), 'post', (params) => {
+Mock.mock(url('/api/v1/file'), 'post', (params) => {
   const formData = params.body;
   const file = formData.get('file');
 

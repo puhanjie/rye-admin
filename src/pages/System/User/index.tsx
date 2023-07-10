@@ -19,7 +19,7 @@ export type TableUserInfo = {
 } & API.UserInfo;
 
 const User: React.FC = () => {
-  const [tableData, setTableData] = useState<TableUserInfo[]>([]);
+  const [tableData, setTableData] = useState<API.PageInfo<API.UserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
   const [selectedData, setSelectData] = useState<TableUserInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,13 +27,20 @@ const User: React.FC = () => {
   useEffect(() => {
     (async () => {
       const roles = await getRoleList();
-      const users = await getUserList();
-      if (users?.data && roles?.data) {
-        const tableData: TableUserInfo[] = users.data.map((item) => {
+      const userPages = await getUserList();
+      if (userPages?.data && roles?.data) {
+        const userData: TableUserInfo[] = userPages.data.records.map((item) => {
           return { key: item.id, ...item };
         });
-        setTableData(tableData);
-        setRoleData(roles.data);
+        const tablePages: API.PageInfo<API.UserInfo[]> = {
+          records: userData,
+          total: userPages.data.total,
+          size: userPages.data.size,
+          current: userPages.data.current,
+          pages: userPages.data.pages
+        };
+        setTableData(tablePages);
+        setRoleData(roles.data.records);
         setLoading(false);
       }
     })();
@@ -120,7 +127,7 @@ const User: React.FC = () => {
       <Table
         bordered
         columns={tableColumns}
-        dataSource={tableData}
+        dataSource={tableData?.records}
         loading={loading}
         size="small"
         rowSelection={{
@@ -133,7 +140,7 @@ const User: React.FC = () => {
         scroll={{ x: 'max-content' }}
         pagination={{
           defaultPageSize: 10,
-          total: tableData.length,
+          total: tableData?.total,
           showSizeChanger: true,
           showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条 / 共 ${total} 条`
         }}

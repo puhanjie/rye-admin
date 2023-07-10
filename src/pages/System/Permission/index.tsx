@@ -19,19 +19,26 @@ type TablePermissionInfo = {
 } & API.PermissionInfo;
 
 const Permission: React.FC = () => {
-  const [data, setData] = useState<API.PermissionInfo[]>([]);
+  const [tableData, setTableData] = useState<API.PageInfo<API.PermissionInfo[]>>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = getToken();
     if (token) {
       (async () => {
-        const res = await getPermissionList();
-        if (res?.data) {
-          const data: TablePermissionInfo[] = res.data.map((item) => {
+        const permissionPages = await getPermissionList();
+        if (permissionPages?.data) {
+          const permissionData: TablePermissionInfo[] = permissionPages.data.records.map((item) => {
             return { key: item.id, ...item };
           });
-          setData(data);
+          const tablePages: API.PageInfo<API.PermissionInfo[]> = {
+            records: permissionData,
+            total: permissionPages.data.total,
+            size: permissionPages.data.size,
+            current: permissionPages.data.current,
+            pages: permissionPages.data.pages
+          };
+          setTableData(tablePages);
           setLoading(false);
         }
       })();
@@ -116,7 +123,7 @@ const Permission: React.FC = () => {
       <Table
         bordered
         columns={tableColumns}
-        dataSource={data}
+        dataSource={tableData?.records}
         loading={loading}
         size="small"
         rowSelection={{
@@ -128,7 +135,7 @@ const Permission: React.FC = () => {
         scroll={{ x: 'max-content' }}
         pagination={{
           defaultPageSize: 10,
-          total: data.length,
+          total: tableData?.total,
           showSizeChanger: true,
           showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条 / 共 ${total} 条`
         }}

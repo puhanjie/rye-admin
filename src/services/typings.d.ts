@@ -13,6 +13,30 @@ declare namespace API {
     type: 'account' | 'phone';
   };
 
+  type UserPageQuery = {
+    pageNum: number = 1;
+    pageSize: number = 10;
+    username?: string;
+    phone?: string;
+    email?: string;
+  };
+
+  type RolePageQuery = {
+    pageNum: number = 1;
+    pageSize: number = 10;
+    name?: string;
+    info?: string;
+  };
+
+  type PermissionPageQuery = {
+    pageNum: number = 1;
+    pageSize: number = 10;
+    name?: string;
+    info?: string;
+    menu?: string;
+    menuName?: string;
+  };
+
   type Token = {
     token: string;
   };
@@ -86,5 +110,13 @@ declare namespace API {
     name: string;
     fileSize: number;
     uuid: string;
+  };
+
+  type PageInfo<T> = {
+    records: T;
+    total: number;
+    size: number;
+    current: number;
+    pages: number;
   };
 }

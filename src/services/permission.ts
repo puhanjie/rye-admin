@@ -26,10 +26,11 @@ export async function editPermission(data: API.PermissionInfo) {
   return res;
 }
 
-export async function getPermissionList() {
-  const res = await request<API.PermissionInfo[]>({
+export async function getPermissionList(params?: API.PermissionPageQuery) {
+  const res = await request<API.PageInfo<API.PermissionInfo[]>>({
     url: '/api/v1/permission/list',
-    method: 'get'
+    method: 'get',
+    params
   });
   return res;
 }

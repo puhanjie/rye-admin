@@ -188,5 +188,12 @@ Mock.mock(url('/api/v1/permission'), 'put', () => {
 });
 
 Mock.mock(url('/api/v1/permission/list'), 'get', () => {
-  return success<API.PermissionInfo[]>(PermissionData);
+  const pageList: API.PageInfo<API.PermissionInfo[]> = {
+    records: PermissionData,
+    total: PermissionData.length,
+    size: 2,
+    current: 1,
+    pages: 10
+  };
+  return success<API.PageInfo<API.PermissionInfo[]>>(pageList);
 });

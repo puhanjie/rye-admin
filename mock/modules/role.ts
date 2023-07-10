@@ -51,5 +51,12 @@ Mock.mock(url('/api/v1/role'), 'put', () => {
 });
 
 Mock.mock(url('/api/v1/role/list'), 'get', () => {
-  return success<API.RoleInfo[]>(roleData);
+  const pageList: API.PageInfo<API.RoleInfo[]> = {
+    records: roleData,
+    total: roleData.length,
+    size: 2,
+    current: 1,
+    pages: 10
+  };
+  return success<API.PageInfo<API.RoleInfo[]>>(pageList);
 });

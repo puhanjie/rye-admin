@@ -61,7 +61,7 @@ const Info: React.FC = () => {
             <Avatar className={styles['avatar']} src={currentUser.avatar} size={128} />
             <Upload
               className={styles['upload']}
-              action="http://localhost:5173/api/v1/file/upload"
+              action="http://localhost:5173/api/v1/file"
               maxCount={1}
               showUploadList={false}
             >

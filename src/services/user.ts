@@ -44,10 +44,11 @@ export async function updatePassword(data: API.Password) {
   return res;
 }
 
-export async function getUserList() {
-  const res = await request<API.UserInfo[]>({
+export async function getUserList(params?: API.UserPageQuery) {
+  const res = await request<API.PageInfo<API.UserInfo[]>>({
     url: '/api/v1/user/list',
-    method: 'get'
+    method: 'get',
+    params
   });
   return res;
 }

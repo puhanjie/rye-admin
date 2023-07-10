@@ -16,8 +16,8 @@ const UserAction: React.FC<Props> = ({ className, roleList, selectedData }) => {
   const [isResetOpen, setIsResetOpen] = useState(false);
 
   const handleReset = () => {
-    if (selectedData.length > 1) {
-      message.warning('请选择单条记录!');
+    if (selectedData.length !== 1) {
+      message.warning('请选择一条记录!');
       return;
     }
     setIsResetOpen(true);

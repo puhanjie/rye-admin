@@ -100,7 +100,14 @@ Mock.mock(url('/api/v1/user/list'), 'get', () => {
       permissions: item.permissions
     };
   });
-  return success<API.UserInfo[]>(userList);
+  const pageList: API.PageInfo<API.UserInfo[]> = {
+    records: userList,
+    total: userList.length,
+    size: 2,
+    current: 1,
+    pages: 10
+  };
+  return success<API.PageInfo<API.UserInfo[]>>(pageList);
 });
 
 Mock.mock(url('/api/v1/user/myself'), 'get', () => {
