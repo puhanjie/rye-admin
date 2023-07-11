@@ -19,12 +19,7 @@ const appSlice = createSlice({
   // 状态操作方法定义
   reducers: {
     setAppTags: (state, { payload }) => {
-      const findData = state.tags.filter((item) => item.path === payload.path);
-      // tag已存在则不添加
-      if (findData.length > 0) {
-        return;
-      }
-      state.tags.push(payload);
+      state.tags = payload;
     },
     cleanAppStore: (state) => {
       state.tags = [];

@@ -41,7 +41,7 @@ const Layouts: React.FC = () => {
         setLoading(false);
       })();
     }
-    dispatch(setAppTags(getTags(routeConfig, pathname)));
+    dispatch(setAppTags(getTags(routeConfig, pathname, tags)));
   }, [pathname, token]);
 
   // 根据路由配置获取菜单项
@@ -74,7 +74,10 @@ const Layouts: React.FC = () => {
           items={menuItems}
           defaultOpenKeys={openKeys}
           selectedKeys={selectKeys}
-          onClick={(event) => navigate(event.key)}
+          onClick={(event) => {
+            dispatch(setAppTags(getTags(routeConfig, pathname, tags)));
+            navigate(event.key);
+          }}
           className={`${styles['menu']} scrollbar`}
         />
       </Layout.Sider>
@@ -87,7 +90,7 @@ const Layouts: React.FC = () => {
           />
           <HeaderRight />
         </Layout.Header>
-        <Tags className={styles['tags']} data={tags} currentPath={pathname} />
+        <Tags currentPath={pathname} />
         <Layout.Content className={`${styles['content']} scrollbar`}>
           <Outlet />
         </Layout.Content>

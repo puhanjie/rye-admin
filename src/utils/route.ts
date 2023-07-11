@@ -88,13 +88,18 @@ export function getActiveMenus(routeConfig: RouteConfig[], pathname: string) {
  * @param currentPath
  * @returns
  */
-export function getTags(routeConfig: RouteConfig[], currentPath: string) {
+export function getTags(routeConfig: RouteConfig[], currentPath: string, tags: TagData[]) {
+  const findData = tags.filter((item) => item.path === currentPath);
+  // tag已存在则不添加
+  if (findData.length > 0) {
+    return tags;
+  }
   const currentRoute = matchRoutes(routeConfig, currentPath)?.slice(-1)[0];
   if (currentRoute?.route.meta?.title && currentRoute?.pathname) {
     const currentTag: TagData = {
       name: currentRoute?.route.meta?.title,
       path: currentRoute?.pathname
     };
-    return currentTag;
+    return [...tags, currentTag];
   }
 }
