@@ -6,6 +6,7 @@ import { clearToken } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { setUserInfo } from '@/store/modules/user';
 import LanguageSwich from '@/components/LanguageSwich';
+import { cleanAppStore } from '@/store/modules/app';
 
 const HeaderRight: React.FC = () => {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const HeaderRight: React.FC = () => {
           permissions: []
         })
       );
+      dispatch(cleanAppStore());
       navigate('/login');
     }
   };

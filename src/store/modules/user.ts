@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState: API.UserBasicInfo = {
+  id: undefined,
+  avatar: '',
+  username: '',
+  phone: '',
+  email: '',
+  roles: [],
+  permissions: []
+};
+
 // 创建Slice定义状态和操作方法
 const userSlice = createSlice({
   name: 'user',
   // 状态定义
-  initialState: {
-    id: undefined,
-    avatar: '',
-    username: '',
-    phone: '',
-    email: '',
-    roles: [],
-    permissions: []
-  },
+  initialState,
   // 状态操作方法定义
   reducers: {
     setUserInfo: (state, { payload }) => {
@@ -23,10 +25,19 @@ const userSlice = createSlice({
       state.email = payload.email;
       state.roles = payload.roles;
       state.permissions = payload.permissions;
+    },
+    cleanUserStore: (state) => {
+      state.id = undefined;
+      state.avatar = '';
+      state.username = '';
+      state.phone = '';
+      state.email = '';
+      state.roles = [];
+      state.permissions = [];
     }
   }
 });
 
-export const { setUserInfo } = userSlice.actions;
+export const { setUserInfo, cleanUserStore } = userSlice.actions;
 
 export default userSlice.reducer;

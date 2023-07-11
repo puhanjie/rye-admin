@@ -1,6 +1,7 @@
 import React from 'react';
 import { resolve } from './path';
 import { matchRoutes } from 'react-router-dom';
+import type { TagData } from '@/layouts/components/Tags';
 
 type MenuItem = {
   key: string;
@@ -79,4 +80,21 @@ export function getActiveMenus(routeConfig: RouteConfig[], pathname: string) {
   const selectKeys = matchKeys?.slice(-1);
 
   return [openKeys, selectKeys];
+}
+
+/**
+ * 获取当前路由对应的tag标签数据
+ * @param routeConfig
+ * @param currentPath
+ * @returns
+ */
+export function getTags(routeConfig: RouteConfig[], currentPath: string) {
+  const currentRoute = matchRoutes(routeConfig, currentPath)?.slice(-1)[0];
+  if (currentRoute?.route.meta?.title && currentRoute?.pathname) {
+    const currentTag: TagData = {
+      name: currentRoute?.route.meta?.title,
+      path: currentRoute?.pathname
+    };
+    return currentTag;
+  }
 }

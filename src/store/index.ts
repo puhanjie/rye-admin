@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './modules/user';
+import appSlice from './modules/app';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const store = configureStore({
   // 合并多个Slice
   reducer: {
+    app: appSlice,
     user: userSlice
   }
 });
