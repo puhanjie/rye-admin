@@ -1,5 +1,5 @@
 import { LoginOutlined, SettingOutlined } from '@ant-design/icons';
-import { Dropdown, Space } from 'antd';
+import { Avatar, Dropdown, Space } from 'antd';
 import styles from './index.module.less';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import { clearToken } from '@/utils/auth';
@@ -52,7 +52,7 @@ const HeaderRight: React.FC = () => {
     <Space align="center">
       <Dropdown menu={{ items, onClick }} placement="bottom" className={styles['user']}>
         <span className={styles['info']}>
-          <img src={avatar} alt="avatar" />
+          <Avatar src={avatar} size={26} alt="avatar" />
           <span>{username}</span>
         </span>
       </Dropdown>
