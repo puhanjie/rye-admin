@@ -1,15 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-type AppInitialState = {
-  tags: {
-    name: string;
-    path: string;
-  }[];
-};
+type AppInitialState = {};
 
-const initialState: AppInitialState = {
-  tags: []
-};
+const initialState: AppInitialState = {};
 
 // 创建Slice定义状态和操作方法
 const appSlice = createSlice({
@@ -17,16 +10,9 @@ const appSlice = createSlice({
   // 状态定义
   initialState,
   // 状态操作方法定义
-  reducers: {
-    setAppTags: (state, { payload }) => {
-      state.tags = payload;
-    },
-    cleanAppStore: (state) => {
-      state.tags = [];
-    }
-  }
+  reducers: {}
 });
 
-export const { setAppTags, cleanAppStore } = appSlice.actions;
+export const {} = appSlice.actions;
 
 export default appSlice.reducer;

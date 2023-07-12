@@ -1,6 +1,6 @@
 import { Layout, Menu, theme } from 'antd';
 import styles from './index.module.less';
-import { getMenuItems, getActiveMenus, getTags } from '../utils/route';
+import { getMenuItems, getActiveMenus } from '../utils/route';
 import { routeConfig } from '../router';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
@@ -15,7 +15,6 @@ import Footer from '@/components/Footer';
 import Logo from '@/layouts/components/Logo';
 import Loading from '@/components/Loading';
 import Tags from './components/Tags';
-import { setAppTags } from '@/store/modules/app';
 
 const Layouts: React.FC = () => {
   const navigate = useNavigate();
@@ -26,7 +25,6 @@ const Layouts: React.FC = () => {
   const [loading, setLoading] = useState(permissions && permissions.length > 0 ? false : true);
   const token = getToken();
   const [openKeys, selectKeys] = getActiveMenus(routeConfig, pathname);
-  const { tags } = useAppSelector((state) => state.app);
 
   useEffect(() => {
     if (!permissions) {
@@ -41,7 +39,6 @@ const Layouts: React.FC = () => {
         setLoading(false);
       })();
     }
-    dispatch(setAppTags(getTags(routeConfig, pathname, tags)));
   }, [pathname, token]);
 
   // 根据路由配置获取菜单项
@@ -75,7 +72,6 @@ const Layouts: React.FC = () => {
           defaultOpenKeys={openKeys}
           selectedKeys={selectKeys}
           onClick={(event) => {
-            dispatch(setAppTags(getTags(routeConfig, pathname, tags)));
             navigate(event.key);
           }}
           className={`${styles['menu']} scrollbar`}
@@ -90,7 +86,7 @@ const Layouts: React.FC = () => {
           />
           <HeaderRight />
         </Layout.Header>
-        <Tags currentPath={pathname} />
+        <Tags />
         <Layout.Content className={`${styles['content']} scrollbar`}>
           <Outlet />
         </Layout.Content>

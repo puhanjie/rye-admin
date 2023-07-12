@@ -1,49 +1,49 @@
 import { Tag, theme } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { matchRoutes, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '@/store';
-import { setAppTags } from '@/store/modules/app';
+import { routeConfig } from '@/router';
 
-export type TagData = {
+type TagData = {
   name: string;
   path: string;
 };
 
-type Props = {
-  currentPath?: string;
-};
-
-const Tags: React.FC<Props> = ({ currentPath }) => {
+const Tags: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { tags } = useAppSelector((state) => state.app);
+  const { pathname } = useLocation();
   const [distance, setDistance] = useState(0);
+  const [tags, setTags] = useState<TagData[]>([]);
   const scroll = useRef<HTMLInputElement>(null);
 
   const {
     token: { colorPrimary }
   } = theme.useToken();
 
-  if (!tags || tags.length <= 0) {
-    return null;
-  }
-
   const scrollToLeft = () => {
-    if (scroll.current && scroll.current.scrollLeft !== 0) {
-      const move = distance - 50;
-      scroll.current.scrollLeft = move;
-      setDistance(move);
+    if (!scroll.current) {
+      return;
     }
+    if (distance <= 0) {
+      return;
+    }
+    const move = distance - 50 <= 0 ? 0 : distance - 50;
+    scroll.current.scrollLeft = move;
+    setDistance(move);
   };
 
   const scrollToRight = () => {
-    if (scroll.current && scroll.current.scrollLeft !== scroll.current.scrollWidth) {
-      const move = distance + 50;
-      scroll.current.scrollLeft = move;
-      setDistance(move);
+    if (!scroll.current) {
+      return;
     }
+    if (distance >= scroll.current.scrollWidth) {
+      return;
+    }
+    const move =
+      distance + 50 >= scroll.current.scrollWidth ? scroll.current.scrollWidth : distance + 50;
+    scroll.current.scrollLeft = move;
+    setDistance(move);
   };
 
   const isShow = () => {
@@ -54,27 +54,63 @@ const Tags: React.FC<Props> = ({ currentPath }) => {
     return false;
   };
 
-  const removeTags = (tag: TagData, tags: TagData[]) => {
-    const newTags = tags.filter((item) => item.path !== tag.path);
-    return newTags;
+  const addTags = (routeConfig: RouteConfig[], tags: TagData[]) => {
+    const findData = tags.filter((item) => item.path === pathname);
+    // tag已存在则不添加
+    if (findData.length > 0) {
+      return;
+    }
+    const currentRoute = matchRoutes(routeConfig, pathname)?.slice(-1)[0];
+    // 若当前路由匹配对象无title和pathname，则返回空数组
+    if (!(currentRoute?.route.meta?.title && currentRoute?.pathname)) {
+      return;
+    }
+    const currentTag: TagData = {
+      name: currentRoute?.route.meta?.title,
+      path: currentRoute?.pathname
+    };
+    setTags([...tags, currentTag]);
   };
 
-  const MenuTags = tags?.map((item, index) => {
+  const removeTags = (tag: TagData, tags: TagData[]) => {
+    const index = tags.indexOf(tag);
+    const beforeIndex = index - 1;
+    const afterIndex = index + 1;
+    const newTags = tags.filter((item) => item.path !== tag.path);
+
+    setTags(newTags);
+    // 若关闭的不是当前活跃的标签，则不进行路由跳转
+    if (tag.path !== pathname) {
+      return;
+    }
+    // 若关闭最后一个标签，则跳转至首页
+    if (!tags[beforeIndex] && !tags[afterIndex]) {
+      navigate('/');
+      return;
+    }
+    tags[beforeIndex] ? navigate(tags[beforeIndex].path) : navigate(tags[afterIndex].path);
+  };
+
+  useEffect(() => {
+    addTags(routeConfig, tags);
+  }, [pathname]);
+
+  const MenuTags = tags.map((item) => {
     return (
       <Tag
-        key={index}
+        className={styles['tag']}
+        key={item.path} //key要唯一，不能使用索引值，否则会导致close标签的时候关闭两个
         closable
         onClick={() => navigate(item.path)}
-        // TODO: 此处bug待修复，移除标签时从redux中也把数据移除会导致前段多关闭一个标签
-        onClose={() => dispatch(setAppTags(removeTags(item, tags)))}
-        style={{ marginTop: '2px', marginBottom: '2px', cursor: 'pointer' }}
-        color={item.path === currentPath ? colorPrimary : 'default'}
+        onClose={() => removeTags(item, tags)}
+        color={item.path === pathname ? colorPrimary : 'default'}
       >
         {item.name}
       </Tag>
     );
   });
-  return (
+
+  return tags.length > 0 ? (
     <div className={styles['container']}>
       <LeftOutlined
         className={styles['scroll-action']}
@@ -90,7 +126,7 @@ const Tags: React.FC<Props> = ({ currentPath }) => {
         style={{ visibility: isShow() ? 'visible' : 'hidden' }}
       />
     </div>
-  );
+  ) : null;
 };
 
 export default Tags;
