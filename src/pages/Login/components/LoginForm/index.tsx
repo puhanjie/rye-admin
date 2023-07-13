@@ -3,12 +3,14 @@ import { login } from '@/services/user';
 import { setToken } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   loginType: 'account' | 'phone';
 };
 
 const LoginForm: React.FC<Props> = ({ loginType }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   // 登录表单提交
   const handleFinish = async (values: API.LoginParams) => {
@@ -27,65 +29,75 @@ const LoginForm: React.FC<Props> = ({ loginType }) => {
 
   return (
     <Form
-      name="login"
+      name={loginType}
       initialValues={{
         remember: true
       }}
       onFinish={handleFinish}
     >
       {loginType === 'account' ? (
-        <Form.Item
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: '请输入用户名'
-            }
-          ]}
-        >
-          <Input placeholder="用户名: admin or guest" prefix={<UserOutlined />} />
-        </Form.Item>
+        <>
+          <Form.Item
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: t('pages.login.username.required')
+              }
+            ]}
+          >
+            <Input placeholder={t('pages.login.username.placeholder')} prefix={<UserOutlined />} />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: t('pages.login.password.required')
+              }
+            ]}
+          >
+            <Input.Password
+              placeholder={t('pages.login.password.placeholder')}
+              prefix={<LockOutlined />}
+            />
+          </Form.Item>
+        </>
       ) : (
-        <Form.Item
-          name="phone"
-          rules={[
-            {
-              required: true,
-              message: '请输入手机号'
-            }
-          ]}
-        >
-          <Input placeholder="请输入手机号" prefix={<MobileOutlined />} />
-        </Form.Item>
-      )}
-
-      {loginType === 'account' ? (
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: '请输入密码'
-            }
-          ]}
-        >
-          <Input.Password placeholder="密码: admin or guest" prefix={<LockOutlined />} />
-        </Form.Item>
-      ) : (
-        <Form.Item
-          name="captcha"
-          rules={[
-            {
-              required: true,
-              message: '请输入验证码'
-            }
-          ]}
-        >
-          <Space.Compact style={{ width: '300px' }}>
-            <Input placeholder="请输入验证码" prefix={<LockOutlined />} />
-            <Button>获取验证码</Button>
-          </Space.Compact>
-        </Form.Item>
+        <>
+          <Form.Item
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: t('pages.login.phoneNumber.required')
+              }
+            ]}
+          >
+            <Input
+              placeholder={t('pages.login.phoneNumber.placeholder')}
+              prefix={<MobileOutlined />}
+            />
+          </Form.Item>
+          <Form.Item
+            name="captcha"
+            rules={[
+              {
+                required: true,
+                message: t('pages.login.captcha.required')
+              }
+            ]}
+          >
+            <Space.Compact style={{ width: '300px' }}>
+              <Input
+                placeholder={t('pages.login.captcha.placeholder')}
+                prefix={<LockOutlined />}
+                style={{ width: '200px' }}
+              />
+              <Button style={{ width: '100px' }}>{t('pages.login.phoneLogin.getVerificationCode')}</Button>
+            </Space.Compact>
+          </Form.Item>
+        </>
       )}
       <Form.Item>
         <div
@@ -96,14 +108,14 @@ const LoginForm: React.FC<Props> = ({ loginType }) => {
           }}
         >
           <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>记住密码</Checkbox>
+            <Checkbox>{t('pages.login.rememberMe')}</Checkbox>
           </Form.Item>
-          <a href="">忘记密码 ?</a>
+          <a href="">{t('pages.login.forgotPassword')}</a>
         </div>
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-          登陆
+          {t('pages.login.submit')}
         </Button>
       </Form.Item>
     </Form>

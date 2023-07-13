@@ -2,22 +2,24 @@ import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import styles from './index.module.less';
 import LoginForm from '../LoginForm';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   className?: string;
 };
 
 const LoginContent: React.FC<Props> = ({ className }) => {
+  const { t } = useTranslation();
   // 登陆页签items内容项
   const loginTabs = [
     {
       key: 'account',
-      label: '账户密码登陆',
+      label: t('pages.login.accountLogin.tab'),
       children: <LoginForm loginType="account" />
     },
     {
       key: 'phone',
-      label: '手机号登陆',
+      label: t('pages.login.phoneLogin.tab'),
       children: <LoginForm loginType="phone" />
     }
   ];
@@ -32,9 +34,9 @@ const LoginContent: React.FC<Props> = ({ className }) => {
       <div className={styles['login-top']}>
         <div className={styles['login-header']}>
           <img src="/src/assets/logo.svg" alt="logo" className={styles['logo']} />
-          <span className={styles['login-title']}>Rye Admin</span>
+          <span className={styles['login-title']}>{t('app.name')}</span>
         </div>
-        <div className={styles['login-desc']}>Rye Admin 是后台系统最具影响力的 Web 设计规范</div>
+        <div className={styles['login-desc']}>{t('app.description')}</div>
       </div>
       <Tabs
         className={styles['login-tabs']}

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.less';
 import 'antd/dist/reset.css';
+import '@/locales';
 
 // 开发环境启用mock
 if (import.meta.env.MODE === 'dev') {

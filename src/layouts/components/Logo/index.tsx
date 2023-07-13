@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   collapsed?: boolean;
 };
 
 const Logo: React.FC<Props> = ({ collapsed }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -16,7 +18,7 @@ const Logo: React.FC<Props> = ({ collapsed }) => {
       onClick={() => navigate('/')}
     >
       <img src="/src/assets/logo.svg" alt="logo" className={styles['image']} />
-      {!collapsed && <span className={styles['title']}>Rye Admin</span>}
+      {!collapsed && <span className={styles['title']}>{t('app.name')}</span>}
     </div>
   );
 };

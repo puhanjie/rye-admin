@@ -2,14 +2,19 @@ import './App.less';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
 import { ConfigProvider } from 'antd';
-import zhCN from 'antd/locale/zh_CN'; //使用语言配置组件后首次进入系统会比较慢
+import zhCN from 'antd/locale/zh_CN';
+import enUS from 'antd/locale/en_US';
 import { Provider } from 'react-redux';
 import store from './store';
+import { useTranslation } from 'react-i18next';
 
 const App: React.FC = () => {
+  const { i18n } = useTranslation();
+  const locale = i18n.language === 'zhCN' ? enUS : zhCN;
+
   return (
     <Provider store={store}>
-      <ConfigProvider locale={zhCN}>
+      <ConfigProvider locale={locale}>
         <RouterProvider router={router} />
       </ConfigProvider>
     </Provider>
