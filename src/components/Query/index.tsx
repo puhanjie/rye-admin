@@ -1,5 +1,6 @@
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Col, Divider, Form, Row, Space } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   className?: string;
@@ -8,6 +9,8 @@ type Props = {
 };
 
 const Query: React.FC<Props> = ({ className, queryFields, onQuery }) => {
+  const { t } = useTranslation();
+
   const renderQueryFields = (queryFields: QueryField[]) => {
     const children: React.ReactNode[] = [];
     for (let i = 0; i < queryFields.length; i++) {
@@ -38,10 +41,10 @@ const Query: React.FC<Props> = ({ className, queryFields, onQuery }) => {
           <Col span={4} style={{ textAlign: 'center' }}>
             <Space>
               <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
-                查询
+                {t('common.button.query')}
               </Button>
               <Button htmlType="reset" icon={<ReloadOutlined />}>
-                重置
+                {t('common.button.reset')}
               </Button>
             </Space>
           </Col>

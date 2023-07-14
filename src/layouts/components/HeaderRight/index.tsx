@@ -6,8 +6,10 @@ import { clearToken } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { setUserInfo } from '@/store/modules/user';
 import LanguageSwich from '@/components/LanguageSwich';
+import { useTranslation } from 'react-i18next';
 
 const HeaderRight: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -15,12 +17,12 @@ const HeaderRight: React.FC = () => {
     {
       key: 'settings',
       icon: <SettingOutlined />,
-      label: '个人设置'
+      label: t('pages.layouts.header.settings')
     },
     {
       key: 'loginout',
       icon: <LoginOutlined />,
-      label: '退出登录'
+      label: t('pages.layouts.header.signOut')
     }
   ];
   const onClick = ({ key }: { key: string }) => {

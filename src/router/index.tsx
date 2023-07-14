@@ -7,10 +7,10 @@ import Loading from '@/components/Loading';
 export const routeConfig: RouteConfig[] = [
   {
     path: '*',
-    name: 'exception',
+    name: 'not-found',
     component: lazy(() => import('@/pages/Exception/404')),
     meta: {
-      title: 'Not Found'
+      auth: true
     }
   },
   {
@@ -18,8 +18,7 @@ export const routeConfig: RouteConfig[] = [
     name: 'login',
     component: lazy(() => import('@/pages/Login')),
     meta: {
-      auth: true,
-      title: '登录'
+      auth: true
     }
   },
   {
@@ -27,15 +26,13 @@ export const routeConfig: RouteConfig[] = [
     name: 'index',
     component: lazy(() => import('@/layouts')),
     meta: {
-      auth: true,
-      title: 'index'
+      auth: true
     },
     children: [
       {
         path: 'dashboard',
         name: 'dashboard',
         meta: {
-          title: 'Dashboard',
           icon: <DashboardOutlined />
         },
         children: [
@@ -44,7 +41,6 @@ export const routeConfig: RouteConfig[] = [
             name: 'analysis',
             component: lazy(() => import('@/pages/Dashboard/Analysis')),
             meta: {
-              title: '分析页',
               access: 'analysis:view'
             }
           }
@@ -54,7 +50,6 @@ export const routeConfig: RouteConfig[] = [
         path: 'system',
         name: 'system',
         meta: {
-          title: '系统管理',
           icon: <AppstoreOutlined />
         },
         children: [
@@ -63,7 +58,6 @@ export const routeConfig: RouteConfig[] = [
             name: 'user',
             component: lazy(() => import('@/pages/System/User')),
             meta: {
-              title: '用户管理',
               access: 'user:view'
             }
           },
@@ -72,7 +66,6 @@ export const routeConfig: RouteConfig[] = [
             name: 'role',
             component: lazy(() => import('@/pages/System/Role')),
             meta: {
-              title: '角色管理',
               access: 'role:view'
             }
           },
@@ -81,7 +74,6 @@ export const routeConfig: RouteConfig[] = [
             name: 'permission',
             component: lazy(() => import('@/pages/System/Permission')),
             meta: {
-              title: '权限管理',
               access: 'permission:view'
             }
           }
@@ -91,7 +83,6 @@ export const routeConfig: RouteConfig[] = [
         path: 'account',
         name: 'account',
         meta: {
-          title: '个人中心',
           icon: <UserOutlined />
         },
         children: [
@@ -100,7 +91,6 @@ export const routeConfig: RouteConfig[] = [
             name: 'settings',
             component: lazy(() => import('@/pages/Account/Settings')),
             meta: {
-              title: '个人设置',
               access: 'settings:view'
             }
           }

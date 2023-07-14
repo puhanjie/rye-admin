@@ -4,13 +4,15 @@ import styles from './index.module.less';
 import { useEffect, useRef, useState } from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { routeConfig } from '@/router';
+import { useTranslation } from 'react-i18next';
 
 type TagData = {
-  name: string;
+  name?: string;
   path: string;
 };
 
 const Tags: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [distance, setDistance] = useState(0);
@@ -56,17 +58,17 @@ const Tags: React.FC = () => {
 
   const addTags = (routeConfig: RouteConfig[], tags: TagData[]) => {
     const findData = tags.filter((item) => item.path === pathname);
-    // tag已存在则不添加
+    // 当前path对应的tag已存在则不添加
     if (findData.length > 0) {
       return;
     }
     const currentRoute = matchRoutes(routeConfig, pathname)?.slice(-1)[0];
     // 若当前路由匹配对象无title和pathname，则返回空数组
-    if (!(currentRoute?.route.meta?.title && currentRoute?.pathname)) {
+    if (!(currentRoute?.route.name && currentRoute?.pathname)) {
       return;
     }
     const currentTag: TagData = {
-      name: currentRoute?.route.meta?.title,
+      name: currentRoute?.route.name,
       path: currentRoute?.pathname
     };
     setTags([...tags, currentTag]);
@@ -105,7 +107,7 @@ const Tags: React.FC = () => {
         onClose={() => removeTags(item, tags)}
         color={item.path === pathname ? colorPrimary : 'default'}
       >
-        {item.name}
+        {t(`menu.${item.name}`)}
       </Tag>
     );
   });

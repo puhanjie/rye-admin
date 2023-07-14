@@ -2,23 +2,28 @@ import { routeConfig } from '@/router';
 import { getToken } from '@/utils/auth';
 import { getDefaultPath } from '@/utils/route';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate, matchRoutes, useLocation } from 'react-router-dom';
+
+// TODO: run dev模式下保存该文件会导致控制台报错，由该Auth组件造成，待修复
 
 type Props = {
   children: React.ReactNode;
 };
 
 const Auth: React.FC<Props> = ({ children }) => {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const token = getToken();
   const { pathname } = useLocation();
   const routeMatch = matchRoutes(routeConfig, pathname);
   const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
 
   useEffect(() => {
-    if (currentRoute?.meta?.title) {
-      document.title = `Rye - ${currentRoute.meta.title}`;
+    if (currentRoute?.name) {
+      document.title = `${t('app.abbreviation')}-${t(`menu.${currentRoute.name}`)}`;
     }
-  }, [pathname]);
+  }, [pathname, language]);
 
   // 路由鉴权
   if (token) {

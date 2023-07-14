@@ -1,5 +1,5 @@
 export default {
-  'pages.login.title': 'Login',
+  // Login page
   'pages.login.accountLogin.tab': 'Account Login',
   'pages.login.phoneLogin.tab': 'Phone Login',
   'pages.login.username.placeholder': 'Username: admin or guest',
@@ -13,5 +13,31 @@ export default {
   'pages.login.phoneLogin.getVerificationCode': 'Get Code',
   'pages.login.rememberMe': 'Remember me',
   'pages.login.forgotPassword': 'Forgot Password ?',
-  'pages.login.submit': 'Login'
+  'pages.login.submit': 'Login',
+  // Layouts page
+  'pages.layouts.header.settings': 'Account settings',
+  'pages.layouts.header.signOut': 'Sign out',
+  // User management page
+  'pages.user.queryForm.username': 'username',
+  'pages.user.queryForm.username.placeholder': 'Please input username',
+  'pages.user.queryForm.phone': 'phone',
+  'pages.user.queryForm.phone.placeholder': 'Please input phone number',
+  'pages.user.queryForm.email': 'email',
+  'pages.user.queryForm.email.placeholder': 'Please input email',
+  'pages.user.add': 'add',
+  'pages.user.resetPassword': 'Reset password',
+  'pages.user.batchDelete': 'Batch delete',
+  'pages.user.edit': 'edit',
+  'pages.user.delete': 'delete',
+  'pages.user.username': 'username',
+  'pages.user.role': 'role',
+  'pages.user.phone': 'phone',
+  'pages.user.email': 'email',
+  'pages.user.createTime': 'Creation time',
+  'pages.user.updateTime': 'Update time',
+  'pages.user.action': 'Action',
+  'pages.user.addModal.title': 'Add User',
+  'pages.user.editModal.title': 'Edit User',
+  'pages.user.resetPasswordModal.title': 'Reset Password',
+  'pages.user.resetPasswordModal.newPassword': 'New Password'
 };

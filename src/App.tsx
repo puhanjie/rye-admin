@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 const App: React.FC = () => {
   const { i18n } = useTranslation();
-  const locale = i18n.language === 'zhCN' ? enUS : zhCN;
+  const locale = i18n.language === 'zhCN' ? zhCN : enUS;
 
   return (
     <Provider store={store}>

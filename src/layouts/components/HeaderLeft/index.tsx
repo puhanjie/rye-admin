@@ -4,6 +4,7 @@ import { Breadcrumb } from 'antd';
 import { matchRoutes, useLocation } from 'react-router-dom';
 import { routeConfig } from '@/router';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   className?: string | undefined;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 const HeaderLeft: React.FC<Props> = ({ className, collapsed, setCollapsed }) => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
 
   const Trigger = () => {
@@ -29,7 +31,7 @@ const HeaderLeft: React.FC<Props> = ({ className, collapsed, setCollapsed }) => 
       const breadcrumbs = match.map((item) => {
         return {
           className: styles['breadcrumb-items'],
-          title: item.route?.meta?.title
+          title: t(`menu.${item.route.name}`)
         };
       });
       return breadcrumbs;

@@ -1,5 +1,5 @@
 export default {
-  'pages.login.title': '登录',
+  // 登录页
   'pages.login.accountLogin.tab': '账户密码登录',
   'pages.login.phoneLogin.tab': '手机号登录',
   'pages.login.username.placeholder': '用户名: admin or guest',
@@ -13,5 +13,31 @@ export default {
   'pages.login.phoneLogin.getVerificationCode': '获取验证码',
   'pages.login.rememberMe': '记住密码',
   'pages.login.forgotPassword': '忘记密码 ?',
-  'pages.login.submit': '登录'
+  'pages.login.submit': '登录',
+  // Layouts页
+  'pages.layouts.header.settings': '个人设置',
+  'pages.layouts.header.signOut': '退出登录',
+  // 用户管理页
+  'pages.user.queryForm.username': '用户名',
+  'pages.user.queryForm.username.placeholder': '请输入用户名',
+  'pages.user.queryForm.phone': '手机',
+  'pages.user.queryForm.phone.placeholder': '请输入手机号',
+  'pages.user.queryForm.email': '邮箱',
+  'pages.user.queryForm.email.placeholder': '请输入邮箱',
+  'pages.user.add': '新增',
+  'pages.user.resetPassword': '重置密码',
+  'pages.user.batchDelete': '批量删除',
+  'pages.user.edit': '编辑',
+  'pages.user.delete': '删除',
+  'pages.user.username': '用户名',
+  'pages.user.role': '角色',
+  'pages.user.phone': '手机',
+  'pages.user.email': '邮箱',
+  'pages.user.createTime': '创建时间',
+  'pages.user.updateTime': '更新时间',
+  'pages.user.action': '操作',
+  'pages.user.addModal.title': '新增用户',
+  'pages.user.editModal.title': '编辑用户',
+  'pages.user.resetPasswordModal.title': '重置密码',
+  'pages.user.resetPasswordModal.newPassword': '新密码'
 };

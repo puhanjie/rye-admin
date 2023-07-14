@@ -1,6 +1,9 @@
 import React from 'react';
 import { resolve } from './path';
 import { matchRoutes } from 'react-router-dom';
+import i18n from 'i18next';
+
+// TODO: run dev模式下保存该文件会导致控制台报错，由Auth组件造成，待修复
 
 type MenuItem = {
   key: string;
@@ -38,7 +41,7 @@ export function getMenuItems(
   routes.map((item) => {
     const tmp: MenuItem = {
       key: resolve(parentPath, item.path),
-      label: item?.meta?.title,
+      label: i18n.t(`menu.${item.name}`),
       icon: item?.meta?.icon
     };
 

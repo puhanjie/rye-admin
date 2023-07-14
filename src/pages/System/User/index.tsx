@@ -7,6 +7,7 @@ import UserAction from './components/UserAction';
 import Query from '@/components/Query';
 import PageContainer from '@/components/PageContainer';
 import { getRoleList } from '@/services/role';
+import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
   username?: string;
@@ -19,6 +20,7 @@ export type TableUserInfo = {
 } & API.UserInfo;
 
 const User: React.FC = () => {
+  const { t } = useTranslation();
   const [tableData, setTableData] = useState<API.PageInfo<API.UserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
   const [selectedData, setSelectData] = useState<TableUserInfo[]>([]);
@@ -48,12 +50,12 @@ const User: React.FC = () => {
 
   const tableColumns: ColumnsType<TableUserInfo> = [
     {
-      title: '用户名',
+      title: t('pages.user.username'),
       dataIndex: 'username',
       align: 'center'
     },
     {
-      title: '角色',
+      title: t('pages.user.role'),
       align: 'center',
       render: (_text, record) => {
         if (!record?.roles) {
@@ -63,28 +65,28 @@ const User: React.FC = () => {
       }
     },
     {
-      title: '手机',
+      title: t('pages.user.phone'),
       dataIndex: 'phone',
       align: 'center'
     },
     {
-      title: '邮箱',
+      title: t('pages.user.email'),
       dataIndex: 'email',
       align: 'center'
     },
     {
-      title: '创建时间',
+      title: t('pages.user.createTime'),
       dataIndex: 'createTime',
       align: 'center'
     },
     {
-      title: '更新时间',
+      title: t('pages.user.updateTime'),
       dataIndex: 'updateTime',
       align: 'center'
     },
     {
-      title: '操作',
-      dataIndex: 'operation',
+      title: t('pages.user.action'),
+      dataIndex: 'action',
       align: 'center',
       render: (_text, record) => {
         // 处理roles对象数组，只保留角色id
@@ -99,19 +101,19 @@ const User: React.FC = () => {
 
   const queryFields: QueryField[] = [
     {
-      label: '用户名',
+      label: t('pages.user.queryForm.username'),
       name: 'username',
-      render: <Input placeholder="请输入用户名" />
+      render: <Input placeholder={t('pages.user.queryForm.username.placeholder')} />
     },
     {
-      label: '手机',
+      label: t('pages.user.queryForm.phone'),
       name: 'phone',
-      render: <Input placeholder="请输入手机号" />
+      render: <Input placeholder={t('pages.user.queryForm.phone.placeholder')} />
     },
     {
-      label: '邮箱',
+      label: t('pages.user.queryForm.email'),
       name: 'email',
-      render: <Input placeholder="请输入邮箱" />
+      render: <Input placeholder={t('pages.user.queryForm.email.placeholder')} />
     }
   ];
 
@@ -142,7 +144,8 @@ const User: React.FC = () => {
           defaultPageSize: 10,
           total: tableData?.total,
           showSizeChanger: true,
-          showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条 / 共 ${total} 条`
+          showTotal: (total, range) =>
+            t('common.table.footer', { start: range[0], end: range[1], total: total })
         }}
       />
     </PageContainer>
