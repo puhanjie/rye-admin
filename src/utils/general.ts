@@ -1,3 +1,5 @@
+import i18n from 'i18next';
+
 export type SelectOptions = {
   label?: string;
   value?: number | string;
@@ -59,7 +61,7 @@ export function getPermissionTreeData(
       let tmp: SelectTreeOptions = {
         key: item.path,
         value: item.path,
-        title: item.meta?.title
+        title: i18n.t(`menu.${item.name}`)
       };
       if (item?.children) {
         tmp.children = getPermissionTreeData(item.children, permissions);

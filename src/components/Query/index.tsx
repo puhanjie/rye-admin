@@ -27,13 +27,7 @@ const Query: React.FC<Props> = ({ className, queryFields, onQuery }) => {
 
   return (
     <div className={className}>
-      <Form
-        name="query"
-        layout="inline"
-        onFinish={onQuery}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-      >
+      <Form name="query" layout="inline" onFinish={onQuery}>
         <Row style={{ width: '100%' }} align="middle">
           <Col span={20}>
             <Row>{renderQueryFields(queryFields)}</Row>

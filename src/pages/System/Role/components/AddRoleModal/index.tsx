@@ -1,6 +1,7 @@
 import { routeConfig } from '@/router';
 import { getPermissionTreeData } from '@/utils/general';
 import { Form, Input, Modal, TreeSelect } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   className?: string;
@@ -16,6 +17,7 @@ export type AddRoleInfo = {
 };
 
 const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionList }) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
@@ -42,7 +44,7 @@ const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionL
   return (
     <div className={className}>
       <Modal
-        title="新增角色"
+        title={t('pages.role.addModal.title')}
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -53,20 +55,20 @@ const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionL
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Form name="addRole" form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-          <Form.Item label="角色名" name="name">
+        <Form name="addRole" form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+          <Form.Item label={t('pages.role.name')} name="name">
             <Input />
           </Form.Item>
-          <Form.Item label="角色信息" name="info">
+          <Form.Item label={t('pages.role.info')} name="info">
             <Input />
           </Form.Item>
-          <Form.Item label="权限" name="permissions">
+          <Form.Item label={t('pages.role.permission')} name="permissions">
             <TreeSelect
               treeData={getPermissionTreeData(menuData, permissionList)}
               maxTagCount={3}
               treeCheckable={true}
               showCheckedStrategy="SHOW_CHILD"
-              placeholder="Please select"
+              placeholder={t('pages.role.modal.permission.placeholder')}
             />
           </Form.Item>
         </Form>

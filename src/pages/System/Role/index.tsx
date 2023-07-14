@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
 import { getRoleList } from '@/services/role';
 import { getPermissionList } from '@/services/permission';
+import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
   name?: string;
@@ -19,6 +20,7 @@ type TableRoleInfo = {
 } & API.RoleInfo;
 
 const Role: React.FC = () => {
+  const { t } = useTranslation();
   const [tableData, setTableData] = useState<API.PageInfo<API.RoleInfo[]>>();
   const [permissionData, setPermissionData] = useState<API.PermissionInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,28 +52,28 @@ const Role: React.FC = () => {
 
   const tableColumns: ColumnsType<TableRoleInfo> = [
     {
-      title: '角色名',
+      title: t('pages.role.name'),
       dataIndex: 'name',
       align: 'center'
     },
     {
-      title: '角色信息',
+      title: t('pages.role.info'),
       dataIndex: 'info',
       align: 'center'
     },
     {
-      title: '创建时间',
+      title: t('pages.role.createTime'),
       dataIndex: 'createTime',
       align: 'center'
     },
     {
-      title: '更新时间',
+      title: t('pages.role.updateTime'),
       dataIndex: 'updateTime',
       align: 'center'
     },
     {
-      title: '操作',
-      dataIndex: 'operation',
+      title: t('pages.role.action'),
+      dataIndex: 'action',
       align: 'center',
       render: (_text, record) => {
         // 处理permissions对象数组，只保留权限id
@@ -86,14 +88,14 @@ const Role: React.FC = () => {
 
   const queryFields: QueryField[] = [
     {
-      label: '角色名',
+      label: t('pages.role.queryForm.name'),
       name: 'name',
-      render: <Input placeholder="请输入角色名" />
+      render: <Input placeholder={t('pages.role.queryForm.name.placeholder')} />
     },
     {
-      label: '角色信息',
+      label: t('pages.role.queryForm.info'),
       name: 'info',
-      render: <Input placeholder="请输入角色信息" />
+      render: <Input placeholder={t('pages.role.queryForm.info.placeholder')} />
     }
   ];
 
@@ -123,7 +125,8 @@ const Role: React.FC = () => {
           defaultPageSize: 10,
           total: tableData?.total,
           showSizeChanger: true,
-          showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条 / 共 ${total} 条`
+          showTotal: (total, range) =>
+            t('common.table.footer', { start: range[0], end: range[1], total: total })
         }}
       />
     </PageContainer>

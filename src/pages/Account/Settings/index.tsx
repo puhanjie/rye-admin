@@ -3,17 +3,19 @@ import Info from './components/Info';
 import Password from './components/Password';
 import PageContainer from '@/components/PageContainer';
 import styles from './index.module.less';
+import { useTranslation } from 'react-i18next';
 
 const Setting: React.FC = () => {
+  const { t } = useTranslation();
   const tabs = [
     {
       key: 'info',
-      label: '基本信息',
+      label: t('pages.settings.basicInfo.tab'),
       children: <Info />
     },
     {
       key: 'password',
-      label: '修改密码',
+      label: t('pages.settings.updatePassword.tab'),
       children: <Password />
     }
   ];

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from './index.module.less';
 import { UploadOutlined } from '@ant-design/icons';
 import Container from '../Container';
+import { useTranslation } from 'react-i18next';
 
 type UserForm = {
   username: string;
@@ -12,6 +13,7 @@ type UserForm = {
 };
 
 const Info: React.FC = () => {
+  const { t } = useTranslation();
   const [currentUser, setCurrentUser] = useState<API.UserBasicInfo>({});
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +32,7 @@ const Info: React.FC = () => {
   };
 
   return (
-    <Container title="基本信息" className={styles['container']}>
+    <Container title={t('pages.settings.basicInfo.tab')} className={styles['container']}>
       {loading ? null : (
         <div className={styles['main']}>
           <div className={styles['left']}>
@@ -41,18 +43,18 @@ const Info: React.FC = () => {
               initialValues={currentUser}
               onFinish={handleFinish}
             >
-              <Form.Item label="用户名" name="username">
+              <Form.Item label={t('pages.settings.username')} name="username">
                 <Input />
               </Form.Item>
-              <Form.Item label="手机" name="phone">
+              <Form.Item label={t('pages.settings.phone')} name="phone">
                 <Input />
               </Form.Item>
-              <Form.Item label="邮箱" name="email">
+              <Form.Item label={t('pages.settings.email')} name="email">
                 <Input />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8 }}>
                 <Button type="primary" htmlType="submit">
-                  提交
+                  {t('common.button.submit')}
                 </Button>
               </Form.Item>
             </Form>
@@ -65,7 +67,7 @@ const Info: React.FC = () => {
               maxCount={1}
               showUploadList={false}
             >
-              <Button icon={<UploadOutlined />}>更换头像</Button>
+              <Button icon={<UploadOutlined />}>{t('common.button.changeAvator')}</Button>
             </Upload>
           </div>
         </div>

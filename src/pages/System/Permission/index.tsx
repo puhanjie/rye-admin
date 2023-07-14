@@ -7,6 +7,7 @@ import PermissionTableAction from './components/PermissionTableAction';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
 import { getPermissionList } from '@/services/permission';
+import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
   name?: string;
@@ -19,6 +20,7 @@ type TablePermissionInfo = {
 } & API.PermissionInfo;
 
 const Permission: React.FC = () => {
+  const { t } = useTranslation();
   const [tableData, setTableData] = useState<API.PageInfo<API.PermissionInfo[]>>();
   const [loading, setLoading] = useState(true);
 
@@ -47,38 +49,38 @@ const Permission: React.FC = () => {
 
   const tableColumns: ColumnsType<TablePermissionInfo> = [
     {
-      title: '权限名',
+      title: t('pages.permission.name'),
       dataIndex: 'name',
       align: 'center'
     },
     {
-      title: '权限信息',
+      title: t('pages.permission.info'),
       dataIndex: 'info',
       align: 'center'
     },
     {
-      title: '菜单',
+      title: t('pages.permission.menu'),
       dataIndex: 'menu',
       align: 'center'
     },
     {
-      title: '菜单名称',
+      title: t('pages.permission.menuName'),
       dataIndex: 'menuName',
       align: 'center'
     },
     {
-      title: '创建时间',
+      title: t('pages.permission.createTime'),
       dataIndex: 'createTime',
       align: 'center'
     },
     {
-      title: '更新时间',
+      title: t('pages.permission.updateTime'),
       dataIndex: 'updateTime',
       align: 'center'
     },
     {
-      title: '操作',
-      dataIndex: 'operation',
+      title: t('pages.permission.action'),
+      dataIndex: 'action',
       align: 'center',
       render: (_text, record) => {
         const { id, name, info, menu, menuName } = record;
@@ -90,24 +92,19 @@ const Permission: React.FC = () => {
 
   const queryFields: QueryField[] = [
     {
-      label: '权限名',
+      label: t('pages.permission.queryForm.name'),
       name: 'name',
-      render: <Input placeholder="请输入权限名" />
+      render: <Input placeholder={t('pages.permission.queryForm.name.placeholder')} />
     },
     {
-      label: '权限信息',
+      label: t('pages.permission.queryForm.info'),
       name: 'info',
-      render: <Input placeholder="请输入权限信息" />
+      render: <Input placeholder={t('pages.permission.queryForm.info.placeholder')} />
     },
     {
-      label: '菜单',
-      name: 'menu',
-      render: <Input placeholder="请输入菜单标识" />
-    },
-    {
-      label: '菜单名称',
+      label: t('pages.permission.queryForm.menuName'),
       name: 'menuName',
-      render: <Input placeholder="请输入菜单名称" />
+      render: <Input placeholder={t('pages.permission.queryForm.menuName.placeholder')} />
     }
   ];
 
@@ -137,7 +134,8 @@ const Permission: React.FC = () => {
           defaultPageSize: 10,
           total: tableData?.total,
           showSizeChanger: true,
-          showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条 / 共 ${total} 条`
+          showTotal: (total, range) =>
+            t('common.table.footer', { start: range[0], end: range[1], total: total })
         }}
       />
     </PageContainer>

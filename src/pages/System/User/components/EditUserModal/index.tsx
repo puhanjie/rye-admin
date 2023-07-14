@@ -1,5 +1,6 @@
 import { getRoleSelectOptions } from '@/utils/general';
 import { Form, Input, Modal, Select } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 export type EditUserInfo = {
   id: number;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const EditUserModal: React.FC<Props> = ({ className, initData, open, setIsOpen }) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -35,7 +37,7 @@ const EditUserModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
   return (
     <div className={className}>
       <Modal
-        title="编辑用户"
+        title={t('pages.user.editModal.title')}
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -50,28 +52,29 @@ const EditUserModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
           name="editUser"
           form={form}
           initialValues={initData}
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 20 }}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
         >
           <Form.Item label="id" name="id" hidden={true}>
             <Input />
           </Form.Item>
-          <Form.Item label="用户名" name="username">
+          <Form.Item label={t('pages.user.username')} name="username">
             <Input />
           </Form.Item>
-          <Form.Item label="角色" name="roles">
+          <Form.Item label={t('pages.user.role')} name="roles">
             <Select
               mode="multiple"
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
               options={getRoleSelectOptions(initData.roleList)}
+              placeholder={t('pages.user.modal.role.placeholder')}
             />
           </Form.Item>
-          <Form.Item label="手机" name="phone">
+          <Form.Item label={t('pages.user.phone')} name="phone">
             <Input />
           </Form.Item>
-          <Form.Item label="邮箱" name="email">
+          <Form.Item label={t('pages.user.email')} name="email">
             <Input />
           </Form.Item>
         </Form>
