@@ -16,6 +16,7 @@ const Auth: React.FC<Props> = ({ children }) => {
   const language = i18n.language;
   const token = getToken();
   const { pathname } = useLocation();
+  // TODO: 由于此处使用了routeConfig，在路由配置文件中又使用了该Auth组件，造成循环调用导致vite热更新报错，待处理
   const routeMatch = matchRoutes(routeConfig, pathname);
   const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
 
