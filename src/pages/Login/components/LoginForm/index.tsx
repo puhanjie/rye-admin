@@ -14,11 +14,19 @@ const LoginForm: React.FC<Props> = ({ loginType }) => {
   const navigate = useNavigate();
   // 登录表单提交
   const handleFinish = async (values: API.LoginParams) => {
-    const res = await login({
-      username: values.username,
-      password: values.password,
-      type: loginType
-    });
+    const loginParams =
+      loginType === 'account'
+        ? {
+            username: values.username,
+            password: values.password,
+            type: loginType
+          }
+        : {
+            phone: values.phone,
+            captcha: values.captcha,
+            type: loginType
+          };
+    const res = await login(loginParams);
 
     if (res?.data) {
       // 登录成功，保存token
@@ -94,7 +102,9 @@ const LoginForm: React.FC<Props> = ({ loginType }) => {
                 prefix={<LockOutlined />}
                 style={{ width: '200px' }}
               />
-              <Button style={{ width: '100px' }}>{t('pages.login.phoneLogin.getVerificationCode')}</Button>
+              <Button style={{ width: '100px' }}>
+                {t('pages.login.phoneLogin.getVerificationCode')}
+              </Button>
             </Space.Compact>
           </Form.Item>
         </>
