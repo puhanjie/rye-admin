@@ -7,8 +7,6 @@ import enUS from 'antd/locale/en_US';
 import { Provider } from 'react-redux';
 import store from './store';
 import { useTranslation } from 'react-i18next';
-import { Suspense } from 'react';
-import Loading from './components/Loading';
 
 const App: React.FC = () => {
   const { i18n } = useTranslation();
@@ -17,9 +15,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <ConfigProvider locale={locale}>
-        <Suspense fallback={<Loading />}>
-          <RouterProvider router={router} />
-        </Suspense>
+        <RouterProvider router={router} />
       </ConfigProvider>
     </Provider>
   );

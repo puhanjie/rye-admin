@@ -1,7 +1,8 @@
 import { AppstoreOutlined, DashboardOutlined, UserOutlined } from '@ant-design/icons';
 import { type RouteObject, createBrowserRouter, Outlet } from 'react-router-dom';
-import { lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import Auth from '@/components/Auth';
+import Loading from '@/components/Loading';
 
 export const routeConfig: RouteConfig[] = [
   {
@@ -108,10 +109,14 @@ function renderRoutes(routes: RouteConfig[]): RouteObject[] {
       // 有认证标识的路由组件上包裹高阶组件<Auth />做登陆认证校验
       route.element = item?.meta?.auth ? (
         <Auth>
-          <item.component />
+          <Suspense fallback={<Loading />}>
+            <item.component />
+          </Suspense>
         </Auth>
       ) : (
-        <item.component />
+        <Suspense fallback={<Loading />}>
+          <item.component />
+        </Suspense>
       );
     } else {
       // 无component配置项的路由为菜单分组，用<Outlet />代替
