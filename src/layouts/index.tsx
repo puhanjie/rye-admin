@@ -1,8 +1,7 @@
 import { Layout, Menu, theme } from 'antd';
 import styles from './index.module.less';
-import { getMenuItems, getActiveMenus } from '../utils/route';
 import { routeConfig } from '../router';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, matchRoutes, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';
 import HeaderRight from './components/HeaderRight';
@@ -15,8 +14,18 @@ import Footer from '@/components/Footer';
 import Logo from '@/layouts/components/Logo';
 import Loading from '@/components/Loading';
 import Tags from './components/Tags';
+import { resolve } from '@/utils/path';
+import { useTranslation } from 'react-i18next';
+
+type MenuItem = {
+  key: string;
+  label?: string | undefined;
+  icon?: React.ReactNode;
+  children?: MenuItem[];
+};
 
 const Layouts: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { permissions } = useAppSelector((state) => state.user);
@@ -24,7 +33,54 @@ const Layouts: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState(permissions && permissions.length > 0 ? false : true);
   const token = getToken();
-  const [openKeys, selectKeys] = getActiveMenus(routeConfig, pathname);
+
+  // 获取菜单数据
+  const getMenuItems = (
+    routes: RouteConfig[],
+    parentPath: string,
+    permissions: { id: number; name: string; info: string }[]
+  ): MenuItem[] => {
+    const menus = new Array<MenuItem>();
+    routes.map((item) => {
+      const tmp: MenuItem = {
+        key: resolve(parentPath, item.path),
+        label: t(`menu.${item.name}`),
+        icon: item?.meta?.icon
+      };
+
+      if (item?.meta?.access) {
+        // 无菜单权限，不添加到菜单数组
+        const hasPermissions = permissions.filter(
+          (permission) => permission.name === item.meta?.access || permission.name === 'app:admin'
+        );
+        if (hasPermissions.length <= 0) {
+          return;
+        }
+      }
+
+      if (item?.children) {
+        tmp.children = getMenuItems(item.children, tmp.key, permissions);
+        // 都无菜单分组下子菜单的权限，则屏蔽该菜单分组的显示
+        if (tmp.children.length === 0) {
+          return;
+        }
+      }
+
+      menus.push(tmp);
+    });
+
+    return menus;
+  };
+
+  // 获取活跃的菜单分组和菜单
+  const getActiveMenus = (routeConfig: RouteConfig[], pathname: string) => {
+    const matches = matchRoutes(routeConfig, pathname)?.filter((item) => item.pathname !== '/');
+    const matchKeys = matches?.map((item) => item.pathname);
+    const openKeys = matchKeys?.slice(0, matchKeys.length - 1);
+    const selectKeys = matchKeys?.slice(-1);
+
+    return [openKeys, selectKeys];
+  };
 
   useEffect(() => {
     if (!permissions) {
@@ -45,6 +101,8 @@ const Layouts: React.FC = () => {
   const menuRoutes = routeConfig.filter((item) => item.path === '/')[0].children;
   // menuRoutes和permissions不为空才返回menuItems
   const menuItems = menuRoutes && permissions && getMenuItems(menuRoutes, '', permissions);
+
+  const [openKeys, selectKeys] = getActiveMenus(routeConfig, pathname);
 
   // 获取antd的背景色token值
   const {
