@@ -22,7 +22,7 @@ const Auth: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (currentRoute?.name) {
-      document.title = `${t('app.abbreviation')}-${t(`menu.${currentRoute.name}`)}`;
+      document.title = `${t('app.abbreviation')} - ${t(`menu.${currentRoute.name}`)}`;
     }
   }, [pathname, language]);
 
