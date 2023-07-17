@@ -10,5 +10,5 @@ export default {
   'common.yes': 'Yes',
   'common.no': 'No',
   'common.tip.selectOne': 'Please select a record!',
-  'common.table.footer': 'Articles {{start}} - {{end}} / Total of {{total}}'
+  'common.table.footer': '{{start}} - {{end}} / Total of {{total}}'
 };
