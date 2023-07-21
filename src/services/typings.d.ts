@@ -74,7 +74,7 @@ declare namespace API {
     email: string;
     createTime: string;
     updateTime: string;
-    roles: {
+    roles?: {
       id: number;
       name: string;
       info: string;
@@ -87,7 +87,7 @@ declare namespace API {
     info: string;
     createTime: string;
     updateTime: string;
-    permissions: {
+    permissions?: {
       id: number;
       name: string;
       info: string;

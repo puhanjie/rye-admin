@@ -6,7 +6,7 @@ import UserTableAction from './components/UserTableAction';
 import UserAction from './components/UserAction';
 import Query from '@/components/Query';
 import PageContainer from '@/components/PageContainer';
-import { getRoleList } from '@/services/role';
+import { getRoles } from '@/services/role';
 import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
@@ -28,7 +28,7 @@ const User: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const roles = await getRoleList();
+      const roles = await getRoles();
       const userPages = await getUserList();
       if (userPages?.data && roles?.data) {
         const userData: TableUserInfo[] = userPages.data.records.map((item) => {
@@ -42,7 +42,7 @@ const User: React.FC = () => {
           pages: userPages.data.pages
         };
         setTableData(tablePages);
-        setRoleData(roles.data.records);
+        setRoleData(roles.data);
         setLoading(false);
       }
     })();

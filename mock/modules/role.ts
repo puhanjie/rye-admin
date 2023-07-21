@@ -60,3 +60,7 @@ Mock.mock(url('/api/v1/role/list'), 'get', () => {
   };
   return success<API.PageInfo<API.RoleInfo[]>>(pageList);
 });
+
+Mock.mock(url('/api/v1/role/all'), 'get', () => {
+  return success<API.RoleInfo[]>(roleData);
+});

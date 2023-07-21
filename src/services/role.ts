@@ -34,3 +34,11 @@ export async function getRoleList(params?: API.RolePageQuery) {
   });
   return res;
 }
+
+export async function getRoles() {
+  const res = await request<API.RoleInfo[]>({
+    url: '/api/v1/role/all',
+    method: 'get'
+  });
+  return res;
+}
