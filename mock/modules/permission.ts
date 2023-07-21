@@ -1,7 +1,7 @@
 import Mock from 'mockjs';
 import { url, success } from '../utils';
 
-const PermissionData = [
+const permissionData = [
   {
     id: 1,
     name: 'app:admin',
@@ -189,11 +189,15 @@ Mock.mock(url('/api/v1/permission'), 'put', () => {
 
 Mock.mock(url('/api/v1/permission/list'), 'get', () => {
   const pageList: API.PageInfo<API.PermissionInfo[]> = {
-    records: PermissionData,
-    total: PermissionData.length,
+    records: permissionData,
+    total: permissionData.length,
     size: 2,
     current: 1,
     pages: 10
   };
   return success<API.PageInfo<API.PermissionInfo[]>>(pageList);
+});
+
+Mock.mock(url('/api/v1/permission/all'), 'get', () => {
+  return success<API.PermissionInfo[]>(permissionData);
 });

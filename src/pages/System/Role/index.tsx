@@ -7,7 +7,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
 import { getRoleList } from '@/services/role';
-import { getPermissionList } from '@/services/permission';
+import { getPermissions } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
@@ -29,7 +29,7 @@ const Role: React.FC = () => {
     const token = getToken();
     if (token) {
       (async () => {
-        const permissions = await getPermissionList();
+        const permissions = await getPermissions();
         const rolePages = await getRoleList();
         if (rolePages?.data && permissions?.data) {
           const roleData: TableRoleInfo[] = rolePages.data.records.map((item) => {
@@ -43,7 +43,7 @@ const Role: React.FC = () => {
             pages: rolePages.data.pages
           };
           setTableData(tablePages);
-          setPermissionData(permissions.data.records);
+          setPermissionData(permissions.data);
           setLoading(false);
         }
       })();

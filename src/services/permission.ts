@@ -34,3 +34,11 @@ export async function getPermissionList(params?: API.PermissionPageQuery) {
   });
   return res;
 }
+
+export async function getPermissions() {
+  const res = await request<API.PermissionInfo[]>({
+    url: '/api/v1/permission/all',
+    method: 'get'
+  });
+  return res;
+}
