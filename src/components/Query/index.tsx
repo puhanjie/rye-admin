@@ -6,9 +6,10 @@ type Props = {
   className?: string;
   queryFields: QueryField[];
   onQuery: (values: any) => void;
+  onReset?: () => void;
 };
 
-const Query: React.FC<Props> = ({ className, queryFields, onQuery }) => {
+const Query: React.FC<Props> = ({ className, queryFields, onQuery, onReset }) => {
   const { t } = useTranslation();
 
   const renderQueryFields = (queryFields: QueryField[]) => {
@@ -37,7 +38,7 @@ const Query: React.FC<Props> = ({ className, queryFields, onQuery }) => {
               <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
                 {t('common.button.query')}
               </Button>
-              <Button htmlType="reset" icon={<ReloadOutlined />}>
+              <Button htmlType="reset" icon={<ReloadOutlined />} onClick={onReset}>
                 {t('common.button.reset')}
               </Button>
             </Space>

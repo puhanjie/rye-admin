@@ -99,14 +99,34 @@ const Role: React.FC = () => {
     }
   ];
 
+  const queryData = async (params?: API.PermissionPageQuery) => {
+    const res = await getRoles(params);
+    if (res.data) {
+      const data: API.PageInfo<TableRoleInfo[]> = {
+        records: res.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: res.data.total,
+        size: res.data.size,
+        current: res.data.current,
+        pages: res.data.pages
+      };
+      setTableData(data);
+    }
+  };
+
   const handleQuery = (values: QueryParams) => {
-    console.log(values);
     // 获取查询数据
+    queryData(values);
+  };
+
+  const handleReset = () => {
+    queryData();
   };
 
   return (
     <PageContainer>
-      <Query queryFields={queryFields} onQuery={handleQuery} />
+      <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <RoleAction permissionList={permissionData} />
       <Table
         bordered
@@ -126,7 +146,10 @@ const Role: React.FC = () => {
           total: tableData?.total,
           showSizeChanger: true,
           showTotal: (total, range) =>
-            t('common.table.footer', { start: range[0], end: range[1], total: total })
+            t('common.table.footer', { start: range[0], end: range[1], total: total }),
+          onChange: (page, pageSize) => {
+            queryData({ pageNum: page, pageSize: pageSize });
+          }
         }}
       />
     </PageContainer>

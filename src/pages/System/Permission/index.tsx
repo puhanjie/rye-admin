@@ -33,7 +33,7 @@ const Permission: React.FC = () => {
           const permissionData: TablePermissionInfo[] = permissionPages.data.records.map((item) => {
             return { key: item.id, ...item };
           });
-          const tablePages: API.PageInfo<API.PermissionInfo[]> = {
+          const tablePages: API.PageInfo<TablePermissionInfo[]> = {
             records: permissionData,
             total: permissionPages.data.total,
             size: permissionPages.data.size,
@@ -108,14 +108,34 @@ const Permission: React.FC = () => {
     }
   ];
 
+  const queryData = async (params?: API.PermissionPageQuery) => {
+    const res = await getPermissions(params);
+    if (res.data) {
+      const data: API.PageInfo<TablePermissionInfo[]> = {
+        records: res.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: res.data.total,
+        size: res.data.size,
+        current: res.data.current,
+        pages: res.data.pages
+      };
+      setTableData(data);
+    }
+  };
+
   const handleQuery = (values: QueryParams) => {
-    console.log(values);
     // 获取查询数据
+    queryData(values);
+  };
+
+  const handleReset = () => {
+    queryData();
   };
 
   return (
     <PageContainer>
-      <Query queryFields={queryFields} onQuery={handleQuery} />
+      <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <PermissionAction />
       <Table
         bordered
@@ -135,7 +155,10 @@ const Permission: React.FC = () => {
           total: tableData?.total,
           showSizeChanger: true,
           showTotal: (total, range) =>
-            t('common.table.footer', { start: range[0], end: range[1], total: total })
+            t('common.table.footer', { start: range[0], end: range[1], total: total }),
+          onChange: (page, pageSize) => {
+            queryData({ pageNum: page, pageSize: pageSize });
+          }
         }}
       />
     </PageContainer>

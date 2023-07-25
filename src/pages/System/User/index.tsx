@@ -34,7 +34,7 @@ const User: React.FC = () => {
         const userData: TableUserInfo[] = userPages.data.records.map((item) => {
           return { key: item.id, ...item };
         });
-        const tablePages: API.PageInfo<API.UserInfo[]> = {
+        const tablePages: API.PageInfo<TableUserInfo[]> = {
           records: userData,
           total: userPages.data.total,
           size: userPages.data.size,
@@ -117,12 +117,10 @@ const User: React.FC = () => {
     }
   ];
 
-  const handleQuery = async (values: QueryParams) => {
-    console.log(values);
-    // 获取查询数据
-    const res = await getUsers(values);
+  const queryData = async (params?: API.UserPageQuery) => {
+    const res = await getUsers(params);
     if (res.data) {
-      const data: API.PageInfo<API.UserInfo[]> = {
+      const data: API.PageInfo<TableUserInfo[]> = {
         records: res.data.records.map((item) => {
           return { key: item.id, ...item };
         }),
@@ -135,9 +133,18 @@ const User: React.FC = () => {
     }
   };
 
+  const handleQuery = (values: QueryParams) => {
+    // 获取查询数据
+    queryData(values);
+  };
+
+  const handleReset = () => {
+    queryData();
+  }
+
   return (
     <PageContainer>
-      <Query queryFields={queryFields} onQuery={handleQuery} />
+      <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <UserAction roleList={roleData} selectedData={selectedData} />
       <Table
         bordered
@@ -158,7 +165,10 @@ const User: React.FC = () => {
           total: tableData?.total,
           showSizeChanger: true,
           showTotal: (total, range) =>
-            t('common.table.footer', { start: range[0], end: range[1], total: total })
+            t('common.table.footer', { start: range[0], end: range[1], total: total }),
+          onChange: (page, pageSize) => {
+            queryData({ pageNum: page, pageSize: pageSize });
+          }
         }}
       />
     </PageContainer>

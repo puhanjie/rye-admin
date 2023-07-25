@@ -10,5 +10,5 @@ export default {
   'common.yes': '是',
   'common.no': '否',
   'common.tip.selectOne': '请选择一条记录！',
-  'common.table.footer': '第 {{start}} - {{end}} 条 / 共 {{total}} 条'
+  'common.table.footer': '{{start}} - {{end}} 条 / 共 {{total}} 条'
 };
