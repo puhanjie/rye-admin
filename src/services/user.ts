@@ -18,10 +18,11 @@ export async function addUser(data: API.UserInfo) {
   return res;
 }
 
-export async function removeUser(id: number) {
+export async function removeUser(ids: number[]) {
   const res = await request<boolean>({
-    url: `/api/v1/user/${id}`,
-    method: 'delete'
+    url: `/api/v1/user`,
+    method: 'delete',
+    data: ids
   });
   return res;
 }
@@ -35,28 +36,28 @@ export async function editUser(data: API.UserBasicInfo) {
   return res;
 }
 
-export async function updatePassword(data: API.Password) {
-  const res = await request<number>({
-    url: '/api/v1/user/password',
-    method: 'put',
-    data
+export async function getInfo() {
+  const res = await request<API.UserBasicInfo>({
+    url: '/api/v1/user/info',
+    method: 'get'
   });
   return res;
 }
 
-export async function getUserList(params?: API.UserPageQuery) {
+export async function getUsers(params?: API.UserPageQuery) {
   const res = await request<API.PageInfo<API.UserInfo[]>>({
-    url: '/api/v1/user/list',
+    url: '/api/v1/user',
     method: 'get',
     params
   });
   return res;
 }
 
-export async function getCurrentUser() {
-  const res = await request<API.UserBasicInfo>({
-    url: '/api/v1/user/myself',
-    method: 'get'
+export async function updatePassword(data: API.Password) {
+  const res = await request<number>({
+    url: '/api/v1/user/password',
+    method: 'put',
+    data
   });
   return res;
 }

@@ -7,7 +7,7 @@ const permissionData = [
     name: 'app:admin',
     info: '管理员',
     menu: '*',
-    menuName: 'all',
+    menuName: '*',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -179,7 +179,7 @@ Mock.mock(url('/api/v1/permission'), 'post', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/permission/'), 'delete', () => {
+Mock.mock(url('/api/v1/permission'), 'delete', () => {
   return success<boolean>(true);
 });
 
@@ -187,7 +187,7 @@ Mock.mock(url('/api/v1/permission'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/permission/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/permission.*')), 'get', () => {
   const pageList: API.PageInfo<API.PermissionInfo[]> = {
     records: permissionData,
     total: permissionData.length,
@@ -198,6 +198,6 @@ Mock.mock(url('/api/v1/permission/list'), 'get', () => {
   return success<API.PageInfo<API.PermissionInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/permission/all'), 'get', () => {
+Mock.mock(url('/api/v1/permission/list'), 'get', () => {
   return success<API.PermissionInfo[]>(permissionData);
 });

@@ -6,8 +6,8 @@ import RoleTableAction from './components/RoleTableAction';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
-import { getRoleList } from '@/services/role';
-import { getPermissions } from '@/services/permission';
+import { getRoles } from '@/services/role';
+import { getPermissionList } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
@@ -29,8 +29,8 @@ const Role: React.FC = () => {
     const token = getToken();
     if (token) {
       (async () => {
-        const permissions = await getPermissions();
-        const rolePages = await getRoleList();
+        const permissions = await getPermissionList();
+        const rolePages = await getRoles();
         if (rolePages?.data && permissions?.data) {
           const roleData: TableRoleInfo[] = rolePages.data.records.map((item) => {
             return { key: item.id, ...item };

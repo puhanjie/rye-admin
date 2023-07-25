@@ -9,10 +9,11 @@ export async function addRole(data: API.RoleInfo) {
   return res;
 }
 
-export async function removeRole(id: number) {
+export async function removeRole(ids: number[]) {
   const res = await request<boolean>({
-    url: `/api/v1/role/${id}`,
-    method: 'delete'
+    url: `/api/v1/role`,
+    method: 'delete',
+    data: ids
   });
   return res;
 }
@@ -26,18 +27,18 @@ export async function editRole(data: API.RoleInfo) {
   return res;
 }
 
-export async function getRoleList(params?: API.RolePageQuery) {
+export async function getRoles(params?: API.RolePageQuery) {
   const res = await request<API.PageInfo<API.RoleInfo[]>>({
-    url: '/api/v1/role/list',
+    url: '/api/v1/role',
     method: 'get',
     params
   });
   return res;
 }
 
-export async function getRoles() {
+export async function getRoleList() {
   const res = await request<API.RoleInfo[]>({
-    url: '/api/v1/role/all',
+    url: '/api/v1/role/list',
     method: 'get'
   });
   return res;

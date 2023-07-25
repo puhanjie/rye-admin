@@ -14,26 +14,25 @@ declare namespace API {
   };
 
   type UserPageQuery = {
-    pageNum: number = 1;
-    pageSize: number = 10;
+    pageNum?: number = 1;
+    pageSize?: number = 10;
     username?: string;
     phone?: string;
     email?: string;
   };
 
   type RolePageQuery = {
-    pageNum: number = 1;
-    pageSize: number = 10;
+    pageNum?: number = 1;
+    pageSize?: number = 10;
     name?: string;
     info?: string;
   };
 
   type PermissionPageQuery = {
-    pageNum: number = 1;
-    pageSize: number = 10;
+    pageNum?: number = 1;
+    pageSize?: number = 10;
     name?: string;
     info?: string;
-    menu?: string;
     menuName?: string;
   };
 

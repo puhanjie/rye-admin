@@ -42,7 +42,7 @@ Mock.mock(url('/api/v1/role'), 'post', (params) => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/role/'), 'delete', () => {
+Mock.mock(url('/api/v1/role'), 'delete', () => {
   return success<boolean>(true);
 });
 
@@ -50,7 +50,7 @@ Mock.mock(url('/api/v1/role'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/role/list'), 'get', () => {
+Mock.mock(url('/api/v1/role'), 'get', () => {
   const pageList: API.PageInfo<API.RoleInfo[]> = {
     records: roleData,
     total: roleData.length,
@@ -61,6 +61,6 @@ Mock.mock(url('/api/v1/role/list'), 'get', () => {
   return success<API.PageInfo<API.RoleInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/role/all'), 'get', () => {
+Mock.mock(url('/api/v1/role/list'), 'get', () => {
   return success<API.RoleInfo[]>(roleData);
 });

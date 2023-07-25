@@ -74,7 +74,7 @@ Mock.mock(url('/api/v1/user'), 'post', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/user/'), 'delete', () => {
+Mock.mock(url('/api/v1/user'), 'delete', () => {
   return success<boolean>(true);
 });
 
@@ -82,11 +82,28 @@ Mock.mock(url('/api/v1/user'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/user/password'), 'put', () => {
-  return success<number>(1);
+Mock.mock(url('/api/v1/user/info'), 'get', () => {
+  const token = getToken();
+  if (token) {
+    const username = token.split('-')[0];
+    const user = userData.filter((item) => item.username === username)[0];
+    if (user) {
+      const { id, username, phone, avatar, email, roles, permissions } = user;
+      return success<API.UserBasicInfo>({
+        id,
+        username,
+        phone,
+        avatar,
+        email,
+        roles,
+        permissions
+      });
+    }
+  }
+  return fail('查询失败');
 });
 
-Mock.mock(url('/api/v1/user/list'), 'get', () => {
+Mock.mock(url('/api/v1/user'), 'get', () => {
   const userList = userData.map((item) => {
     return {
       id: item.id,
@@ -110,23 +127,6 @@ Mock.mock(url('/api/v1/user/list'), 'get', () => {
   return success<API.PageInfo<API.UserInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/user/myself'), 'get', () => {
-  const token = getToken();
-  if (token) {
-    const username = token.split('-')[0];
-    const user = userData.filter((item) => item.username === username)[0];
-    if (user) {
-      const { id, username, phone, avatar, email, roles, permissions } = user;
-      return success<API.UserBasicInfo>({
-        id,
-        username,
-        phone,
-        avatar,
-        email,
-        roles,
-        permissions
-      });
-    }
-  }
-  return fail('查询失败');
+Mock.mock(url('/api/v1/user/password'), 'put', () => {
+  return success<number>(1);
 });

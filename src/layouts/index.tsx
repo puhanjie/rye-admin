@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';
 import HeaderRight from './components/HeaderRight';
 import { getToken } from '@/utils/auth';
-import { getCurrentUser } from '@/services/user';
+import { getInfo } from '@/services/user';
 import { setUserInfo } from '@/store/modules/user';
 import { useDispatch } from 'react-redux';
 import HeaderLeft from '@/layouts/components/HeaderLeft';
@@ -90,7 +90,7 @@ const Layouts: React.FC = () => {
     if (token && permissions.length === 0) {
       // IIFE方式调用异步接口获取用户信息和权限数据，存入store
       (async () => {
-        const res = await getCurrentUser();
+        const res = await getInfo();
         dispatch(setUserInfo(res.data));
         setLoading(false);
       })();

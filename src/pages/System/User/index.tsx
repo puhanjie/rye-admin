@@ -1,12 +1,12 @@
 import { Input, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { getUserList } from '@/services/user';
+import { getUsers } from '@/services/user';
 import UserTableAction from './components/UserTableAction';
 import UserAction from './components/UserAction';
 import Query from '@/components/Query';
 import PageContainer from '@/components/PageContainer';
-import { getRoles } from '@/services/role';
+import { getRoleList } from '@/services/role';
 import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
@@ -28,8 +28,8 @@ const User: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const roles = await getRoles();
-      const userPages = await getUserList();
+      const roles = await getRoleList();
+      const userPages = await getUsers();
       if (userPages?.data && roles?.data) {
         const userData: TableUserInfo[] = userPages.data.records.map((item) => {
           return { key: item.id, ...item };
@@ -117,9 +117,22 @@ const User: React.FC = () => {
     }
   ];
 
-  const handleQuery = (values: QueryParams) => {
+  const handleQuery = async (values: QueryParams) => {
     console.log(values);
     // 获取查询数据
+    const res = await getUsers(values);
+    if (res.data) {
+      const data: API.PageInfo<API.UserInfo[]> = {
+        records: res.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: res.data.total,
+        size: res.data.size,
+        current: res.data.current,
+        pages: res.data.pages
+      };
+      setTableData(data);
+    }
   };
 
   return (

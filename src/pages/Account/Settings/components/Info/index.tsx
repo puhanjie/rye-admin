@@ -1,4 +1,4 @@
-import { getCurrentUser, editUser } from '@/services/user';
+import { getInfo, editUser } from '@/services/user';
 import { Avatar, Button, Form, Input, Upload } from 'antd';
 import { useEffect, useState } from 'react';
 import styles from './index.module.less';
@@ -19,7 +19,7 @@ const Info: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await getCurrentUser();
+      const res = await getInfo();
       if (res?.data) {
         setCurrentUser(res.data);
         setLoading(false);

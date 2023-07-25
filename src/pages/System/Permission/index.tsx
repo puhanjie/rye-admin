@@ -6,7 +6,7 @@ import type { ColumnsType } from 'antd/es/table';
 import PermissionTableAction from './components/PermissionTableAction';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
-import { getPermissionList } from '@/services/permission';
+import { getPermissions } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 
 type QueryParams = {
@@ -28,7 +28,7 @@ const Permission: React.FC = () => {
     const token = getToken();
     if (token) {
       (async () => {
-        const permissionPages = await getPermissionList();
+        const permissionPages = await getPermissions();
         if (permissionPages?.data) {
           const permissionData: TablePermissionInfo[] = permissionPages.data.records.map((item) => {
             return { key: item.id, ...item };

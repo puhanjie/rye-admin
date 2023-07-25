@@ -4,7 +4,7 @@
  * @returns 请求url地址
  */
 export function url(url: string) {
-  return new RegExp(`${import.meta.env.VITE_APP_BASE_API}${url}`);
+  return `${import.meta.env.VITE_APP_BASE_API}${url}`;
 }
 
 /**
