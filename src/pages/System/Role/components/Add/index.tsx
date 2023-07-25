@@ -1,14 +1,9 @@
 import { routeConfig } from '@/router';
 import { getPermissionTreeData } from '@/utils/general';
-import { Form, Input, Modal, TreeSelect } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal, TreeSelect } from 'antd';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-type Props = {
-  className?: string;
-  open: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  permissionList: API.PermissionInfo[];
-};
 
 export type AddRoleInfo = {
   name: string;
@@ -16,13 +11,17 @@ export type AddRoleInfo = {
   permissions?: string[];
 };
 
-const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionList }) => {
+type Props = {
+  permissionData: API.PermissionInfo[];
+};
+
+const Add: React.FC<Props> = ({ permissionData }) => {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = () => {
-    // console.log(form.getFieldsValue());
     const formData: AddRoleInfo = form.getFieldsValue();
     // 提交到后台处理需要把权限id值转为number类型
     const permissions = formData.permissions?.map((item) => Number(item));
@@ -41,11 +40,15 @@ const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionL
     setIsOpen(false);
     form.resetFields();
   };
+
   return (
-    <div className={className}>
+    <div>
+      <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpen(true)}>
+        {t('pages.role.add')}
+      </Button>
       <Modal
         title={t('pages.role.addModal.title')}
-        open={open}
+        open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}
@@ -64,7 +67,7 @@ const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionL
           </Form.Item>
           <Form.Item label={t('pages.role.permission')} name="permissions">
             <TreeSelect
-              treeData={getPermissionTreeData(menuData, permissionList)}
+              treeData={getPermissionTreeData(menuData, permissionData)}
               maxTagCount={3}
               treeCheckable={true}
               showCheckedStrategy="SHOW_CHILD"
@@ -77,4 +80,4 @@ const AddRoleModal: React.FC<Props> = ({ className, open, setIsOpen, permissionL
   );
 };
 
-export default AddRoleModal;
+export default Add;

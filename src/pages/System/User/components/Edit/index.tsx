@@ -1,21 +1,30 @@
 import { getRoleSelectOptions } from '@/utils/general';
 import { Form, Input, Modal, Select } from 'antd';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-type Props = {
-  className?: string;
-  open: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+type EditUserInfo = {
+  id: number;
+  username: string;
+  phone: string;
+  avatar: string;
+  email: string;
+  roles?: number[];
   roleList: API.RoleInfo[];
 };
 
-const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen, roleList }) => {
+type Props = {
+  userData: EditUserInfo;
+};
+
+const Edit: React.FC<Props> = ({ userData }) => {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
   const handleOk = () => {
     console.log(form.getFieldsValue());
-    // 新增用户
+    // 编辑用户
     setIsOpen(false);
     form.resetFields();
   };
@@ -24,11 +33,15 @@ const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen, roleList })
     setIsOpen(false);
     form.resetFields();
   };
+
   return (
-    <div className={className}>
+    <div>
+      <a type="link" onClick={() => setIsOpen(true)}>
+        {t('pages.user.edit')}
+      </a>
       <Modal
-        title={t('pages.user.addModal.title')}
-        open={open}
+        title={t('pages.user.editModal.title')}
+        open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}
@@ -38,7 +51,16 @@ const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen, roleList })
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Form name="addUser" form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+        <Form
+          name="editUser"
+          form={form}
+          initialValues={userData}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+        >
+          <Form.Item label="id" name="id" hidden={true}>
+            <Input />
+          </Form.Item>
           <Form.Item label={t('pages.user.username')} name="username">
             <Input />
           </Form.Item>
@@ -48,12 +70,9 @@ const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen, roleList })
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
-              options={getRoleSelectOptions(roleList)}
+              options={getRoleSelectOptions(userData.roleList)}
               placeholder={t('pages.user.modal.role.placeholder')}
             />
-          </Form.Item>
-          <Form.Item label={t('pages.user.password')} name="password">
-            <Input.Password />
           </Form.Item>
           <Form.Item label={t('pages.user.phone')} name="phone">
             <Input />
@@ -67,4 +86,4 @@ const AddUserModal: React.FC<Props> = ({ className, open, setIsOpen, roleList })
   );
 };
 
-export default AddUserModal;
+export default Edit;

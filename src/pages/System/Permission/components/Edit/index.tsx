@@ -1,19 +1,27 @@
 import { Form, Input, Modal } from 'antd';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-type Props = {
-  className?: string;
-  open: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+type EditPermissionInfo = {
+  id?: number;
+  name?: string;
+  info?: string;
+  menu?: string;
+  menuName?: string;
 };
 
-const AddPermissionModal: React.FC<Props> = ({ className, open, setIsOpen }) => {
+type Props = {
+  permissionData: EditPermissionInfo;
+};
+
+const Edit: React.FC<Props> = ({ permissionData }) => {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
   const handleOk = () => {
     console.log(form.getFieldsValue());
-    // 新增权限
+    // 编辑权限
     setIsOpen(false);
     form.resetFields();
   };
@@ -22,11 +30,15 @@ const AddPermissionModal: React.FC<Props> = ({ className, open, setIsOpen }) => 
     setIsOpen(false);
     form.resetFields();
   };
+
   return (
-    <div className={className}>
+    <div>
+      <a type="link" onClick={() => setIsOpen(true)}>
+        {t('pages.permission.edit')}
+      </a>
       <Modal
-        title={t('pages.permission.addModal.title')}
-        open={open}
+        title={t('pages.permission.editModal.title')}
+        open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}
@@ -36,7 +48,16 @@ const AddPermissionModal: React.FC<Props> = ({ className, open, setIsOpen }) => 
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Form name="addPermission" form={form} labelCol={{ span: 7 }} wrapperCol={{ span: 17 }}>
+        <Form
+          name="editPermission"
+          form={form}
+          initialValues={permissionData}
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 17 }}
+        >
+          <Form.Item label="id" name="id" hidden={true}>
+            <Input />
+          </Form.Item>
           <Form.Item label={t('pages.permission.name')} name="name">
             <Input />
           </Form.Item>
@@ -54,5 +75,4 @@ const AddPermissionModal: React.FC<Props> = ({ className, open, setIsOpen }) => 
     </div>
   );
 };
-
-export default AddPermissionModal;
+export default Edit;

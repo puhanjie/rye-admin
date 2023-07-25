@@ -1,13 +1,16 @@
-import { Input, Table, Tag } from 'antd';
+import { Divider, Input, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getUsers } from '@/services/user';
-import UserTableAction from './components/UserTableAction';
-import UserAction from './components/UserAction';
 import Query from '@/components/Query';
 import PageContainer from '@/components/PageContainer';
 import { getRoleList } from '@/services/role';
 import { useTranslation } from 'react-i18next';
+import Add from './components/Add';
+import ResetPassword from './components/ResetPassword';
+import BatchDelete from './components/BatchDelete';
+import Edit from './components/Edit';
+import Delete from './components/Delete';
 
 type QueryParams = {
   username?: string;
@@ -21,7 +24,7 @@ export type TableUserInfo = {
 
 const User: React.FC = () => {
   const { t } = useTranslation();
-  const [tableData, setTableData] = useState<API.PageInfo<API.UserInfo[]>>();
+  const [tableData, setTableData] = useState<API.PageInfo<TableUserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
   const [selectedData, setSelectData] = useState<TableUserInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -94,7 +97,12 @@ const User: React.FC = () => {
         const { id, username, phone, avatar, email } = record;
         const data = { id, username, phone, avatar, email, roles, roleList: roleData };
         // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
-        return <UserTableAction data={data} />;
+        return (
+          <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
+            <Edit userData={data} />
+            <Delete selectId={id} />
+          </Space>
+        );
       }
     }
   ];
@@ -140,12 +148,16 @@ const User: React.FC = () => {
 
   const handleReset = () => {
     queryData();
-  }
+  };
 
   return (
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <UserAction roleList={roleData} selectedData={selectedData} />
+      <Space style={{ width: '100%', marginBottom: '10px' }}>
+        <Add roleData={roleData} />
+        <ResetPassword selectedData={selectedData} />
+        <BatchDelete selectedData={selectedData} />
+      </Space>
       <Table
         bordered
         columns={tableColumns}

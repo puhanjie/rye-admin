@@ -1,9 +1,10 @@
 import { routeConfig } from '@/router';
 import { getPermissionTreeData } from '@/utils/general';
 import { Form, Input, Modal, TreeSelect } from 'antd';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type EditRoleInfo = {
+type EditRoleInfo = {
   id: number;
   name: string;
   info: string;
@@ -12,14 +13,12 @@ export type EditRoleInfo = {
 };
 
 type Props = {
-  className?: string;
-  initData: EditRoleInfo;
-  open: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  roleData: EditRoleInfo;
 };
 
-const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }) => {
+const Edit: React.FC<Props> = ({ roleData }) => {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
@@ -57,11 +56,15 @@ const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
     setIsOpen(false);
     form.resetFields();
   };
+
   return (
-    <div className={className}>
+    <div>
+      <a type="link" onClick={() => setIsOpen(true)}>
+        {t('pages.role.edit')}
+      </a>
       <Modal
         title={t('pages.role.editModal.title')}
-        open={open}
+        open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}
@@ -74,7 +77,7 @@ const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
         <Form
           name="editRole"
           form={form}
-          initialValues={getFormInitData(initData)}
+          initialValues={getFormInitData(roleData)}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >
@@ -89,7 +92,7 @@ const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
           </Form.Item>
           <Form.Item label={t('pages.role.permission')} name="permissions">
             <TreeSelect
-              treeData={getPermissionTreeData(menuData, initData.permissionList)}
+              treeData={getPermissionTreeData(menuData, roleData.permissionList)}
               maxTagCount={3}
               treeCheckable={true}
               showCheckedStrategy="SHOW_CHILD"
@@ -102,4 +105,4 @@ const EditRoleModal: React.FC<Props> = ({ className, initData, open, setIsOpen }
   );
 };
 
-export default EditRoleModal;
+export default Edit;

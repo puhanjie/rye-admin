@@ -1,28 +1,31 @@
 import PageContainer from '@/components/PageContainer';
 import Query from '@/components/Query';
-import { Input, Table } from 'antd';
-import RoleAction from './components/RoleAction';
-import RoleTableAction from './components/RoleTableAction';
+import { Divider, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
 import { getRoles } from '@/services/role';
 import { getPermissionList } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
+import Add from './components/Add';
+import BatchDelete from './components/BatchDelete';
+import Edit from './components/Edit';
+import Delete from './components/Delete';
 
 type QueryParams = {
   name?: string;
   info?: string;
 };
 
-type TableRoleInfo = {
+export type TableRoleInfo = {
   key?: number;
 } & API.RoleInfo;
 
 const Role: React.FC = () => {
   const { t } = useTranslation();
-  const [tableData, setTableData] = useState<API.PageInfo<API.RoleInfo[]>>();
+  const [tableData, setTableData] = useState<API.PageInfo<TableRoleInfo[]>>();
   const [permissionData, setPermissionData] = useState<API.PermissionInfo[]>([]);
+  const [selectedData, setSelectData] = useState<TableRoleInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -81,7 +84,12 @@ const Role: React.FC = () => {
           record?.permissions && record.permissions.map((item) => item.id.toString());
         const { id, name, info } = record;
         const data = { id, name, info, permissions, permissionList: permissionData };
-        return <RoleTableAction data={data} />;
+        return (
+          <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
+            <Edit roleData={data} />
+            <Delete selectId={id} />
+          </Space>
+        );
       }
     }
   ];
@@ -127,7 +135,10 @@ const Role: React.FC = () => {
   return (
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <RoleAction permissionList={permissionData} />
+      <Space style={{ width: '100%', marginBottom: '10px' }}>
+        <Add permissionData={permissionData} />
+        <BatchDelete selectedData={selectedData} />
+      </Space>
       <Table
         bordered
         columns={tableColumns}
@@ -138,6 +149,7 @@ const Role: React.FC = () => {
           type: 'checkbox',
           onChange: (_selectedRowKeys, selectedRows) => {
             console.log(selectedRows);
+            setSelectData(selectedRows);
           }
         }}
         scroll={{ x: 'max-content' }}

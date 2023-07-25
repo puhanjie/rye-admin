@@ -1,13 +1,15 @@
 import PageContainer from '@/components/PageContainer';
 import Query from '@/components/Query';
-import { Input, Table } from 'antd';
-import PermissionAction from './components/PermissionAction';
+import { Divider, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import PermissionTableAction from './components/PermissionTableAction';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
 import { getPermissions } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
+import Add from './components/Add';
+import BatchDelete from './components/BatchDelete';
+import Edit from './components/Edit';
+import Delete from './components/Delete';
 
 type QueryParams = {
   name?: string;
@@ -15,13 +17,14 @@ type QueryParams = {
   menuName?: string;
 };
 
-type TablePermissionInfo = {
+export type TablePermissionInfo = {
   key?: number;
 } & API.PermissionInfo;
 
 const Permission: React.FC = () => {
   const { t } = useTranslation();
-  const [tableData, setTableData] = useState<API.PageInfo<API.PermissionInfo[]>>();
+  const [tableData, setTableData] = useState<API.PageInfo<TablePermissionInfo[]>>();
+  const [selectedData, setSelectData] = useState<TablePermissionInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -85,7 +88,12 @@ const Permission: React.FC = () => {
       render: (_text, record) => {
         const { id, name, info, menu, menuName } = record;
         const data = { id, name, info, menu, menuName };
-        return <PermissionTableAction data={data} />;
+        return (
+          <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
+            <Edit permissionData={data} />
+            <Delete selectId={id} />
+          </Space>
+        );
       }
     }
   ];
@@ -136,7 +144,10 @@ const Permission: React.FC = () => {
   return (
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <PermissionAction />
+      <Space style={{ width: '100%', marginBottom: '10px' }}>
+        <Add />
+        <BatchDelete selectedData={selectedData} />
+      </Space>
       <Table
         bordered
         columns={tableColumns}
@@ -147,6 +158,7 @@ const Permission: React.FC = () => {
           type: 'checkbox',
           onChange: (_selectedRowKeys, selectedRows) => {
             console.log(selectedRows);
+            setSelectData(selectedRows);
           }
         }}
         scroll={{ x: 'max-content' }}
