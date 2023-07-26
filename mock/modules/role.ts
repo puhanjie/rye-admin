@@ -37,8 +37,7 @@ const roleData = [
   }
 ];
 
-Mock.mock(url('/api/v1/role'), 'post', (params) => {
-  console.log(params.body);
+Mock.mock(url('/api/v1/role'), 'post', () => {
   return success<boolean>(true);
 });
 

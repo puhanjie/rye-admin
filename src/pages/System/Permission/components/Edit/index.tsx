@@ -1,6 +1,8 @@
-import { Form, Input, Modal } from 'antd';
+import { Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { TablePermissionInfo } from '../..';
+import { editPermission, getPermissions } from '@/services/permission';
 
 type EditPermissionInfo = {
   id?: number;
@@ -12,17 +14,41 @@ type EditPermissionInfo = {
 
 type Props = {
   permissionData: EditPermissionInfo;
+  setPermissionData: React.Dispatch<
+    React.SetStateAction<API.PageInfo<TablePermissionInfo[]> | undefined>
+  >;
 };
 
-const Edit: React.FC<Props> = ({ permissionData }) => {
+const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const handleOk = () => {
-    console.log(form.getFieldsValue());
-    // 编辑权限
+  const handleOk = async () => {
     setIsOpen(false);
+    // 编辑权限
+    const permission: API.PermissionParams = form.getFieldsValue();
+    const editResult = await editPermission(permission);
+    if (!editResult.data) {
+      message.error(t('pages.permission.edit.tip.fail'));
+      form.resetFields();
+      return;
+    }
+    // 编辑权限成功后重新获取权限列表数据
+    const queryResult = await getPermissions();
+    if (queryResult.data) {
+      const data: API.PageInfo<TablePermissionInfo[]> = {
+        records: queryResult.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: queryResult.data.total,
+        size: queryResult.data.size,
+        current: queryResult.data.current,
+        pages: queryResult.data.pages
+      };
+      setPermissionData(data);
+    }
+    message.success(t('pages.permission.edit.tip.success'));
     form.resetFields();
   };
 

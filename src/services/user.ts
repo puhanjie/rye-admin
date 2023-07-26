@@ -9,7 +9,7 @@ export async function login(data: API.LoginParams) {
   return res;
 }
 
-export async function addUser(data: API.UserInfo) {
+export async function addUser(data: API.UserParams) {
   const res = await request<boolean>({
     url: '/api/v1/user',
     method: 'post',
@@ -27,7 +27,7 @@ export async function removeUser(ids: number[]) {
   return res;
 }
 
-export async function editUser(data: API.UserBasicInfo) {
+export async function editUser(data: API.UserParams) {
   const res = await request<boolean>({
     url: '/api/v1/user',
     method: 'put',

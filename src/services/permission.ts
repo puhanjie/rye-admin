@@ -1,6 +1,6 @@
 import request from '../utils/http';
 
-export async function addPermission(data: API.PermissionInfo) {
+export async function addPermission(data: API.PermissionParams) {
   const res = await request<boolean>({
     url: '/api/v1/permission',
     method: 'post',
@@ -18,7 +18,7 @@ export async function removePermission(ids: number[]) {
   return res;
 }
 
-export async function editPermission(data: API.PermissionInfo) {
+export async function editPermission(data: API.PermissionParams) {
   const res = await request<boolean>({
     url: '/api/v1/permission',
     method: 'put',

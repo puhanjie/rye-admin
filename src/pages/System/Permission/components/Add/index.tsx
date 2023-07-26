@@ -1,17 +1,46 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { TablePermissionInfo } from '../..';
+import { addPermission, getPermissions } from '@/services/permission';
 
-const Add: React.FC = () => {
+type Props = {
+  setPermissionData: React.Dispatch<
+    React.SetStateAction<API.PageInfo<TablePermissionInfo[]> | undefined>
+  >;
+};
+
+const Add: React.FC<Props> = ({ setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const handleOk = () => {
-    console.log(form.getFieldsValue());
-    // 新增权限
+  const handleOk = async () => {
     setIsOpen(false);
+    // 新增权限
+    const permission: API.PermissionParams = form.getFieldsValue();
+    const addResult = await addPermission(permission);
+    if (!addResult.data) {
+      message.error(t('pages.permission.add.tip.fail'));
+      form.resetFields();
+      return;
+    }
+    // 新增权限成功后重新获取权限列表数据
+    const queryResult = await getPermissions();
+    if (queryResult.data) {
+      const data: API.PageInfo<TablePermissionInfo[]> = {
+        records: queryResult.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: queryResult.data.total,
+        size: queryResult.data.size,
+        current: queryResult.data.current,
+        pages: queryResult.data.pages
+      };
+      setPermissionData(data);
+    }
+    message.success(t('pages.permission.add.tip.success'));
     form.resetFields();
   };
 

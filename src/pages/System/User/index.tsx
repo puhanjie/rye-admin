@@ -11,6 +11,7 @@ import ResetPassword from './components/ResetPassword';
 import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
+import type { Key } from 'antd/es/table/interface';
 
 type QueryParams = {
   username?: string;
@@ -26,7 +27,8 @@ const User: React.FC = () => {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState<API.PageInfo<TableUserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
-  const [selectedData, setSelectData] = useState<TableUserInfo[]>([]);
+  const [selectData, setSelectData] = useState<TableUserInfo[]>([]);
+  const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -99,8 +101,8 @@ const User: React.FC = () => {
         // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit userData={data} />
-            <Delete selectId={id} />
+            <Edit userData={data} setUserData={setTableData} />
+            <Delete selectId={id} setUserData={setTableData} />
           </Space>
         );
       }
@@ -124,6 +126,10 @@ const User: React.FC = () => {
       render: <Input placeholder={t('pages.user.queryForm.email.placeholder')} />
     }
   ];
+
+  const clearSelectData = () => {
+    setSelectKeys([]);
+  };
 
   const queryData = async (params?: API.UserPageQuery) => {
     const res = await getUsers(params);
@@ -154,9 +160,9 @@ const User: React.FC = () => {
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add roleData={roleData} />
-        <ResetPassword selectedData={selectedData} />
-        <BatchDelete selectedData={selectedData} />
+        <Add roleData={roleData} setUserData={setTableData} />
+        <ResetPassword selectData={selectData} clearSelectData={clearSelectData} />
+        <BatchDelete selectData={selectData} setUserData={setTableData} />
       </Space>
       <Table
         bordered
@@ -166,8 +172,9 @@ const User: React.FC = () => {
         size="small"
         rowSelection={{
           type: 'checkbox',
-          onChange: (_selectedRowKeys, selectedRows) => {
-            console.log(selectedRows);
+          selectedRowKeys: selectKeys,
+          onChange: (selectedRowKeys, selectedRows) => {
+            setSelectKeys(selectedRowKeys);
             setSelectData(selectedRows);
           }
         }}

@@ -1,38 +1,55 @@
 import { routeConfig } from '@/router';
+import { addRole, getRoles } from '@/services/role';
 import { getPermissionTreeData } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, TreeSelect } from 'antd';
+import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-export type AddRoleInfo = {
-  name: string;
-  info: string;
-  permissions?: string[];
-};
+import type { TableRoleInfo } from '../..';
 
 type Props = {
   permissionData: API.PermissionInfo[];
+  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<TableRoleInfo[]> | undefined>>;
 };
 
-const Add: React.FC<Props> = ({ permissionData }) => {
+const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
-  const handleOk = () => {
-    const formData: AddRoleInfo = form.getFieldsValue();
+  const handleOk = async () => {
+    setIsOpen(false);
     // 提交到后台处理需要把权限id值转为number类型
+    const formData: API.RoleParams = form.getFieldsValue();
     const permissions = formData.permissions?.map((item) => Number(item));
-    const data = {
+    const role = {
       name: formData.name,
       info: formData.info,
-      permissions: permissions
+      permissions
     };
-    console.log(data);
     // 新增角色
-    setIsOpen(false);
+    const addResult = await addRole(role);
+    if (!addResult.data) {
+      message.error(t('pages.role.add.tip.fail'));
+      form.resetFields();
+      return;
+    }
+    // 新增角色成功后重新获取角色列表数据
+    const queryResult = await getRoles();
+    if (queryResult.data) {
+      const data: API.PageInfo<TableRoleInfo[]> = {
+        records: queryResult.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: queryResult.data.total,
+        size: queryResult.data.size,
+        current: queryResult.data.current,
+        pages: queryResult.data.pages
+      };
+      setRoleData(data);
+    }
+    message.success(t('pages.role.add.tip.success'));
     form.resetFields();
   };
 

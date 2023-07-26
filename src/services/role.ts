@@ -1,6 +1,6 @@
 import request from '../utils/http';
 
-export async function addRole(data: API.RoleInfo) {
+export async function addRole(data: API.RoleParams) {
   const res = await request<boolean>({
     url: '/api/v1/role',
     method: 'post',
@@ -18,7 +18,7 @@ export async function removeRole(ids: number[]) {
   return res;
 }
 
-export async function editRole(data: API.RoleInfo) {
+export async function editRole(data: API.RoleParams) {
   const res = await request<boolean>({
     url: '/api/v1/role',
     method: 'put',

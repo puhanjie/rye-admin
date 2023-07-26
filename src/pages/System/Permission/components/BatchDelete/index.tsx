@@ -2,24 +2,44 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
+import { getPermissions, removePermission } from '@/services/permission';
 
 type Props = {
-  selectedData: TablePermissionInfo[];
+  selectData: TablePermissionInfo[];
+  setPermissionData: React.Dispatch<
+    React.SetStateAction<API.PageInfo<TablePermissionInfo[]> | undefined>
+  >;
 };
 
-const BatchDelete: React.FC<Props> = ({ selectedData }) => {
+const BatchDelete: React.FC<Props> = ({ selectData, setPermissionData }) => {
   const { t } = useTranslation();
 
-  const handleConfirm = () => {
-    if (selectedData.length <= 0) {
+  const handleConfirm = async () => {
+    if (selectData.length <= 0) {
       message.warning(t('common.tip.select'));
       return;
     }
-    message.success('Click on Yes');
-  };
-
-  const handleCancel = () => {
-    message.error('Click on No');
+    const ids = selectData.map((item) => item.id);
+    const deleteResult = await removePermission(ids);
+    if (!deleteResult.data) {
+      message.error(t('pages.permission.batchDelete.tip.fail'));
+      return;
+    }
+    // 删除成功后重新获取权限列表数据
+    const queryResult = await getPermissions();
+    if (queryResult.data) {
+      const data: API.PageInfo<TablePermissionInfo[]> = {
+        records: queryResult.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: queryResult.data.total,
+        size: queryResult.data.size,
+        current: queryResult.data.current,
+        pages: queryResult.data.pages
+      };
+      setPermissionData(data);
+    }
+    message.success(t('pages.permission.batchDelete.tip.success'));
   };
 
   return (
@@ -28,7 +48,6 @@ const BatchDelete: React.FC<Props> = ({ selectedData }) => {
         title={t('common.tip.batchDelete.title')}
         description={t('common.tip.batchDelete.description')}
         onConfirm={handleConfirm}
-        onCancel={handleCancel}
         okText={t('common.yes')}
         cancelText={t('common.no')}
       >

@@ -1,12 +1,13 @@
 import { Button, Form, Input, Modal, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { TableUserInfo } from '../..';
+import type { TableUserInfo } from '../..';
 import { useState } from 'react';
 import { updatePassword } from '@/services/user';
 import { ReloadOutlined } from '@ant-design/icons';
 
 type Props = {
-  selectedData: TableUserInfo[];
+  selectData: TableUserInfo[];
+  clearSelectData: () => void;
 };
 
 type ResetPasswordForm = {
@@ -14,13 +15,13 @@ type ResetPasswordForm = {
   newPassword?: string;
 };
 
-const ResetPassword: React.FC<Props> = ({ selectedData }) => {
+const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
   const handleReset = () => {
-    if (selectedData.length !== 1) {
+    if (selectData.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
     }
@@ -28,18 +29,19 @@ const ResetPassword: React.FC<Props> = ({ selectedData }) => {
   };
 
   const handleOk = async () => {
+    setIsOpen(false);
     const formData: ResetPasswordForm = form.getFieldsValue();
-    console.log(formData);
     // 重置密码
     const res = await updatePassword({
       userId: formData.userId,
       newPassword: formData.newPassword
     });
-    if (res?.data && res?.data <= 0) {
+    if (res.data && res.data <= 0) {
       // 密码重置失败
-      console.log('密码重置失败!');
+      message.error(t('pages.user.resetPassword.tip.fail'));
     }
-    setIsOpen(false);
+    message.success(t('pages.user.resetPassword.tip.success'));
+    clearSelectData();
     form.resetFields();
   };
 
@@ -65,7 +67,7 @@ const ResetPassword: React.FC<Props> = ({ selectedData }) => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        {selectedData.length === 1 && (
+        {selectData.length === 1 && (
           <Form
             name="resetPassword"
             form={form}
@@ -74,7 +76,7 @@ const ResetPassword: React.FC<Props> = ({ selectedData }) => {
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 18 }}
           >
-            <Form.Item label="id" name="userId" initialValue={selectedData[0].id} hidden>
+            <Form.Item label="id" name="userId" initialValue={selectData[0].id} hidden>
               <Input />
             </Form.Item>
             <Form.Item label={t('pages.user.resetPasswordModal.newPassword')} name="newPassword">

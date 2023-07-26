@@ -24,7 +24,7 @@ export type TablePermissionInfo = {
 const Permission: React.FC = () => {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState<API.PageInfo<TablePermissionInfo[]>>();
-  const [selectedData, setSelectData] = useState<TablePermissionInfo[]>([]);
+  const [selectData, setSelectData] = useState<TablePermissionInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -90,8 +90,8 @@ const Permission: React.FC = () => {
         const data = { id, name, info, menu, menuName };
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit permissionData={data} />
-            <Delete selectId={id} />
+            <Edit permissionData={data} setPermissionData={setTableData} />
+            <Delete selectId={id} setPermissionData={setTableData} />
           </Space>
         );
       }
@@ -145,8 +145,8 @@ const Permission: React.FC = () => {
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add />
-        <BatchDelete selectedData={selectedData} />
+        <Add setPermissionData={setTableData} />
+        <BatchDelete selectData={selectData} setPermissionData={setTableData} />
       </Space>
       <Table
         bordered
@@ -157,7 +157,6 @@ const Permission: React.FC = () => {
         rowSelection={{
           type: 'checkbox',
           onChange: (_selectedRowKeys, selectedRows) => {
-            console.log(selectedRows);
             setSelectData(selectedRows);
           }
         }}

@@ -1,8 +1,9 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import styles from './index.module.less';
 import { updatePassword } from '@/services/user';
 import Container from '../Container';
 import { useAppSelector } from '@/store';
+import { useTranslation } from 'react-i18next';
 
 type PasswordForm = {
   userId: number;
@@ -12,13 +13,14 @@ type PasswordForm = {
 };
 
 const Password: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useAppSelector((state) => state.user);
 
   const handleFinish = async (values: PasswordForm) => {
     console.log(values);
     const { userId, currentPassword, newPassword, confirmPassword } = values;
     if (newPassword !== confirmPassword) {
-      console.log('两次输入密码不一致!');
+      message.error(t('pages.settings.updatePassword.tip'));
       return;
     }
     const res = await updatePassword({
@@ -29,11 +31,12 @@ const Password: React.FC = () => {
     });
     if (res?.data && res?.data <= 0) {
       console.log('密码修改失败!');
+      message.error(t('pages.settings.updatePassword.tip.fail'));
     }
   };
 
   return (
-    <Container title="修改密码" className={styles['container']}>
+    <Container title={t('pages.settings.updatePassword.tab')} className={styles['container']}>
       <div className={styles['main']}>
         <Form
           name="password"
@@ -41,16 +44,22 @@ const Password: React.FC = () => {
           wrapperCol={{ span: 16 }}
           onFinish={handleFinish}
         >
-          <Form.Item label="用户id" name="userId" initialValue={id} hidden>
+          <Form.Item label="userId" name="userId" initialValue={id} hidden>
             <Input />
           </Form.Item>
-          <Form.Item label="当前密码" name="currentPassword">
+          <Form.Item
+            label={t('pages.settings.updatePassword.currentPassword')}
+            name="currentPassword"
+          >
             <Input.Password />
           </Form.Item>
-          <Form.Item label="新密码" name="newPassword">
+          <Form.Item label={t('pages.settings.updatePassword.newPassword')} name="newPassword">
             <Input.Password />
           </Form.Item>
-          <Form.Item label="确认密码" name="confirmPassword">
+          <Form.Item
+            label={t('pages.settings.updatePassword.confirmPassword')}
+            name="confirmPassword"
+          >
             <Input.Password />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8 }}>

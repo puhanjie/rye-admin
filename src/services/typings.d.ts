@@ -118,4 +118,29 @@ declare namespace API {
     current: number;
     pages: number;
   };
+
+  type UserParams = {
+    id?: number | string;
+    username?: string;
+    password?: string;
+    phone?: string;
+    avatar?: string;
+    email?: string;
+    roles?: number[];
+  };
+
+  type RoleParams = {
+    id?: number | string;
+    name?: string;
+    info?: string;
+    permissions?: number[];
+  };
+
+  type PermissionParams = {
+    id?: number | string;
+    name?: string;
+    info?: string;
+    menu?: string;
+    menuName?: string;
+  };
 }

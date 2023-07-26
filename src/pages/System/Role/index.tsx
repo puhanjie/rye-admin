@@ -25,7 +25,7 @@ const Role: React.FC = () => {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState<API.PageInfo<TableRoleInfo[]>>();
   const [permissionData, setPermissionData] = useState<API.PermissionInfo[]>([]);
-  const [selectedData, setSelectData] = useState<TableRoleInfo[]>([]);
+  const [selectData, setSelectData] = useState<TableRoleInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -86,8 +86,8 @@ const Role: React.FC = () => {
         const data = { id, name, info, permissions, permissionList: permissionData };
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit roleData={data} />
-            <Delete selectId={id} />
+            <Edit roleData={data} setRoleData={setTableData} />
+            <Delete selectId={id} setRoleData={setTableData} />
           </Space>
         );
       }
@@ -136,8 +136,8 @@ const Role: React.FC = () => {
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add permissionData={permissionData} />
-        <BatchDelete selectedData={selectedData} />
+        <Add permissionData={permissionData} setRoleData={setTableData} />
+        <BatchDelete selectData={selectData} setRoleData={setTableData} />
       </Space>
       <Table
         bordered
@@ -148,7 +148,6 @@ const Role: React.FC = () => {
         rowSelection={{
           type: 'checkbox',
           onChange: (_selectedRowKeys, selectedRows) => {
-            console.log(selectedRows);
             setSelectData(selectedRows);
           }
         }}

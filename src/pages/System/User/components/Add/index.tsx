@@ -1,22 +1,56 @@
+import { addUser, getUsers } from '@/services/user';
 import { getRoleSelectOptions } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Select } from 'antd';
+import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { TableUserInfo } from '../..';
 
 type Props = {
   roleData: API.RoleInfo[];
+  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
 };
 
-const Add: React.FC<Props> = ({ roleData }) => {
+const Add: React.FC<Props> = ({ roleData, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const handleOk = () => {
-    console.log(form.getFieldsValue());
-    // 新增用户
+  const handleOk = async () => {
     setIsOpen(false);
+    // 提交到后台处理需要把权限id值转为number类型
+    const formData: API.UserParams = form.getFieldsValue();
+    const roles = formData.roles?.map((item) => Number(item));
+    const user: API.UserParams = {
+      username: formData.username,
+      password: formData.password,
+      phone: formData.phone,
+      avatar: formData.avatar,
+      email: formData.email,
+      roles
+    };
+    // 新增用户
+    const addResult = await addUser(user);
+    if (!addResult.data) {
+      message.error(t('pages.user.add.tip.fail'));
+      form.resetFields();
+      return;
+    }
+    // 新增用户成功后重新获取用户列表数据
+    const queryResult = await getUsers();
+    if (queryResult.data) {
+      const data: API.PageInfo<TableUserInfo[]> = {
+        records: queryResult.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: queryResult.data.total,
+        size: queryResult.data.size,
+        current: queryResult.data.current,
+        pages: queryResult.data.pages
+      };
+      setUserData(data);
+    }
+    message.success(t('pages.user.add.tip.success'));
     form.resetFields();
   };
 

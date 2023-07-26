@@ -1,7 +1,9 @@
 import { getRoleSelectOptions } from '@/utils/general';
-import { Form, Input, Modal, Select } from 'antd';
+import { Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { TableUserInfo } from '../..';
+import { editUser, getUsers } from '@/services/user';
 
 type EditUserInfo = {
   id: number;
@@ -15,17 +17,50 @@ type EditUserInfo = {
 
 type Props = {
   userData: EditUserInfo;
+  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
 };
 
-const Edit: React.FC<Props> = ({ userData }) => {
+const Edit: React.FC<Props> = ({ userData, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const handleOk = () => {
-    console.log(form.getFieldsValue());
-    // 编辑用户
+  const handleOk = async () => {
     setIsOpen(false);
+    // 提交到后台处理需要把权限id值转为number类型
+    const formData: API.UserParams = form.getFieldsValue();
+    const roles = formData.roles?.map((item) => Number(item));
+    const user: API.UserParams = {
+      id: formData.id,
+      username: formData.username,
+      password: formData.password,
+      phone: formData.phone,
+      avatar: formData.avatar,
+      email: formData.email,
+      roles
+    };
+    // 编辑用户
+    const editResult = await editUser(user);
+    if (!editResult.data) {
+      message.error(t('pages.user.edit.tip.fail'));
+      form.resetFields();
+      return;
+    }
+    // 修改用户成功后重新获取用户列表数据
+    const queryResult = await getUsers();
+    if (queryResult.data) {
+      const data: API.PageInfo<TableUserInfo[]> = {
+        records: queryResult.data.records.map((item) => {
+          return { key: item.id, ...item };
+        }),
+        total: queryResult.data.total,
+        size: queryResult.data.size,
+        current: queryResult.data.current,
+        pages: queryResult.data.pages
+      };
+      setUserData(data);
+    }
+    message.success(t('pages.user.edit.tip.success'));
     form.resetFields();
   };
 
