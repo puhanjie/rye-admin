@@ -1,6 +1,6 @@
 import PageContainer from '@/components/PageContainer';
 import Query from '@/components/Query';
-import { Divider, Input, Space, Table } from 'antd';
+import { Divider, Input, Space, Table, TreeSelect } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getToken } from '@/utils/auth';
@@ -10,11 +10,13 @@ import Add from './components/Add';
 import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
+import { getMenuTree } from '@/utils/general';
+import { routeConfig } from '@/router';
 
 type QueryParams = {
   name?: string;
   info?: string;
-  menuName?: string;
+  menu?: string;
 };
 
 export type TablePermissionInfo = {
@@ -26,6 +28,7 @@ const Permission: React.FC = () => {
   const [tableData, setTableData] = useState<API.PageInfo<TablePermissionInfo[]>>();
   const [selectData, setSelectData] = useState<TablePermissionInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   useEffect(() => {
     const token = getToken();
@@ -64,12 +67,8 @@ const Permission: React.FC = () => {
     {
       title: t('pages.permission.menu'),
       dataIndex: 'menu',
-      align: 'center'
-    },
-    {
-      title: t('pages.permission.menuName'),
-      dataIndex: 'menuName',
-      align: 'center'
+      align: 'center',
+      render: (_text, record) => t(`menu.${record.menu}`)
     },
     {
       title: t('pages.permission.createTime'),
@@ -86,8 +85,8 @@ const Permission: React.FC = () => {
       dataIndex: 'action',
       align: 'center',
       render: (_text, record) => {
-        const { id, name, info, menu, menuName } = record;
-        const data = { id, name, info, menu, menuName };
+        const { id, name, info, menu } = record;
+        const data = { id, name, info, menu };
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
             <Edit permissionData={data} setPermissionData={setTableData} />
@@ -110,9 +109,15 @@ const Permission: React.FC = () => {
       render: <Input placeholder={t('pages.permission.queryForm.info.placeholder')} />
     },
     {
-      label: t('pages.permission.queryForm.menuName'),
-      name: 'menuName',
-      render: <Input placeholder={t('pages.permission.queryForm.menuName.placeholder')} />
+      label: t('pages.permission.queryForm.menu'),
+      name: 'menu',
+      render: (
+        <TreeSelect
+          treeData={getMenuTree(menuData)}
+          showCheckedStrategy="SHOW_CHILD"
+          placeholder={t('pages.permission.queryForm.menu.placeholder')}
+        />
+      )
     }
   ];
 

@@ -26,6 +26,9 @@ const userSlice = createSlice({
       state.roles = payload.roles;
       state.permissions = payload.permissions;
     },
+    setAvatar: (state, { payload }) => {
+      state.avatar = payload;
+    },
     cleanUserStore: (state) => {
       state.id = undefined;
       state.avatar = '';
@@ -38,6 +41,6 @@ const userSlice = createSlice({
   }
 });
 
-export const { setUserInfo, cleanUserStore } = userSlice.actions;
+export const { setUserInfo, cleanUserStore, setAvatar } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -4,6 +4,7 @@ import type { TableUserInfo } from '../..';
 import { useState } from 'react';
 import { updatePassword } from '@/services/user';
 import { ReloadOutlined } from '@ant-design/icons';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   selectData: TableUserInfo[];
@@ -52,9 +53,11 @@ const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
 
   return (
     <div>
-      <Button icon={<ReloadOutlined />} onClick={handleReset}>
-        {t('pages.user.resetPassword')}
-      </Button>
+      <AuthWrapper permission="user:resetPassword">
+        <Button icon={<ReloadOutlined />} onClick={handleReset}>
+          {t('pages.user.resetPassword')}
+        </Button>
+      </AuthWrapper>
       <Modal
         title={t('pages.user.resetPasswordModal.title')}
         open={isOpen}

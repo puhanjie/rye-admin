@@ -7,7 +7,6 @@ const permissionData = [
     name: 'app:admin',
     info: '管理员',
     menu: '*',
-    menuName: '*',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -16,7 +15,6 @@ const permissionData = [
     name: 'analysis:view',
     info: '查看',
     menu: 'analysis',
-    menuName: '分析页',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -25,7 +23,6 @@ const permissionData = [
     name: 'user:add',
     info: '新增',
     menu: 'user',
-    menuName: '用户管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -34,7 +31,6 @@ const permissionData = [
     name: 'user:delete',
     info: '删除',
     menu: 'user',
-    menuName: '用户管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -43,7 +39,6 @@ const permissionData = [
     name: 'user:update',
     info: '修改',
     menu: 'user',
-    menuName: '用户管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -52,7 +47,6 @@ const permissionData = [
     name: 'user:view',
     info: '查看',
     menu: 'user',
-    menuName: '用户管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -61,7 +55,6 @@ const permissionData = [
     name: 'user:resetPassword',
     info: '重置密码',
     menu: 'user',
-    menuName: '用户管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -70,7 +63,6 @@ const permissionData = [
     name: 'user:batchDelete',
     info: '批量删除',
     menu: 'user',
-    menuName: '用户管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -79,7 +71,6 @@ const permissionData = [
     name: 'role:add',
     info: '新增',
     menu: 'role',
-    menuName: '角色管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -88,7 +79,6 @@ const permissionData = [
     name: 'role:delete',
     info: '删除',
     menu: 'role',
-    menuName: '角色管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -97,7 +87,6 @@ const permissionData = [
     name: 'role:update',
     info: '修改',
     menu: 'role',
-    menuName: '角色管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -106,7 +95,6 @@ const permissionData = [
     name: 'role:view',
     info: '查看',
     menu: 'role',
-    menuName: '角色管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -115,7 +103,6 @@ const permissionData = [
     name: 'role:batchDelete',
     info: '批量删除',
     menu: 'role',
-    menuName: '角色管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -124,7 +111,6 @@ const permissionData = [
     name: 'permission:add',
     info: '新增',
     menu: 'permission',
-    menuName: '权限管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -133,7 +119,6 @@ const permissionData = [
     name: 'permission:delete',
     info: '删除',
     menu: 'permission',
-    menuName: '权限管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -142,7 +127,6 @@ const permissionData = [
     name: 'permission:update',
     info: '修改',
     menu: 'permission',
-    menuName: '权限管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -151,7 +135,6 @@ const permissionData = [
     name: 'permission:view',
     info: '查看',
     menu: 'permission',
-    menuName: '权限管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -160,7 +143,6 @@ const permissionData = [
     name: 'permission:batchDelete',
     info: '批量删除',
     menu: 'permission',
-    menuName: '权限管理',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
@@ -169,7 +151,6 @@ const permissionData = [
     name: 'settings:view',
     info: '查看',
     menu: 'settings',
-    menuName: '个人设置',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   }

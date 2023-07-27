@@ -33,7 +33,7 @@ declare namespace API {
     pageSize?: number = 10;
     name?: string;
     info?: string;
-    menuName?: string;
+    menu?: string;
   };
 
   type Token = {
@@ -98,7 +98,6 @@ declare namespace API {
     name: string;
     info: string;
     menu: string;
-    menuName: string;
     createTime: string;
     updateTime: string;
   };
@@ -141,6 +140,9 @@ declare namespace API {
     name?: string;
     info?: string;
     menu?: string;
-    menuName?: string;
+  };
+
+  type Avatar = {
+    url: string;
   };
 }

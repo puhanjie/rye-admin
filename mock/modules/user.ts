@@ -130,3 +130,9 @@ Mock.mock(url('/api/v1/user'), 'get', () => {
 Mock.mock(url('/api/v1/user/password'), 'put', () => {
   return success<number>(1);
 });
+
+Mock.mock(url('/api/v1/user/avatar'), 'put', () => {
+  return success<API.Avatar>({
+    url: 'http://localhost:8088/res/upload/20230726/e041970e-87c8-4009-b434-1ede1aa0ce61.png'
+  });
+});

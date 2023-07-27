@@ -2,6 +2,7 @@ import { Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableUserInfo } from '../..';
 import { getUsers, removeUser } from '@/services/user';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   selectId: number;
@@ -40,15 +41,17 @@ const Delete: React.FC<Props> = ({ selectId, setUserData }) => {
 
   return (
     <div>
-      <Popconfirm
-        title={t('common.tip.delete.title')}
-        description={t('common.tip.delete.description')}
-        onConfirm={handleConfirm}
-        okText={t('common.yes')}
-        cancelText={t('common.no')}
-      >
-        <a>{t('pages.user.delete')}</a>
-      </Popconfirm>
+      <AuthWrapper permission="user:delete">
+        <Popconfirm
+          title={t('common.tip.delete.title')}
+          description={t('common.tip.delete.description')}
+          onConfirm={handleConfirm}
+          okText={t('common.yes')}
+          cancelText={t('common.no')}
+        >
+          <a>{t('pages.user.delete')}</a>
+        </Popconfirm>
+      </AuthWrapper>
     </div>
   );
 };

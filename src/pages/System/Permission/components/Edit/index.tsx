@@ -1,15 +1,17 @@
-import { Form, Input, Modal, message } from 'antd';
+import { Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
 import { editPermission, getPermissions } from '@/services/permission';
+import { routeConfig } from '@/router';
+import { getMenuTree } from '@/utils/general';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type EditPermissionInfo = {
   id?: number;
   name?: string;
   info?: string;
   menu?: string;
-  menuName?: string;
 };
 
 type Props = {
@@ -23,6 +25,7 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
+  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = async () => {
     setIsOpen(false);
@@ -59,9 +62,11 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
 
   return (
     <div>
-      <a type="link" onClick={() => setIsOpen(true)}>
-        {t('pages.permission.edit')}
-      </a>
+      <AuthWrapper permission="permission:edit">
+        <a type="link" onClick={() => setIsOpen(true)}>
+          {t('pages.permission.edit')}
+        </a>
+      </AuthWrapper>
       <Modal
         title={t('pages.permission.editModal.title')}
         open={isOpen}
@@ -91,10 +96,12 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
             <Input />
           </Form.Item>
           <Form.Item label={t('pages.permission.menu')} name="menu">
-            <Input />
-          </Form.Item>
-          <Form.Item label={t('pages.permission.menuName')} name="menuName">
-            <Input />
+            <TreeSelect
+              treeData={getMenuTree(menuData)}
+              treeDefaultExpandedKeys={permissionData.menu ? [permissionData.menu] : []}
+              showCheckedStrategy="SHOW_CHILD"
+              placeholder={t('pages.permission.modal.menu.placeholder')}
+            />
           </Form.Item>
         </Form>
       </Modal>

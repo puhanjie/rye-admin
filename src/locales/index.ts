@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import enTranslation from './en-US';
 import zhTranslation from './zh-CN';
-import appConfig from '@/config/appConfig.json';
+import appConfig from '@/config/appConfig';
 
 i18n.use(initReactI18next).init({
   resources: {

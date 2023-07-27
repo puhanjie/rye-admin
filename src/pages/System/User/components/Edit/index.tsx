@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableUserInfo } from '../..';
 import { editUser, getUsers } from '@/services/user';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type EditUserInfo = {
   id: number;
@@ -71,9 +72,11 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
 
   return (
     <div>
-      <a type="link" onClick={() => setIsOpen(true)}>
-        {t('pages.user.edit')}
-      </a>
+      <AuthWrapper permission="user:edit">
+        <a type="link" onClick={() => setIsOpen(true)}>
+          {t('pages.user.edit')}
+        </a>
+      </AuthWrapper>
       <Modal
         title={t('pages.user.editModal.title')}
         open={isOpen}

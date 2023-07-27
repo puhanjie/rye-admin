@@ -3,6 +3,7 @@ import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableUserInfo } from '../..';
 import { getUsers, removeUser } from '@/services/user';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   selectData: TableUserInfo[];
@@ -42,17 +43,19 @@ const BatchDelete: React.FC<Props> = ({ selectData, setUserData }) => {
 
   return (
     <div>
-      <Popconfirm
-        title={t('common.tip.batchDelete.title')}
-        description={t('common.tip.batchDelete.description')}
-        onConfirm={handleConfirm}
-        okText={t('common.yes')}
-        cancelText={t('common.no')}
-      >
-        <Button danger icon={<DeleteOutlined />}>
-          {t('pages.user.batchDelete')}
-        </Button>
-      </Popconfirm>
+      <AuthWrapper permission="user:batchDelete">
+        <Popconfirm
+          title={t('common.tip.batchDelete.title')}
+          description={t('common.tip.batchDelete.description')}
+          onConfirm={handleConfirm}
+          okText={t('common.yes')}
+          cancelText={t('common.no')}
+        >
+          <Button danger icon={<DeleteOutlined />}>
+            {t('pages.user.batchDelete')}
+          </Button>
+        </Popconfirm>
+      </AuthWrapper>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableRoleInfo } from '../..';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   permissionData: API.PermissionInfo[];
@@ -60,9 +61,11 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
 
   return (
     <div>
-      <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpen(true)}>
-        {t('pages.role.add')}
-      </Button>
+      <AuthWrapper permission="role:add">
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpen(true)}>
+          {t('pages.role.add')}
+        </Button>
+      </AuthWrapper>
       <Modal
         title={t('pages.role.addModal.title')}
         open={isOpen}

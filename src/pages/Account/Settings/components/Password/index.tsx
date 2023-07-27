@@ -30,7 +30,6 @@ const Password: React.FC = () => {
       newPassword: newPassword
     });
     if (res?.data && res?.data <= 0) {
-      console.log('密码修改失败!');
       message.error(t('pages.settings.updatePassword.tip.fail'));
     }
   };
@@ -64,7 +63,7 @@ const Password: React.FC = () => {
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8 }}>
             <Button type="primary" htmlType="submit">
-              提交
+              {t('common.button.submit')}
             </Button>
           </Form.Item>
         </Form>

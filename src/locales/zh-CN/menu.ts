@@ -1,4 +1,5 @@
 export default {
+  'menu.*': '*',
   'menu.not-found': '404',
   'menu.login': '登录',
   'menu.index': 'index',

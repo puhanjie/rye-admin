@@ -9,6 +9,7 @@ export type SelectTreeOptions = {
   key?: string;
   value?: string;
   title?: string;
+  selectable?: boolean;
   children?: SelectTreeOptions[];
 };
 
@@ -72,4 +73,27 @@ export function getPermissionTreeData(
     });
   }
   return treeData;
+}
+
+/**
+ * 获取菜单树
+ * @param routeConfig
+ * @returns
+ */
+export function getMenuTree(routeConfig?: RouteConfig[]) {
+  if (!routeConfig) {
+    return;
+  }
+  return routeConfig.map((item) => {
+    const tree: SelectTreeOptions = {
+      key: item.name,
+      value: item.name,
+      title: i18n.t(`menu.${item.name}`)
+    };
+    if (item.children) {
+      tree.selectable = false;
+      tree.children = getMenuTree(item.children);
+    }
+    return tree;
+  });
 }

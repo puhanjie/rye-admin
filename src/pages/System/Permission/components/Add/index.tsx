@@ -1,9 +1,12 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, message } from 'antd';
+import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
 import { addPermission, getPermissions } from '@/services/permission';
+import { getMenuTree } from '@/utils/general';
+import { routeConfig } from '@/router';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   setPermissionData: React.Dispatch<
@@ -15,6 +18,7 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
+  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = async () => {
     setIsOpen(false);
@@ -51,9 +55,11 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
 
   return (
     <div>
-      <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpen(true)}>
-        {t('pages.permission.add')}
-      </Button>
+      <AuthWrapper permission="permission:add">
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpen(true)}>
+          {t('pages.permission.add')}
+        </Button>
+      </AuthWrapper>
       <Modal
         title={t('pages.permission.addModal.title')}
         open={isOpen}
@@ -74,10 +80,11 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
             <Input />
           </Form.Item>
           <Form.Item label={t('pages.permission.menu')} name="menu">
-            <Input />
-          </Form.Item>
-          <Form.Item label={t('pages.permission.menuName')} name="menuName">
-            <Input />
+            <TreeSelect
+              treeData={getMenuTree(menuData)}
+              showCheckedStrategy="SHOW_CHILD"
+              placeholder={t('pages.permission.modal.menu.placeholder')}
+            />
           </Form.Item>
         </Form>
       </Modal>

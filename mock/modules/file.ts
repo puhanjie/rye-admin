@@ -3,7 +3,7 @@ import { url, success } from '../utils';
 
 Mock.mock(url('/api/v1/file'), 'post', (params) => {
   const formData = params.body;
-  const file = formData.get('file');
+  const file = formData.get('files');
 
   return success<API.FileInfo>({
     id: 1,

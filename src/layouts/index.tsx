@@ -29,6 +29,7 @@ const Layouts: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { permissions } = useAppSelector((state) => state.user);
+  const { menuWidth, collapsedWidth, menuTheme } = useAppSelector((state) => state.app);
   const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState(permissions && permissions.length > 0 ? false : true);
@@ -114,17 +115,17 @@ const Layouts: React.FC = () => {
   ) : (
     <Layout className={styles['container']}>
       <Layout.Sider
-        width="210"
-        theme="light"
+        width={menuWidth}
+        theme={menuTheme}
         trigger={null}
         collapsible
         collapsed={collapsed}
-        collapsedWidth="48"
+        collapsedWidth={collapsedWidth}
         className={styles['sider']}
       >
         <Logo collapsed={collapsed} />
         <Menu
-          theme="light"
+          theme={menuTheme}
           mode="inline"
           items={menuItems}
           defaultOpenKeys={openKeys}

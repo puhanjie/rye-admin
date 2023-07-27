@@ -5,6 +5,7 @@ import { Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableRoleInfo } from '../..';
+import AuthWrapper from '@/components/AuthWrapper';
 
 type EditRoleInfo = {
   id: number;
@@ -82,9 +83,11 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
 
   return (
     <div>
-      <a type="link" onClick={() => setIsOpen(true)}>
-        {t('pages.role.edit')}
-      </a>
+      <AuthWrapper permission="role:edit">
+        <a type="link" onClick={() => setIsOpen(true)}>
+          {t('pages.role.edit')}
+        </a>
+      </AuthWrapper>
       <Modal
         title={t('pages.role.editModal.title')}
         open={isOpen}
