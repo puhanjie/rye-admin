@@ -76,6 +76,14 @@ export const routeConfig: RouteConfig[] = [
             meta: {
               access: 'permission:view'
             }
+          },
+          {
+            path: 'dictionary',
+            name: 'dictionary',
+            component: lazy(() => import('@/pages/System/Dictionary')),
+            meta: {
+              access: 'dictionary:view'
+            }
           }
         ]
       },

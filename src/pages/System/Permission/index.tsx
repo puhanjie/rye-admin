@@ -3,7 +3,6 @@ import Query from '@/components/Query';
 import { Divider, Input, Space, Table, TreeSelect } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { getToken } from '@/utils/auth';
 import { getPermissions } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
@@ -25,32 +24,27 @@ export type TablePermissionInfo = {
 
 const Permission: React.FC = () => {
   const { t } = useTranslation();
-  const [tableData, setTableData] = useState<API.PageInfo<TablePermissionInfo[]>>();
+  const [permissionData, setPermissionData] = useState<API.PageInfo<TablePermissionInfo[]>>();
   const [selectData, setSelectData] = useState<TablePermissionInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   useEffect(() => {
-    const token = getToken();
-    if (token) {
-      (async () => {
-        const permissionPages = await getPermissions();
-        if (permissionPages?.data) {
-          const permissionData: TablePermissionInfo[] = permissionPages.data.records.map((item) => {
-            return { key: item.id, ...item };
-          });
-          const tablePages: API.PageInfo<TablePermissionInfo[]> = {
-            records: permissionData,
-            total: permissionPages.data.total,
-            size: permissionPages.data.size,
-            current: permissionPages.data.current,
-            pages: permissionPages.data.pages
-          };
-          setTableData(tablePages);
-          setLoading(false);
-        }
-      })();
-    }
+    (async () => {
+      const permissionDataRes = await getPermissions();
+      if (!permissionDataRes.data) {
+        return;
+      }
+      const tablePages: API.PageInfo<TablePermissionInfo[]> = {
+        records: permissionDataRes.data.records.map((item) => ({ key: item.id, ...item })),
+        total: permissionDataRes.data.total,
+        size: permissionDataRes.data.size,
+        current: permissionDataRes.data.current,
+        pages: permissionDataRes.data.pages
+      };
+      setPermissionData(tablePages);
+      setLoading(false);
+    })();
   }, []);
 
   const tableColumns: ColumnsType<TablePermissionInfo> = [
@@ -89,8 +83,8 @@ const Permission: React.FC = () => {
         const data = { id, name, info, menu };
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit permissionData={data} setPermissionData={setTableData} />
-            <Delete selectId={id} setPermissionData={setTableData} />
+            <Edit permissionData={data} setPermissionData={setPermissionData} />
+            <Delete selectId={id} setPermissionData={setPermissionData} />
           </Space>
         );
       }
@@ -125,15 +119,13 @@ const Permission: React.FC = () => {
     const res = await getPermissions(params);
     if (res.data) {
       const data: API.PageInfo<TablePermissionInfo[]> = {
-        records: res.data.records.map((item) => {
-          return { key: item.id, ...item };
-        }),
+        records: res.data.records.map((item) => ({ key: item.id, ...item })),
         total: res.data.total,
         size: res.data.size,
         current: res.data.current,
         pages: res.data.pages
       };
-      setTableData(data);
+      setPermissionData(data);
     }
   };
 
@@ -150,13 +142,13 @@ const Permission: React.FC = () => {
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add setPermissionData={setTableData} />
-        <BatchDelete selectData={selectData} setPermissionData={setTableData} />
+        <Add setPermissionData={setPermissionData} />
+        <BatchDelete selectData={selectData} setPermissionData={setPermissionData} />
       </Space>
       <Table
         bordered
         columns={tableColumns}
-        dataSource={tableData?.records}
+        dataSource={permissionData?.records}
         loading={loading}
         size="small"
         rowSelection={{
@@ -168,7 +160,7 @@ const Permission: React.FC = () => {
         scroll={{ x: 'max-content' }}
         pagination={{
           defaultPageSize: 10,
-          total: tableData?.total,
+          total: permissionData?.total,
           showSizeChanger: true,
           showTotal: (total, range) =>
             t('common.table.footer', { start: range[0], end: range[1], total: total }),

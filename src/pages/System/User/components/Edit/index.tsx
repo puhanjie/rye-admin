@@ -18,11 +18,11 @@ type EditUserInfo = {
 
 type Props = {
   userData: EditUserInfo;
-  userStatus: API.DictionaryInfo[];
+  userStatusData: API.DictionaryInfo[];
   setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
 };
 
-const Edit: React.FC<Props> = ({ userData, userStatus, setUserData }) => {
+const Edit: React.FC<Props> = ({ userData, userStatusData, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -52,9 +52,7 @@ const Edit: React.FC<Props> = ({ userData, userStatus, setUserData }) => {
     const queryResult = await getUsers();
     if (queryResult.data) {
       const data: API.PageInfo<TableUserInfo[]> = {
-        records: queryResult.data.records.map((item) => {
-          return { key: item.id, ...item };
-        }),
+        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
         total: queryResult.data.total,
         size: queryResult.data.size,
         current: queryResult.data.current,
@@ -111,7 +109,7 @@ const Edit: React.FC<Props> = ({ userData, userStatus, setUserData }) => {
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
-              options={getUserStatusSelectOptions(userStatus)}
+              options={getUserStatusSelectOptions(userStatusData)}
               placeholder={t('pages.user.modal.role.placeholder')}
             />
           </Form.Item>

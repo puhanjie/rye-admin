@@ -3,7 +3,6 @@ import Query from '@/components/Query';
 import { Divider, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { getToken } from '@/utils/auth';
 import { getRoles } from '@/services/role';
 import { getPermissionList } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
@@ -23,34 +22,29 @@ export type TableRoleInfo = {
 
 const Role: React.FC = () => {
   const { t } = useTranslation();
-  const [tableData, setTableData] = useState<API.PageInfo<TableRoleInfo[]>>();
+  const [roleData, setTableData] = useState<API.PageInfo<TableRoleInfo[]>>();
   const [permissionData, setPermissionData] = useState<API.PermissionInfo[]>([]);
   const [selectData, setSelectData] = useState<TableRoleInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = getToken();
-    if (token) {
-      (async () => {
-        const permissions = await getPermissionList();
-        const rolePages = await getRoles();
-        if (rolePages?.data && permissions?.data) {
-          const roleData: TableRoleInfo[] = rolePages.data.records.map((item) => {
-            return { key: item.id, ...item };
-          });
-          const tablePages: API.PageInfo<API.RoleInfo[]> = {
-            records: roleData,
-            total: rolePages.data.total,
-            size: rolePages.data.size,
-            current: rolePages.data.current,
-            pages: rolePages.data.pages
-          };
-          setTableData(tablePages);
-          setPermissionData(permissions.data);
-          setLoading(false);
-        }
-      })();
-    }
+    (async () => {
+      const roleDataRes = await getRoles();
+      const permissionDataRes = await getPermissionList();
+      if (!roleDataRes.data || !permissionDataRes.data) {
+        return;
+      }
+      const roleData: API.PageInfo<API.RoleInfo[]> = {
+        records: roleDataRes.data.records.map((item) => ({ key: item.id, ...item })),
+        total: roleDataRes.data.total,
+        size: roleDataRes.data.size,
+        current: roleDataRes.data.current,
+        pages: roleDataRes.data.pages
+      };
+      setTableData(roleData);
+      setPermissionData(permissionDataRes.data);
+      setLoading(false);
+    })();
   }, []);
 
   const tableColumns: ColumnsType<TableRoleInfo> = [
@@ -111,9 +105,7 @@ const Role: React.FC = () => {
     const res = await getRoles(params);
     if (res.data) {
       const data: API.PageInfo<TableRoleInfo[]> = {
-        records: res.data.records.map((item) => {
-          return { key: item.id, ...item };
-        }),
+        records: res.data.records.map((item) => ({ key: item.id, ...item })),
         total: res.data.total,
         size: res.data.size,
         current: res.data.current,
@@ -142,7 +134,7 @@ const Role: React.FC = () => {
       <Table
         bordered
         columns={tableColumns}
-        dataSource={tableData?.records}
+        dataSource={roleData?.records}
         loading={loading}
         size="small"
         rowSelection={{
@@ -154,7 +146,7 @@ const Role: React.FC = () => {
         scroll={{ x: 'max-content' }}
         pagination={{
           defaultPageSize: 10,
-          total: tableData?.total,
+          total: roleData?.total,
           showSizeChanger: true,
           showTotal: (total, range) =>
             t('common.table.footer', { start: range[0], end: range[1], total: total }),

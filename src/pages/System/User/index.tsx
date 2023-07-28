@@ -12,7 +12,8 @@ import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
 import type { Key } from 'antd/es/table/interface';
-import { getDictionarys } from '@/services/dictionary';
+import { getDictionaryList } from '@/services/dictionary';
+import { userStatusTagColor } from '@/config/statusTagConfig';
 
 type QueryParams = {
   username?: string;
@@ -26,7 +27,7 @@ export type TableUserInfo = {
 
 const User: React.FC = () => {
   const { t } = useTranslation();
-  const [tableData, setTableData] = useState<API.PageInfo<TableUserInfo[]>>();
+  const [userData, setUserData] = useState<API.PageInfo<TableUserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
   const [userStatusData, setUserStatusData] = useState<API.DictionaryInfo[]>([]);
   const [selectData, setSelectData] = useState<TableUserInfo[]>([]);
@@ -35,32 +36,23 @@ const User: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const roles = await getRoleList();
-      const userPages = await getUsers();
-      if (userPages?.data && roles?.data) {
-        const userData: TableUserInfo[] = userPages.data.records.map((item) => {
-          return { key: item.id, ...item };
-        });
-        const tablePages: API.PageInfo<TableUserInfo[]> = {
-          records: userData,
-          total: userPages.data.total,
-          size: userPages.data.size,
-          current: userPages.data.current,
-          pages: userPages.data.pages
-        };
-        setTableData(tablePages);
-        setRoleData(roles.data);
-        setLoading(false);
+      const userDataRes = await getUsers();
+      const roleDataRes = await getRoleList();
+      const userStatusDataRes = await getDictionaryList({ dictName: 'user_status' });
+      if (!userDataRes.data || !roleDataRes.data || !userStatusDataRes.data) {
+        return;
       }
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const res = await getDictionarys({ dictName: 'user_status' });
-      if (res.data) {
-        setUserStatusData(res.data.records);
-      }
+      const userData: API.PageInfo<TableUserInfo[]> = {
+        records: userDataRes.data.records.map((item) => ({ key: item.id, ...item })),
+        total: userDataRes.data.total,
+        size: userDataRes.data.size,
+        current: userDataRes.data.current,
+        pages: userDataRes.data.pages
+      };
+      setUserData(userData);
+      setRoleData(roleDataRes.data);
+      setUserStatusData(userStatusDataRes.data);
+      setLoading(false);
     })();
   }, []);
 
@@ -83,7 +75,11 @@ const User: React.FC = () => {
         if (!record.userStatus) {
           return null;
         }
-        return userStatusData.filter((item) => record.userStatus === item.itemValue)[0].itemText;
+        const status = userStatusData.filter((item) => record.userStatus === item.itemValue)[0]
+          .itemText;
+        const tagColor = userStatusTagColor.filter((item) => record.userStatus === item.value)[0]
+          .color;
+        return <Tag color={tagColor}>{status}</Tag>;
       }
     },
     {
@@ -139,8 +135,8 @@ const User: React.FC = () => {
         // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit userData={data} userStatus={userStatusData} setUserData={setTableData} />
-            <Delete selectId={id} setUserData={setTableData} />
+            <Edit userData={data} userStatusData={userStatusData} setUserData={setUserData} />
+            <Delete selectId={id} setUserData={setUserData} />
           </Space>
         );
       }
@@ -173,15 +169,13 @@ const User: React.FC = () => {
     const res = await getUsers(params);
     if (res.data) {
       const data: API.PageInfo<TableUserInfo[]> = {
-        records: res.data.records.map((item) => {
-          return { key: item.id, ...item };
-        }),
+        records: res.data.records.map((item) => ({ key: item.id, ...item })),
         total: res.data.total,
         size: res.data.size,
         current: res.data.current,
         pages: res.data.pages
       };
-      setTableData(data);
+      setUserData(data);
     }
   };
 
@@ -198,14 +192,14 @@ const User: React.FC = () => {
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add roleData={roleData} userStatus={userStatusData} setUserData={setTableData} />
+        <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />
         <ResetPassword selectData={selectData} clearSelectData={clearSelectData} />
-        <BatchDelete selectData={selectData} setUserData={setTableData} />
+        <BatchDelete selectData={selectData} setUserData={setUserData} />
       </Space>
       <Table
         bordered
         columns={tableColumns}
-        dataSource={tableData?.records}
+        dataSource={userData?.records}
         loading={loading}
         size="small"
         rowSelection={{
@@ -219,7 +213,7 @@ const User: React.FC = () => {
         scroll={{ x: 'max-content' }}
         pagination={{
           defaultPageSize: 10,
-          total: tableData?.total,
+          total: userData?.total,
           showSizeChanger: true,
           showTotal: (total, range) =>
             t('common.table.footer', { start: range[0], end: range[1], total: total }),

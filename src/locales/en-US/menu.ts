@@ -9,6 +9,7 @@ export default {
   'menu.user': 'User management',
   'menu.role': 'Role management',
   'menu.permission': 'Permission management',
+  'menu.dictionary': 'Dictionary management',
   'menu.account': 'Account Center',
   'menu.settings': 'Account Settings'
 };

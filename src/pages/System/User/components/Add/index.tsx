@@ -42,9 +42,7 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
     const queryResult = await getUsers();
     if (queryResult.data) {
       const data: API.PageInfo<TableUserInfo[]> = {
-        records: queryResult.data.records.map((item) => {
-          return { key: item.id, ...item };
-        }),
+        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
         total: queryResult.data.total,
         size: queryResult.data.size,
         current: queryResult.data.current,

@@ -34,9 +34,7 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
     const queryResult = await getPermissions();
     if (queryResult.data) {
       const data: API.PageInfo<TablePermissionInfo[]> = {
-        records: queryResult.data.records.map((item) => {
-          return { key: item.id, ...item };
-        }),
+        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
         total: queryResult.data.total,
         size: queryResult.data.size,
         current: queryResult.data.current,

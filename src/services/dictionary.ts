@@ -35,3 +35,12 @@ export async function getDictionarys(params?: API.DictionaryPageQuery) {
   });
   return res;
 }
+
+export async function getDictionaryList(params: { dictName: string }) {
+  const res = await request<API.DictionaryInfo[]>({
+    url: '/api/v1/dictionary/list',
+    method: 'get',
+    params
+  });
+  return res;
+}
