@@ -12,6 +12,7 @@ import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
 import type { Key } from 'antd/es/table/interface';
+import { getDictionarys } from '@/services/dictionary';
 
 type QueryParams = {
   username?: string;
@@ -27,6 +28,7 @@ const User: React.FC = () => {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState<API.PageInfo<TableUserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
+  const [userStatusData, setUserStatusData] = useState<API.DictionaryInfo[]>([]);
   const [selectData, setSelectData] = useState<TableUserInfo[]>([]);
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,6 +55,15 @@ const User: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const res = await getDictionarys({ dictName: 'user_status' });
+      if (res.data) {
+        setUserStatusData(res.data.records);
+      }
+    })();
+  }, []);
+
   const tableColumns: ColumnsType<TableUserInfo> = [
     {
       title: t('pages.user.username'),
@@ -60,11 +71,28 @@ const User: React.FC = () => {
       align: 'center'
     },
     {
-      title: t('pages.user.role'),
+      title: t('pages.user.nickname'),
+      dataIndex: 'nickname',
+      align: 'center'
+    },
+    {
+      title: t('pages.user.userStatus'),
+      dataIndex: 'userStatus',
       align: 'center',
       render: (_text, record) => {
-        if (!record?.roles) {
-          return;
+        if (!record.userStatus) {
+          return null;
+        }
+        return userStatusData.filter((item) => record.userStatus === item.itemValue)[0].itemText;
+      }
+    },
+    {
+      title: t('pages.user.role'),
+      dataIndex: 'roles',
+      align: 'center',
+      render: (_text, record) => {
+        if (!record.roles) {
+          return null;
         }
         return record.roles.map((item, index) => <Tag key={index}>{item.info}</Tag>);
       }
@@ -96,12 +124,22 @@ const User: React.FC = () => {
       render: (_text, record) => {
         // 处理roles对象数组，只保留角色id
         const roles = record?.roles && record.roles.map((item) => item.id);
-        const { id, username, phone, avatar, email } = record;
-        const data = { id, username, phone, avatar, email, roles, roleList: roleData };
+        const { id, username, nickname, userStatus, phone, avatar, email } = record;
+        const data = {
+          id,
+          username,
+          nickname,
+          userStatus,
+          phone,
+          avatar,
+          email,
+          roles,
+          roleList: roleData
+        };
         // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit userData={data} setUserData={setTableData} />
+            <Edit userData={data} userStatus={userStatusData} setUserData={setTableData} />
             <Delete selectId={id} setUserData={setTableData} />
           </Space>
         );
@@ -160,7 +198,7 @@ const User: React.FC = () => {
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add roleData={roleData} setUserData={setTableData} />
+        <Add roleData={roleData} userStatus={userStatusData} setUserData={setTableData} />
         <ResetPassword selectData={selectData} clearSelectData={clearSelectData} />
         <BatchDelete selectData={selectData} setUserData={setTableData} />
       </Space>

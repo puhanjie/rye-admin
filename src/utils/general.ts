@@ -14,6 +14,18 @@ export type SelectTreeOptions = {
 };
 
 /**
+ * 通过字典数据获取角色选项框数据
+ * @param dictionarys
+ * @returns
+ */
+export function getUserStatusSelectOptions(dictionarys: API.DictionaryInfo[]) {
+  const options: SelectOptions[] = dictionarys.map((item) => {
+    return { label: item.itemText, value: item.itemValue };
+  });
+  return options;
+}
+
+/**
  * 通过角色数据获取角色选项框数据
  * @param roles
  * @returns

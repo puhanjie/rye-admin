@@ -4,6 +4,7 @@ const initialState: API.UserBasicInfo = {
   id: undefined,
   avatar: '',
   username: '',
+  nickname: '',
   phone: '',
   email: '',
   roles: [],
@@ -21,6 +22,7 @@ const userSlice = createSlice({
       state.id = payload.id;
       state.avatar = payload.avatar;
       state.username = payload.username;
+      state.nickname = payload.nickname;
       state.phone = payload.phone;
       state.email = payload.email;
       state.roles = payload.roles;

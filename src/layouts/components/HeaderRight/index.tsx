@@ -37,8 +37,11 @@ const HeaderRight: React.FC = () => {
       // 清空redux中数据
       dispatch(
         setUserInfo({
-          username: '',
           avatar: '',
+          username: '',
+          nickname: '',
+          phone: '',
+          email: '',
           roles: [],
           permissions: []
         })

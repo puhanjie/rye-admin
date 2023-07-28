@@ -6,6 +6,8 @@ const userData = [
   {
     id: 1,
     username: 'admin',
+    nickname: '管理员',
+    userStatus: '0',
     password: 'admin',
     phone: '15887280652',
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
@@ -30,6 +32,8 @@ const userData = [
   {
     id: 2,
     username: 'guest',
+    nickname: '访客',
+    userStatus: '0',
     password: 'guest',
     phone: '18650329448',
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
@@ -88,10 +92,11 @@ Mock.mock(url('/api/v1/user/info'), 'get', () => {
     const username = token.split('-')[0];
     const user = userData.filter((item) => item.username === username)[0];
     if (user) {
-      const { id, username, phone, avatar, email, roles, permissions } = user;
+      const { id, username, nickname, phone, avatar, email, roles, permissions } = user;
       return success<API.UserBasicInfo>({
         id,
         username,
+        nickname,
         phone,
         avatar,
         email,
@@ -108,6 +113,8 @@ Mock.mock(url('/api/v1/user'), 'get', () => {
     return {
       id: item.id,
       username: item.username,
+      nickname: item.nickname,
+      userStatus: item.userStatus,
       phone: item.phone,
       avatar: item.avatar,
       email: item.email,

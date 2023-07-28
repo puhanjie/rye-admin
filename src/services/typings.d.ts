@@ -36,6 +36,13 @@ declare namespace API {
     menu?: string;
   };
 
+  type DictionaryPageQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    dictName?: string;
+    itemText?: string;
+  };
+
   type Token = {
     token: string;
   };
@@ -43,6 +50,7 @@ declare namespace API {
   type UserBasicInfo = {
     id?: number;
     username?: string;
+    nickname?: string;
     phone?: string;
     avatar?: string;
     email?: string;
@@ -68,6 +76,8 @@ declare namespace API {
   type UserInfo = {
     id: number;
     username: string;
+    nickname: string;
+    userStatus: string;
     phone: string;
     avatar: string;
     email: string;
@@ -110,6 +120,15 @@ declare namespace API {
     uuid: string;
   };
 
+  type DictionaryInfo = {
+    id: number;
+    dictName: string;
+    dictText: string;
+    itemValue: string;
+    itemText: string;
+    description: string;
+  };
+
   type PageInfo<T> = {
     records: T;
     total: number;
@@ -140,6 +159,15 @@ declare namespace API {
     name?: string;
     info?: string;
     menu?: string;
+  };
+
+  type DictionaryParams = {
+    id?: number | string;
+    dictName?: string;
+    dictText?: string;
+    itemValue?: string;
+    itemText?: string;
+    description?: string;
   };
 
   type Avatar = {

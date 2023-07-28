@@ -3,6 +3,7 @@ import './modules/user';
 import './modules/file';
 import './modules/role';
 import './modules/permission';
+import './modules/dictionary';
 
 // 设置被拦截的请求的响应时间，单位：毫秒
 Mock.setup({

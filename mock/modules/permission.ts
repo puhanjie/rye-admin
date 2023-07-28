@@ -148,6 +148,46 @@ const permissionData = [
   },
   {
     id: 19,
+    name: 'dictionary:add',
+    info: '新增',
+    menu: 'dictionary',
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 20,
+    name: 'dictionary:delete',
+    info: '删除',
+    menu: 'dictionary',
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 21,
+    name: 'dictionary:update',
+    info: '修改',
+    menu: 'dictionary',
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 22,
+    name: 'dictionary:view',
+    info: '查看',
+    menu: 'dictionary',
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 23,
+    name: 'dictionary:batchDelete',
+    info: '批量删除',
+    menu: 'dictionary',
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 25,
     name: 'settings:view',
     info: '查看',
     menu: 'settings',

@@ -1,4 +1,4 @@
-import { getRoleSelectOptions } from '@/utils/general';
+import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/general';
 import { Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,10 +18,11 @@ type EditUserInfo = {
 
 type Props = {
   userData: EditUserInfo;
+  userStatus: API.DictionaryInfo[];
   setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
 };
 
-const Edit: React.FC<Props> = ({ userData, setUserData }) => {
+const Edit: React.FC<Props> = ({ userData, userStatus, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -101,6 +102,18 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
           </Form.Item>
           <Form.Item label={t('pages.user.username')} name="username">
             <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.user.nickname')} name="nickname">
+            <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.user.userStatus')} name="userStatus">
+            <Select
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={getUserStatusSelectOptions(userStatus)}
+              placeholder={t('pages.user.modal.role.placeholder')}
+            />
           </Form.Item>
           <Form.Item label={t('pages.user.role')} name="roles">
             <Select

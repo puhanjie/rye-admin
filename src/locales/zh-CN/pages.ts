@@ -30,6 +30,8 @@ export default {
   'pages.user.edit': '编辑',
   'pages.user.delete': '删除',
   'pages.user.username': '用户名',
+  'pages.user.nickname': '昵称',
+  'pages.user.userStatus': '用户状态',
   'pages.user.role': '角色',
   'pages.user.password': '密码',
   'pages.user.phone': '手机',

@@ -30,6 +30,8 @@ export default {
   'pages.user.edit': 'Edit',
   'pages.user.delete': 'Delete',
   'pages.user.username': 'Username',
+  'pages.user.nickname': 'Nickname',
+  'pages.user.userStatus': 'User status',
   'pages.user.role': 'Role',
   'pages.user.password': 'Password',
   'pages.user.phone': 'Phone',

@@ -1,5 +1,5 @@
 import { addUser, getUsers } from '@/services/user';
-import { getRoleSelectOptions } from '@/utils/general';
+import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
@@ -9,10 +9,11 @@ import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   roleData: API.RoleInfo[];
+  userStatus: API.DictionaryInfo[];
   setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
 };
 
-const Add: React.FC<Props> = ({ roleData, setUserData }) => {
+const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -82,6 +83,18 @@ const Add: React.FC<Props> = ({ roleData, setUserData }) => {
         <Form name="add" form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
           <Form.Item label={t('pages.user.username')} name="username">
             <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.user.nickname')} name="nickname">
+            <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.user.userStatus')} name="userStatus" initialValue={['0']}>
+            <Select
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={getUserStatusSelectOptions(userStatus)}
+              placeholder={t('pages.user.modal.role.placeholder')}
+            />
           </Form.Item>
           <Form.Item label={t('pages.user.role')} name="roles">
             <Select
