@@ -1,7 +1,7 @@
 import { AppstoreOutlined, DashboardOutlined, UserOutlined } from '@ant-design/icons';
 import { type RouteObject, createBrowserRouter, Outlet } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
-import Auth from '@/components/Auth';
+import RouteGuard from '@/components/RouteGuard';
 import Loading from '@/components/Loading';
 
 export const routeConfig: RouteConfig[] = [
@@ -114,13 +114,13 @@ function renderRoutes(routes: RouteConfig[]): RouteObject[] {
     const route: RouteObject = {};
     route.path = item.path;
     if (item?.component) {
-      // 有认证标识的路由组件上包裹高阶组件<Auth />做登陆认证校验
+      // 有认证标识的路由组件上包裹高阶组件<RouteGuard />做登陆认证校验
       route.element = item?.meta?.auth ? (
-        <Auth>
+        <RouteGuard>
           <Suspense fallback={<Loading />}>
             <item.component />
           </Suspense>
-        </Auth>
+        </RouteGuard>
       ) : (
         <Suspense fallback={<Loading />}>
           <item.component />

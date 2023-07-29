@@ -11,7 +11,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const Auth: React.FC<Props> = ({ children }) => {
+const RouteGuard: React.FC<Props> = ({ children }) => {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
   const token = getToken();
@@ -47,4 +47,4 @@ const Auth: React.FC<Props> = ({ children }) => {
   return <>{children}</>;
 };
 
-export default Auth;
+export default RouteGuard;
