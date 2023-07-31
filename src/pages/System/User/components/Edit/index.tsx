@@ -9,20 +9,22 @@ import AuthWrapper from '@/components/AuthWrapper';
 type EditUserInfo = {
   id: number;
   username: string;
+  nickname: string;
+  userStatus: string;
   phone: string;
   avatar: string;
   email: string;
   roles?: number[];
   roleList: API.RoleInfo[];
+  userStatusList: API.DictionaryInfo[];
 };
 
 type Props = {
   userData: EditUserInfo;
-  userStatusData: API.DictionaryInfo[];
   setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
 };
 
-const Edit: React.FC<Props> = ({ userData, userStatusData, setUserData }) => {
+const Edit: React.FC<Props> = ({ userData, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -109,7 +111,7 @@ const Edit: React.FC<Props> = ({ userData, userStatusData, setUserData }) => {
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
-              options={getUserStatusSelectOptions(userStatusData)}
+              options={getUserStatusSelectOptions(userData.userStatusList)}
               placeholder={t('pages.user.modal.role.placeholder')}
             />
           </Form.Item>

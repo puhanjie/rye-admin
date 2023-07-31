@@ -114,7 +114,10 @@ Mock.mock(url('/api/v1/user'), 'get', () => {
       id: item.id,
       username: item.username,
       nickname: item.nickname,
-      userStatus: item.userStatus,
+      userStatus: {
+        itemValue: '0',
+        itemText: '正常'
+      },
       phone: item.phone,
       avatar: item.avatar,
       email: item.email,

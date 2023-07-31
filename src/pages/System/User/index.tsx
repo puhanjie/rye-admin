@@ -75,10 +75,10 @@ const User: React.FC = () => {
         if (!record.userStatus) {
           return null;
         }
-        const status = userStatusData.filter((item) => record.userStatus === item.itemValue)[0]
-          .itemText;
-        const tagColor = userStatusTagColor.filter((item) => record.userStatus === item.value)[0]
-          .color;
+        const status = record.userStatus.itemText;
+        const tagColor = userStatusTagColor.filter(
+          (item) => record.userStatus.itemValue === item.value
+        )[0].color;
         return <Tag color={tagColor}>{status}</Tag>;
       }
     },
@@ -125,17 +125,18 @@ const User: React.FC = () => {
           id,
           username,
           nickname,
-          userStatus,
+          userStatus: userStatus.itemValue,
           phone,
           avatar,
           email,
           roles,
-          roleList: roleData
+          roleList: roleData,
+          userStatusList: userStatusData
         };
         // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit userData={data} userStatusData={userStatusData} setUserData={setUserData} />
+            <Edit userData={data} setUserData={setUserData} />
             <Delete selectId={id} setUserData={setUserData} />
           </Space>
         );

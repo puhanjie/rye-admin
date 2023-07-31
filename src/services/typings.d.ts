@@ -77,7 +77,10 @@ declare namespace API {
     id: number;
     username: string;
     nickname: string;
-    userStatus: string;
+    userStatus: {
+      itemValue: string;
+      itemText: string;
+    };
     phone: string;
     avatar: string;
     email: string;
