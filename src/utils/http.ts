@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { getToken } from './auth';
+import { message } from 'antd';
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -19,6 +20,7 @@ http.interceptors.request.use(
   },
   (error) => {
     // 请求错误时处理
+    message.error('Request Error');
     return Promise.reject(error);
   }
 );
@@ -30,31 +32,14 @@ http.interceptors.response.use(
 
     // 相应状态码不等于0代表错误
     if (res.code !== 0) {
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if ([50008, 50012, 50014].includes(res.code) && response.config.url !== '/api/user/info') {
-        // Modal.error({
-        //     title: 'Confirm logout',
-        //     content:
-        //         'You have been logged out, you can cancel to stay on this page, or log in again',
-        //     okText: 'Re-Login',
-        //     async onOk() {
-        //         // const userStore = useUserStore()
-        //         // await userStore.logout()
-        //         window.location.reload()
-        //     },
-        // })
-        // 返回code异常时处理
-      }
+      message.error(`${res.code}|${res.message}`);
       return Promise.reject(res);
     }
     return res;
   },
   (error) => {
-    // Message.error({
-    //     content: error.msg || 'Request Error',
-    //     duration: 5 * 1000,
-    // })
-    // 请求异常时处理
+    // 响应异常时处理
+    message.error('Response Error');
     return Promise.reject(error);
   }
 );
