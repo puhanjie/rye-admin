@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 
 const Login: React.FC = () => {
   return (
-    <div className={`${styles['container']} scrollbar`}>
+    <div className={`${styles['container']} scrollbar-light`}>
       <LoginHeader className={styles['header']} />
       <LoginContent className={styles['content']} />
       <Footer className={styles['footer']} />

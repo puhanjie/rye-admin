@@ -133,7 +133,7 @@ const Layouts: React.FC = () => {
           onClick={(event) => {
             navigate(event.key);
           }}
-          className={`${styles['menu']} scrollbar`}
+          className={`${styles['menu']} scrollbar-dark`}
         />
       </Layout.Sider>
       <Layout className={styles['main']}>
@@ -146,7 +146,7 @@ const Layouts: React.FC = () => {
           <HeaderRight />
         </Layout.Header>
         <Tags />
-        <Layout.Content className={`${styles['content']} scrollbar`}>
+        <Layout.Content className={`${styles['content']} scrollbar-light`}>
           <Outlet />
         </Layout.Content>
         <Layout.Footer className={styles['footer']}>

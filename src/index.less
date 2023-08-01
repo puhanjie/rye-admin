@@ -11,7 +11,7 @@ body,
   font-feature-settings: 'tnum', 'tnum';
 }
 
-.scrollbar {
+.scrollbar-light {
   overflow: auto;
 
   &::-webkit-scrollbar {
@@ -27,6 +27,27 @@ body,
 
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.06);
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
+  }
+}
+
+.scrollbar-dark {
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: hsla(0, 0%, 100%, 0.2);
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: hsla(0, 0%, 100%, 0.15);
     border-radius: 3px;
     box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
   }
