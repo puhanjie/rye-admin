@@ -1,11 +1,9 @@
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 import { getToken } from '@/utils/auth';
 import { getDefaultPath } from '@/utils/route';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, matchRoutes, useLocation } from 'react-router-dom';
-
-// TODO: run dev模式下保存该文件会导致控制台报错，由该Auth组件造成，待修复
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +14,6 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
   const language = i18n.language;
   const token = getToken();
   const { pathname } = useLocation();
-  // TODO: 由于此处使用了routeConfig，在路由配置文件中又使用了该Auth组件，造成循环调用导致vite热更新报错，待处理
   const routeMatch = matchRoutes(routeConfig, pathname);
   const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
 

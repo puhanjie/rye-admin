@@ -3,7 +3,6 @@ declare type RouteConfig = {
   name?: string;
   component?: React.FC;
   meta?: {
-    auth?: boolean;
     icon?: React.ReactNode;
     access?: string;
   };

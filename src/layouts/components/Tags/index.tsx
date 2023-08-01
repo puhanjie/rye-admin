@@ -3,7 +3,7 @@ import { matchRoutes, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
 import { useEffect, useRef, useState } from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 import { useTranslation } from 'react-i18next';
 
 type TagData = {

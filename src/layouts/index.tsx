@@ -1,6 +1,6 @@
 import { Layout, Menu, theme } from 'antd';
 import styles from './index.module.less';
-import { routeConfig } from '../router';
+import routeConfig from '../router';
 import { Outlet, matchRoutes, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';

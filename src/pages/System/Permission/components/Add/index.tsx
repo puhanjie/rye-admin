@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
 import { addPermission, getPermissions } from '@/services/permission';
 import { getMenuTree } from '@/utils/general';
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {

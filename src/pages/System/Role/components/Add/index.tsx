@@ -1,4 +1,4 @@
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 import { addRole, getRoles } from '@/services/role';
 import { getPermissionTreeData } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
 import { editPermission, getPermissions } from '@/services/permission';
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 import { getMenuTree } from '@/utils/general';
 import AuthWrapper from '@/components/AuthWrapper';
 

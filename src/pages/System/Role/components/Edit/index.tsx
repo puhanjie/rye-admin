@@ -1,4 +1,4 @@
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 import { editRole, getRoles } from '@/services/role';
 import { getPermissionTreeData } from '@/utils/general';
 import { Form, Input, Modal, TreeSelect, message } from 'antd';

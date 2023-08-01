@@ -10,7 +10,7 @@ import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
 import { getMenuTree } from '@/utils/general';
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 
 type QueryParams = {
   name?: string;

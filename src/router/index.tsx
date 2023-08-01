@@ -1,33 +1,21 @@
 import { AppstoreOutlined, DashboardOutlined, UserOutlined } from '@ant-design/icons';
-import { type RouteObject, createBrowserRouter, Outlet } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
-import RouteGuard from '@/components/RouteGuard';
-import Loading from '@/components/Loading';
+import { lazy } from 'react';
 
-export const routeConfig: RouteConfig[] = [
+const routeConfig: RouteConfig[] = [
   {
     path: '*',
     name: 'not-found',
-    component: lazy(() => import('@/pages/Exception/404')),
-    meta: {
-      auth: true
-    }
+    component: lazy(() => import('@/pages/Exception/404'))
   },
   {
     path: '/login',
     name: 'login',
-    component: lazy(() => import('@/pages/Login')),
-    meta: {
-      auth: true
-    }
+    component: lazy(() => import('@/pages/Login'))
   },
   {
     path: '/',
     name: 'index',
     component: lazy(() => import('@/layouts')),
-    meta: {
-      auth: true
-    },
     children: [
       {
         path: 'dashboard',
@@ -108,37 +96,4 @@ export const routeConfig: RouteConfig[] = [
   }
 ];
 
-// 生成路由
-function renderRoutes(routes: RouteConfig[]): RouteObject[] {
-  const routeMap = routes.map((item) => {
-    const route: RouteObject = {};
-    route.path = item.path;
-    if (item?.component) {
-      // 有认证标识的路由组件上包裹高阶组件<RouteGuard />做登陆认证校验
-      route.element = item?.meta?.auth ? (
-        <RouteGuard>
-          <Suspense fallback={<Loading />}>
-            <item.component />
-          </Suspense>
-        </RouteGuard>
-      ) : (
-        <Suspense fallback={<Loading />}>
-          <item.component />
-        </Suspense>
-      );
-    } else {
-      // 无component配置项的路由为菜单分组，用<Outlet />代替
-      route.element = <Outlet />;
-    }
-    if (item?.children) {
-      route.children = renderRoutes(item.children);
-    }
-    return route;
-  });
-  return routeMap;
-}
-
-const routes = renderRoutes(routeConfig);
-const router = createBrowserRouter(routes);
-
-export default router;
+export default routeConfig;

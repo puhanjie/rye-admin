@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './index.module.less';
 import { Breadcrumb } from 'antd';
 import { matchRoutes, useLocation } from 'react-router-dom';
-import { routeConfig } from '@/router';
+import routeConfig from '@/router';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
