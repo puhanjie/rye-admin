@@ -38,7 +38,7 @@ export async function getDictionaryList(params?: API.DictionaryPageQuery) {
 
 export async function getDictionarys(params: { dictName: string }) {
   const res = await request<API.DictionaryInfo[]>({
-    url: '/api/v1/dictionary',
+    url: '/api/v1/dictionary/items',
     method: 'get',
     params
   });

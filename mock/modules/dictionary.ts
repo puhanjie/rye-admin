@@ -57,6 +57,6 @@ Mock.mock(url('/api/v1/dictionary/list'), 'get', () => {
   return success<API.PageInfo<API.DictionaryInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/dictionary?dictName=user_status'), 'get', () => {
+Mock.mock(url('/api/v1/dictionary/items?dictName=user_status'), 'get', () => {
   return success<API.DictionaryInfo[]>(dictionaryData);
 });
