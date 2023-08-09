@@ -1,7 +1,7 @@
 import { Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
-import { getPermissions, removePermission } from '@/services/permission';
+import { getPermissionList, removePermission } from '@/services/permission';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
@@ -25,7 +25,7 @@ const Delete: React.FC<Props> = ({ selectId, setPermissionData }) => {
       return;
     }
     // 删除权限成功后重新获取权限列表数据
-    const queryResult = await getPermissions();
+    const queryResult = await getPermissionList();
     if (queryResult.data) {
       const data: API.PageInfo<TablePermissionInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

@@ -2,7 +2,7 @@ import { Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
-import { getDictionarys, removeDictionary } from '@/services/dictionary';
+import { getDictionaryList, removeDictionary } from '@/services/dictionary';
 
 type Props = {
   selectId: number;
@@ -25,7 +25,7 @@ const Delete: React.FC<Props> = ({ selectId, setDictionaryData }) => {
       return;
     }
     // 删除权限成功后重新获取权限列表数据
-    const queryResult = await getDictionarys();
+    const queryResult = await getDictionaryList();
     if (queryResult.data) {
       const data: API.PageInfo<TableDictionaryInfo[]> = {
         records: queryResult.data.records.map((item) => {

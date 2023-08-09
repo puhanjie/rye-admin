@@ -122,6 +122,8 @@ export default {
   'pages.dictionary.itemValue': 'Dictionary value',
   'pages.dictionary.itemText': 'Dictionary value text',
   'pages.dictionary.description': 'Description',
+  'pages.dictionary.createTime': 'Create time',
+  'pages.dictionary.updateTime': 'Update time',
   'pages.dictionary.action': 'Action',
   'pages.dictionary.addModal.title': 'Add dictionary',
   'pages.dictionary.editModal.title': 'Edit dictionary',

@@ -44,9 +44,9 @@ export async function getInfo() {
   return res;
 }
 
-export async function getUsers(params?: API.UserPageQuery) {
+export async function getUserList(params?: API.UserPageQuery) {
   const res = await request<API.PageInfo<API.UserInfo[]>>({
-    url: '/api/v1/user',
+    url: '/api/v1/user/list',
     method: 'get',
     params
   });

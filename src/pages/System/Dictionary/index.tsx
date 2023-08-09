@@ -1,6 +1,6 @@
 import PageContainer from '@/components/PageContainer';
 import Query from '@/components/Query';
-import { getDictionarys } from '@/services/dictionary';
+import { getDictionaryList } from '@/services/dictionary';
 import { Divider, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
@@ -27,7 +27,7 @@ const Dictionary: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const dictionaryDataRes = await getDictionarys();
+      const dictionaryDataRes = await getDictionaryList();
       if (!dictionaryDataRes.data) {
         return;
       }
@@ -70,6 +70,16 @@ const Dictionary: React.FC = () => {
       align: 'center'
     },
     {
+      title: t('pages.dictionary.createTime'),
+      dataIndex: 'createTime',
+      align: 'center'
+    },
+    {
+      title: t('pages.dictionary.updateTime'),
+      dataIndex: 'updateTime',
+      align: 'center'
+    },
+    {
       title: t('pages.dictionary.action'),
       dataIndex: 'action',
       align: 'center',
@@ -100,7 +110,7 @@ const Dictionary: React.FC = () => {
   ];
 
   const queryData = async (params?: API.DictionaryPageQuery) => {
-    const res = await getDictionarys(params);
+    const res = await getDictionaryList(params);
     if (res.data) {
       const data: API.PageInfo<TableDictionaryInfo[]> = {
         records: res.data.records.map((item) => ({ key: item.id, ...item })),

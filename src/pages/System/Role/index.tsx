@@ -3,8 +3,8 @@ import Query from '@/components/Query';
 import { Divider, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { getRoles } from '@/services/role';
-import { getPermissionList } from '@/services/permission';
+import { getRoleList } from '@/services/role';
+import { getPermissions } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
 import BatchDelete from './components/BatchDelete';
@@ -29,8 +29,8 @@ const Role: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const roleDataRes = await getRoles();
-      const permissionDataRes = await getPermissionList();
+      const roleDataRes = await getRoleList();
+      const permissionDataRes = await getPermissions();
       if (!roleDataRes.data || !permissionDataRes.data) {
         return;
       }
@@ -102,7 +102,7 @@ const Role: React.FC = () => {
   ];
 
   const queryData = async (params?: API.PermissionPageQuery) => {
-    const res = await getRoles(params);
+    const res = await getRoleList(params);
     if (res.data) {
       const data: API.PageInfo<TableRoleInfo[]> = {
         records: res.data.records.map((item) => ({ key: item.id, ...item })),

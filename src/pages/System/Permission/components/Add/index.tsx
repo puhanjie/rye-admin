@@ -3,7 +3,7 @@ import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
-import { addPermission, getPermissions } from '@/services/permission';
+import { addPermission, getPermissionList } from '@/services/permission';
 import { getMenuTree } from '@/utils/general';
 import routeConfig from '@/router';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -31,7 +31,7 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
       return;
     }
     // 新增权限成功后重新获取权限列表数据
-    const queryResult = await getPermissions();
+    const queryResult = await getPermissionList();
     if (queryResult.data) {
       const data: API.PageInfo<TablePermissionInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

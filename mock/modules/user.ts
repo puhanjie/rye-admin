@@ -108,7 +108,7 @@ Mock.mock(url('/api/v1/user/info'), 'get', () => {
   return fail('查询失败');
 });
 
-Mock.mock(url('/api/v1/user'), 'get', () => {
+Mock.mock(url('/api/v1/user/list'), 'get', () => {
   const userList = userData.map((item) => {
     return {
       id: item.id,

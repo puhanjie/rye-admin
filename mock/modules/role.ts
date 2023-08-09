@@ -49,7 +49,7 @@ Mock.mock(url('/api/v1/role'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/role'), 'get', () => {
+Mock.mock(url('/api/v1/role/list'), 'get', () => {
   const pageList: API.PageInfo<API.RoleInfo[]> = {
     records: roleData,
     total: roleData.length,
@@ -60,6 +60,6 @@ Mock.mock(url('/api/v1/role'), 'get', () => {
   return success<API.PageInfo<API.RoleInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/role/list'), 'get', () => {
+Mock.mock(url('/api/v1/role'), 'get', () => {
   return success<API.RoleInfo[]>(roleData);
 });

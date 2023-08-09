@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
-import { addDictionary, getDictionarys } from '@/services/dictionary';
+import { addDictionary, getDictionaryList } from '@/services/dictionary';
 
 type Props = {
   setDictionaryData: React.Dispatch<
@@ -28,7 +28,7 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
       return;
     }
     // 新增字典成功后重新获取字典列表数据
-    const queryResult = await getDictionarys();
+    const queryResult = await getDictionaryList();
     if (queryResult.data) {
       const data: API.PageInfo<TableDictionaryInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

@@ -3,7 +3,7 @@ import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
-import { getDictionarys, removeDictionary } from '@/services/dictionary';
+import { getDictionaryList, removeDictionary } from '@/services/dictionary';
 
 type Props = {
   selectData: TableDictionaryInfo[];
@@ -27,7 +27,7 @@ const BatchDelete: React.FC<Props> = ({ selectData, setDictionaryData }) => {
       return;
     }
     // 删除成功后重新获取字典列表数据
-    const queryResult = await getDictionarys();
+    const queryResult = await getDictionaryList();
     if (queryResult.data) {
       const data: API.PageInfo<TableDictionaryInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

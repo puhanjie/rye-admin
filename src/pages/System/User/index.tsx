@@ -1,10 +1,10 @@
 import { Divider, Input, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { getUsers } from '@/services/user';
+import { getUserList } from '@/services/user';
 import Query from '@/components/Query';
 import PageContainer from '@/components/PageContainer';
-import { getRoleList } from '@/services/role';
+import { getRoles } from '@/services/role';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
 import ResetPassword from './components/ResetPassword';
@@ -12,7 +12,7 @@ import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
 import type { Key } from 'antd/es/table/interface';
-import { getDictionaryList } from '@/services/dictionary';
+import { getDictionarys } from '@/services/dictionary';
 import { userStatusTagColor } from '@/config/statusTagConfig';
 
 type QueryParams = {
@@ -36,9 +36,9 @@ const User: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const userDataRes = await getUsers();
-      const roleDataRes = await getRoleList();
-      const userStatusDataRes = await getDictionaryList({ dictName: 'user_status' });
+      const userDataRes = await getUserList();
+      const roleDataRes = await getRoles();
+      const userStatusDataRes = await getDictionarys({ dictName: 'user_status' });
       if (!userDataRes.data || !roleDataRes.data || !userStatusDataRes.data) {
         return;
       }
@@ -167,7 +167,7 @@ const User: React.FC = () => {
   };
 
   const queryData = async (params?: API.UserPageQuery) => {
-    const res = await getUsers(params);
+    const res = await getUserList(params);
     if (res.data) {
       const data: API.PageInfo<TableUserInfo[]> = {
         records: res.data.records.map((item) => ({ key: item.id, ...item })),

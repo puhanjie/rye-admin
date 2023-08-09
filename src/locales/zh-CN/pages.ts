@@ -122,6 +122,8 @@ export default {
   'pages.dictionary.itemValue': '字典值',
   'pages.dictionary.itemText': '字典值文本',
   'pages.dictionary.description': '描述',
+  'pages.dictionary.createTime': '创建时间',
+  'pages.dictionary.updateTime': '更新时间',
   'pages.dictionary.action': '操作',
   'pages.dictionary.addModal.title': '新增字典',
   'pages.dictionary.editModal.title': '编辑字典',

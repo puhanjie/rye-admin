@@ -208,7 +208,7 @@ Mock.mock(url('/api/v1/permission'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/permission'), 'get', () => {
+Mock.mock(url('/api/v1/permission/list'), 'get', () => {
   const pageList: API.PageInfo<API.PermissionInfo[]> = {
     records: permissionData,
     total: permissionData.length,
@@ -219,6 +219,6 @@ Mock.mock(url('/api/v1/permission'), 'get', () => {
   return success<API.PageInfo<API.PermissionInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/permission/list'), 'get', () => {
+Mock.mock(url('/api/v1/permission'), 'get', () => {
   return success<API.PermissionInfo[]>(permissionData);
 });

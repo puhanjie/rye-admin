@@ -1,5 +1,5 @@
 import routeConfig from '@/router';
-import { editRole, getRoles } from '@/services/role';
+import { editRole, getRoleList } from '@/services/role';
 import { getPermissionTreeData } from '@/utils/general';
 import { Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
@@ -59,7 +59,7 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
       return;
     }
     // 编辑角色成功后重新获取角色列表数据
-    const queryResult = await getRoles();
+    const queryResult = await getRoleList();
     if (queryResult.data) {
       const data: API.PageInfo<TableRoleInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

@@ -2,7 +2,7 @@ import { Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
-import { editPermission, getPermissions } from '@/services/permission';
+import { editPermission, getPermissionList } from '@/services/permission';
 import routeConfig from '@/router';
 import { getMenuTree } from '@/utils/general';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -38,7 +38,7 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
       return;
     }
     // 编辑权限成功后重新获取权限列表数据
-    const queryResult = await getPermissions();
+    const queryResult = await getPermissionList();
     if (queryResult.data) {
       const data: API.PageInfo<TablePermissionInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

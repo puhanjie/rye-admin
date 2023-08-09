@@ -1,5 +1,5 @@
 import routeConfig from '@/router';
-import { addRole, getRoles } from '@/services/role';
+import { addRole, getRoleList } from '@/services/role';
 import { getPermissionTreeData } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
@@ -37,7 +37,7 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
       return;
     }
     // 新增角色成功后重新获取角色列表数据
-    const queryResult = await getRoles();
+    const queryResult = await getRoleList();
     if (queryResult.data) {
       const data: API.PageInfo<TableRoleInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

@@ -130,6 +130,8 @@ declare namespace API {
     itemValue: string;
     itemText: string;
     description: string;
+    createTime: string;
+    updateTime: string;
   };
 
   type PageInfo<T> = {

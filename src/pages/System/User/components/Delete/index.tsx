@@ -1,7 +1,7 @@
 import { Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableUserInfo } from '../..';
-import { getUsers, removeUser } from '@/services/user';
+import { getUserList, removeUser } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
@@ -23,7 +23,7 @@ const Delete: React.FC<Props> = ({ selectId, setUserData }) => {
       return;
     }
     // 删除用户成功后重新获取用户列表数据
-    const queryResult = await getUsers();
+    const queryResult = await getUserList();
     if (queryResult.data) {
       const data: API.PageInfo<TableUserInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

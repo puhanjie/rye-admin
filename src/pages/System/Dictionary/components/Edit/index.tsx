@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
-import { editDictionary, getDictionarys } from '@/services/dictionary';
+import { editDictionary, getDictionaryList } from '@/services/dictionary';
 
 type EditDictionaryInfo = {
   id?: number;
@@ -37,7 +37,7 @@ const Edit: React.FC<Props> = ({ dictionaryData, setDictionaryData }) => {
       return;
     }
     // 编辑字典成功后重新获取字典列表数据
-    const queryResult = await getDictionarys();
+    const queryResult = await getDictionaryList();
     if (queryResult.data) {
       const data: API.PageInfo<TableDictionaryInfo[]> = {
         records: queryResult.data.records.map((item) => {

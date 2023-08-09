@@ -1,4 +1,4 @@
-import { addUser, getUsers } from '@/services/user';
+import { addUser, getUserList } from '@/services/user';
 import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, message } from 'antd';
@@ -39,7 +39,7 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
       return;
     }
     // 新增用户成功后重新获取用户列表数据
-    const queryResult = await getUsers();
+    const queryResult = await getUserList();
     if (queryResult.data) {
       const data: API.PageInfo<TableUserInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),

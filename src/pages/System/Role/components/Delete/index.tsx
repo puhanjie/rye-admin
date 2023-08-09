@@ -1,7 +1,7 @@
 import { Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableRoleInfo } from '../..';
-import { getRoles, removeRole } from '@/services/role';
+import { getRoleList, removeRole } from '@/services/role';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
@@ -23,7 +23,7 @@ const Delete: React.FC<Props> = ({ selectId, setRoleData }) => {
       return;
     }
     // 删除成功后重新获取角色列表数据
-    const queryResult = await getRoles();
+    const queryResult = await getRoleList();
     if (queryResult.data) {
       const data: API.PageInfo<TableRoleInfo[]> = {
         records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
