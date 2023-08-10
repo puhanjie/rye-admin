@@ -29,7 +29,7 @@ const roleData = [
         info: '查看'
       },
       {
-        id: 19,
+        id: 24,
         name: 'settings:view',
         info: '查看'
       }

@@ -187,7 +187,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 25,
+    id: 24,
     name: 'settings:view',
     info: '查看',
     menu: 'settings',

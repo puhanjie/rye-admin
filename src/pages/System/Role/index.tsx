@@ -22,7 +22,7 @@ export type TableRoleInfo = {
 
 const Role: React.FC = () => {
   const { t } = useTranslation();
-  const [roleData, setTableData] = useState<API.PageInfo<TableRoleInfo[]>>();
+  const [roleData, setRoleData] = useState<API.PageInfo<TableRoleInfo[]>>();
   const [permissionData, setPermissionData] = useState<API.PermissionInfo[]>([]);
   const [selectData, setSelectData] = useState<TableRoleInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const Role: React.FC = () => {
         current: roleDataRes.data.current,
         pages: roleDataRes.data.pages
       };
-      setTableData(roleData);
+      setRoleData(roleData);
       setPermissionData(permissionDataRes.data);
       setLoading(false);
     })();
@@ -80,8 +80,8 @@ const Role: React.FC = () => {
         const data = { id, name, info, permissions, permissionList: permissionData };
         return (
           <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
-            <Edit roleData={data} setRoleData={setTableData} />
-            <Delete selectId={id} setRoleData={setTableData} />
+            <Edit roleData={data} setRoleData={setRoleData} />
+            <Delete selectId={id} setRoleData={setRoleData} />
           </Space>
         );
       }
@@ -111,7 +111,7 @@ const Role: React.FC = () => {
         current: res.data.current,
         pages: res.data.pages
       };
-      setTableData(data);
+      setRoleData(data);
     }
   };
 
@@ -128,8 +128,8 @@ const Role: React.FC = () => {
     <PageContainer>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add permissionData={permissionData} setRoleData={setTableData} />
-        <BatchDelete selectData={selectData} setRoleData={setTableData} />
+        <Add permissionData={permissionData} setRoleData={setRoleData} />
+        <BatchDelete selectData={selectData} setRoleData={setRoleData} />
       </Space>
       <Table
         bordered
