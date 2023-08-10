@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableUserInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
+import MD5 from 'crypto-js/md5';
 
 type Props = {
   roleData: API.RoleInfo[];
@@ -25,7 +26,7 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
     const roles = formData.roles?.map((item) => Number(item));
     const user: API.UserParams = {
       username: formData.username,
-      password: formData.password,
+      password: formData.password && MD5(formData.password).toString(),
       phone: formData.phone,
       avatar: formData.avatar,
       email: formData.email,

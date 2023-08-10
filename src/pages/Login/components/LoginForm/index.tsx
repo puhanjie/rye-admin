@@ -4,6 +4,7 @@ import { setToken } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import MD5 from 'crypto-js/md5';
 
 type Props = {
   loginType: 'account' | 'phone';
@@ -18,7 +19,7 @@ const LoginForm: React.FC<Props> = ({ loginType }) => {
       loginType === 'account'
         ? {
             username: values.username,
-            password: values.password,
+            password: values.password && MD5(values.password).toString(),
             type: loginType
           }
         : {
