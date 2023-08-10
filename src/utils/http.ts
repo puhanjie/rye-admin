@@ -32,7 +32,7 @@ http.interceptors.response.use(
 
     // 相应状态码不等于0代表错误
     if (res.code !== 0) {
-      message.error(`${res.code}|${res.message}`);
+      message.error(`${res.code} | ${res.message}`);
       return Promise.reject(res);
     }
     return res;
