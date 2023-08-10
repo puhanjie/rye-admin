@@ -4,6 +4,7 @@ import { updatePassword } from '@/services/user';
 import Container from '../Container';
 import { useAppSelector } from '@/store';
 import { useTranslation } from 'react-i18next';
+import MD5 from 'crypto-js/md5';
 
 type PasswordForm = {
   userId: number;
@@ -17,7 +18,6 @@ const Password: React.FC = () => {
   const { id } = useAppSelector((state) => state.user);
 
   const handleFinish = async (values: PasswordForm) => {
-    console.log(values);
     const { userId, currentPassword, newPassword, confirmPassword } = values;
     if (newPassword !== confirmPassword) {
       message.error(t('pages.settings.updatePassword.tip'));
@@ -27,7 +27,7 @@ const Password: React.FC = () => {
       type: 2,
       userId,
       currentPassword: currentPassword,
-      newPassword: newPassword
+      newPassword: newPassword && MD5(newPassword).toString()
     });
     if (res?.data && res?.data <= 0) {
       message.error(t('pages.settings.updatePassword.tip.fail'));

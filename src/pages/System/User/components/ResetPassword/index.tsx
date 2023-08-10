@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { updatePassword } from '@/services/user';
 import { ReloadOutlined } from '@ant-design/icons';
 import AuthWrapper from '@/components/AuthWrapper';
+import MD5 from 'crypto-js/md5';
 
 type Props = {
   selectData: TableUserInfo[];
@@ -35,7 +36,7 @@ const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
     // 重置密码
     const res = await updatePassword({
       userId: formData.userId,
-      newPassword: formData.newPassword
+      newPassword: formData.newPassword && MD5(formData.newPassword).toString()
     });
     if (res.data && res.data <= 0) {
       // 密码重置失败
