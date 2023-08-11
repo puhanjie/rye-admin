@@ -96,6 +96,7 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
           <Form.Item label={t('pages.permission.menu')} name="menu">
             <TreeSelect
               treeData={getMenuTree(menuData)}
+              allowClear
               treeDefaultExpandedKeys={permissionData.menu ? [permissionData.menu] : []}
               showCheckedStrategy="SHOW_CHILD"
               placeholder={t('pages.permission.modal.menu.placeholder')}
