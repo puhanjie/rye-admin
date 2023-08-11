@@ -5,8 +5,8 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const PageContainer: React.FC<Props> = ({ children, className }) => {
+const PageContent: React.FC<Props> = ({ children, className }) => {
   return <div className={`${styles['container']} ${className}`}>{children}</div>;
 };
 
-export default PageContainer;
+export default PageContent;

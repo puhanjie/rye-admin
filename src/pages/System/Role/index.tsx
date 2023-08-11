@@ -1,4 +1,4 @@
-import PageContainer from '@/components/PageContainer';
+import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
 import { Divider, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -10,6 +10,7 @@ import Add from './components/Add';
 import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
+import PageWrapper from '@/components/PageWrapper';
 
 type QueryParams = {
   name?: string;
@@ -72,6 +73,7 @@ const Role: React.FC = () => {
       title: t('pages.role.action'),
       dataIndex: 'action',
       align: 'center',
+      fixed: 'right',
       render: (_text, record) => {
         // 处理permissions对象数组，只保留权限id
         const permissions =
@@ -125,37 +127,39 @@ const Role: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add permissionData={permissionData} setRoleData={setRoleData} />
-        <BatchDelete selectData={selectData} setRoleData={setRoleData} />
-      </Space>
-      <Table
-        bordered
-        columns={tableColumns}
-        dataSource={roleData?.records}
-        loading={loading}
-        size="small"
-        rowSelection={{
-          type: 'checkbox',
-          onChange: (_selectedRowKeys, selectedRows) => {
-            setSelectData(selectedRows);
-          }
-        }}
-        scroll={{ x: 'max-content' }}
-        pagination={{
-          defaultPageSize: 10,
-          total: roleData?.total,
-          showSizeChanger: true,
-          showTotal: (total, range) =>
-            t('common.table.footer', { start: range[0], end: range[1], total: total }),
-          onChange: (page, pageSize) => {
-            queryData({ pageNum: page, pageSize: pageSize });
-          }
-        }}
-      />
-    </PageContainer>
+      <PageContent>
+        <Space style={{ width: '100%', marginBottom: '10px' }}>
+          <Add permissionData={permissionData} setRoleData={setRoleData} />
+          <BatchDelete selectData={selectData} setRoleData={setRoleData} />
+        </Space>
+        <Table
+          bordered
+          columns={tableColumns}
+          dataSource={roleData?.records}
+          loading={loading}
+          size="small"
+          rowSelection={{
+            type: 'checkbox',
+            onChange: (_selectedRowKeys, selectedRows) => {
+              setSelectData(selectedRows);
+            }
+          }}
+          scroll={{ x: 'max-content' }}
+          pagination={{
+            defaultPageSize: 10,
+            total: roleData?.total,
+            showSizeChanger: true,
+            showTotal: (total, range) =>
+              t('common.table.footer', { start: range[0], end: range[1], total: total }),
+            onChange: (page, pageSize) => {
+              queryData({ pageNum: page, pageSize: pageSize });
+            }
+          }}
+        />
+      </PageContent>
+    </PageWrapper>
   );
 };
 

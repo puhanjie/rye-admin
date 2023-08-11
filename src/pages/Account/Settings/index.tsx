@@ -1,9 +1,9 @@
 import { Tabs } from 'antd';
 import Info from './components/Info';
 import Password from './components/Password';
-import PageContainer from '@/components/PageContainer';
 import styles from './index.module.less';
 import { useTranslation } from 'react-i18next';
+import PageWrapper from '@/components/PageWrapper';
 
 const Setting: React.FC = () => {
   const { t } = useTranslation();
@@ -20,9 +20,9 @@ const Setting: React.FC = () => {
     }
   ];
   return (
-    <PageContainer className={styles['container']}>
+    <PageWrapper className={styles['container']}>
       <Tabs items={tabs} tabPosition="left" className={styles['tabs']} />
-    </PageContainer>
+    </PageWrapper>
   );
 };
 

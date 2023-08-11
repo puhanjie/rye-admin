@@ -3,7 +3,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getUserList } from '@/services/user';
 import Query from '@/components/Query';
-import PageContainer from '@/components/PageContainer';
+import PageContent from '@/components/PageContent';
 import { getRoles } from '@/services/role';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
@@ -14,6 +14,7 @@ import Delete from './components/Delete';
 import type { Key } from 'antd/es/table/interface';
 import { getDictionarys } from '@/services/dictionary';
 import { userStatusTagColor } from '@/config/statusTagConfig';
+import PageWrapper from '@/components/PageWrapper';
 
 type QueryParams = {
   username?: string;
@@ -117,6 +118,7 @@ const User: React.FC = () => {
       title: t('pages.user.action'),
       dataIndex: 'action',
       align: 'center',
+      fixed: 'right',
       render: (_text, record) => {
         // 处理roles对象数组，只保留角色id
         const roles = record?.roles && record.roles.map((item) => item.id);
@@ -190,40 +192,42 @@ const User: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />
-        <ResetPassword selectData={selectData} clearSelectData={clearSelectData} />
-        <BatchDelete selectData={selectData} setUserData={setUserData} />
-      </Space>
-      <Table
-        bordered
-        columns={tableColumns}
-        dataSource={userData?.records}
-        loading={loading}
-        size="small"
-        rowSelection={{
-          type: 'checkbox',
-          selectedRowKeys: selectKeys,
-          onChange: (selectedRowKeys, selectedRows) => {
-            setSelectKeys(selectedRowKeys);
-            setSelectData(selectedRows);
-          }
-        }}
-        scroll={{ x: 'max-content' }}
-        pagination={{
-          defaultPageSize: 10,
-          total: userData?.total,
-          showSizeChanger: true,
-          showTotal: (total, range) =>
-            t('common.table.footer', { start: range[0], end: range[1], total: total }),
-          onChange: (page, pageSize) => {
-            queryData({ pageNum: page, pageSize: pageSize });
-          }
-        }}
-      />
-    </PageContainer>
+      <PageContent>
+        <Space style={{ width: '100%', marginBottom: '10px' }}>
+          <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />
+          <ResetPassword selectData={selectData} clearSelectData={clearSelectData} />
+          <BatchDelete selectData={selectData} setUserData={setUserData} />
+        </Space>
+        <Table
+          bordered
+          columns={tableColumns}
+          dataSource={userData?.records}
+          loading={loading}
+          size="small"
+          rowSelection={{
+            type: 'checkbox',
+            selectedRowKeys: selectKeys,
+            onChange: (selectedRowKeys, selectedRows) => {
+              setSelectKeys(selectedRowKeys);
+              setSelectData(selectedRows);
+            }
+          }}
+          scroll={{ x: 'max-content' }}
+          pagination={{
+            defaultPageSize: 10,
+            total: userData?.total,
+            showSizeChanger: true,
+            showTotal: (total, range) =>
+              t('common.table.footer', { start: range[0], end: range[1], total: total }),
+            onChange: (page, pageSize) => {
+              queryData({ pageNum: page, pageSize: pageSize });
+            }
+          }}
+        />
+      </PageContent>
+    </PageWrapper>
   );
 };
 

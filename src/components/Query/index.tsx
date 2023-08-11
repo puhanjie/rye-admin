@@ -1,6 +1,7 @@
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, Form, Row, Space } from 'antd';
+import { Button, Col, Form, Row, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
+import styles from './index.module.less';
 
 type Props = {
   className?: string;
@@ -27,7 +28,7 @@ const Query: React.FC<Props> = ({ className, queryFields, onQuery, onReset }) =>
   };
 
   return (
-    <div className={className}>
+    <div className={`${styles['container']} ${className}`}>
       <Form
         name="query"
         layout="inline"
@@ -51,7 +52,6 @@ const Query: React.FC<Props> = ({ className, queryFields, onQuery, onReset }) =>
           </Col>
         </Row>
       </Form>
-      <Divider style={{ margin: '10px 0' }} />
     </div>
   );
 };

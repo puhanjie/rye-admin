@@ -1,4 +1,4 @@
-import PageContainer from '@/components/PageContainer';
+import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
 import { Divider, Input, Space, Table, TreeSelect } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -11,6 +11,7 @@ import Edit from './components/Edit';
 import Delete from './components/Delete';
 import { getMenuTree } from '@/utils/general';
 import routeConfig from '@/router';
+import PageWrapper from '@/components/PageWrapper';
 
 type QueryParams = {
   name?: string;
@@ -78,6 +79,7 @@ const Permission: React.FC = () => {
       title: t('pages.permission.action'),
       dataIndex: 'action',
       align: 'center',
+      fixed: 'right',
       render: (_text, record) => {
         const { id, name, info, menu } = record;
         const data = { id, name, info, menu };
@@ -108,6 +110,7 @@ const Permission: React.FC = () => {
       render: (
         <TreeSelect
           treeData={getMenuTree(menuData)}
+          allowClear
           showCheckedStrategy="SHOW_CHILD"
           placeholder={t('pages.permission.queryForm.menu.placeholder')}
         />
@@ -139,37 +142,39 @@ const Permission: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add setPermissionData={setPermissionData} />
-        <BatchDelete selectData={selectData} setPermissionData={setPermissionData} />
-      </Space>
-      <Table
-        bordered
-        columns={tableColumns}
-        dataSource={permissionData?.records}
-        loading={loading}
-        size="small"
-        rowSelection={{
-          type: 'checkbox',
-          onChange: (_selectedRowKeys, selectedRows) => {
-            setSelectData(selectedRows);
-          }
-        }}
-        scroll={{ x: 'max-content' }}
-        pagination={{
-          defaultPageSize: 10,
-          total: permissionData?.total,
-          showSizeChanger: true,
-          showTotal: (total, range) =>
-            t('common.table.footer', { start: range[0], end: range[1], total: total }),
-          onChange: (page, pageSize) => {
-            queryData({ pageNum: page, pageSize: pageSize });
-          }
-        }}
-      />
-    </PageContainer>
+      <PageContent>
+        <Space style={{ width: '100%', marginBottom: '10px' }}>
+          <Add setPermissionData={setPermissionData} />
+          <BatchDelete selectData={selectData} setPermissionData={setPermissionData} />
+        </Space>
+        <Table
+          bordered
+          columns={tableColumns}
+          dataSource={permissionData?.records}
+          loading={loading}
+          size="small"
+          rowSelection={{
+            type: 'checkbox',
+            onChange: (_selectedRowKeys, selectedRows) => {
+              setSelectData(selectedRows);
+            }
+          }}
+          scroll={{ x: 'max-content' }}
+          pagination={{
+            defaultPageSize: 10,
+            total: permissionData?.total,
+            showSizeChanger: true,
+            showTotal: (total, range) =>
+              t('common.table.footer', { start: range[0], end: range[1], total: total }),
+            onChange: (page, pageSize) => {
+              queryData({ pageNum: page, pageSize: pageSize });
+            }
+          }}
+        />
+      </PageContent>
+    </PageWrapper>
   );
 };
 

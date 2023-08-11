@@ -1,4 +1,4 @@
-import PageContainer from '@/components/PageContainer';
+import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
 import { getDictionaryList } from '@/services/dictionary';
 import { Divider, Input, Space, Table } from 'antd';
@@ -9,6 +9,7 @@ import Add from './components/Add';
 import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
+import PageWrapper from '@/components/PageWrapper';
 
 type QueryParams = {
   dictName?: string;
@@ -83,6 +84,7 @@ const Dictionary: React.FC = () => {
       title: t('pages.dictionary.action'),
       dataIndex: 'action',
       align: 'center',
+      fixed: 'right',
       render: (_text, record) => {
         const { id, dictName, dictText, itemValue, itemText, description } = record;
         const data = { id, dictName, dictText, itemValue, itemText, description };
@@ -133,37 +135,39 @@ const Dictionary: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Space style={{ width: '100%', marginBottom: '10px' }}>
-        <Add setDictionaryData={setDictionaryData} />
-        <BatchDelete selectData={selectData} setDictionaryData={setDictionaryData} />
-      </Space>
-      <Table
-        bordered
-        columns={tableColumns}
-        dataSource={dictionaryData?.records}
-        loading={loading}
-        size="small"
-        rowSelection={{
-          type: 'checkbox',
-          onChange: (_selectedRowKeys, selectedRows) => {
-            setSelectData(selectedRows);
-          }
-        }}
-        scroll={{ x: 'max-content' }}
-        pagination={{
-          defaultPageSize: 10,
-          total: dictionaryData?.total,
-          showSizeChanger: true,
-          showTotal: (total, range) =>
-            t('common.table.footer', { start: range[0], end: range[1], total: total }),
-          onChange: (page, pageSize) => {
-            queryData({ pageNum: page, pageSize: pageSize });
-          }
-        }}
-      />
-    </PageContainer>
+      <PageContent>
+        <Space style={{ width: '100%', marginBottom: '10px' }}>
+          <Add setDictionaryData={setDictionaryData} />
+          <BatchDelete selectData={selectData} setDictionaryData={setDictionaryData} />
+        </Space>
+        <Table
+          bordered
+          columns={tableColumns}
+          dataSource={dictionaryData?.records}
+          loading={loading}
+          size="small"
+          rowSelection={{
+            type: 'checkbox',
+            onChange: (_selectedRowKeys, selectedRows) => {
+              setSelectData(selectedRows);
+            }
+          }}
+          scroll={{ x: 'max-content' }}
+          pagination={{
+            defaultPageSize: 10,
+            total: dictionaryData?.total,
+            showSizeChanger: true,
+            showTotal: (total, range) =>
+              t('common.table.footer', { start: range[0], end: range[1], total: total }),
+            onChange: (page, pageSize) => {
+              queryData({ pageNum: page, pageSize: pageSize });
+            }
+          }}
+        />
+      </PageContent>
+    </PageWrapper>
   );
 };
 

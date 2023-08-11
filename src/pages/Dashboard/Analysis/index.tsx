@@ -1,15 +1,16 @@
-import PageContainer from '@/components/PageContainer';
+import PageWrapper from '@/components/PageWrapper';
 import { Result } from 'antd';
+import styles from './index.module.less';
 
 const Analysis: React.FC = () => {
   return (
-    <PageContainer>
+    <PageWrapper className={styles['container']}>
       <Result
         status="success"
         title="Welcome!"
         subTitle="Cloud server configuration takes 1-5 minutes, please wait."
       />
-    </PageContainer>
+    </PageWrapper>
   );
 };
 
