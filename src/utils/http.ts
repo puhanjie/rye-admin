@@ -29,7 +29,6 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => {
     const res = response.data;
-
     // 相应状态码不等于0代表错误
     if (res.code !== 0) {
       message.error(`${res.code} | ${res.message}`);
@@ -39,7 +38,8 @@ http.interceptors.response.use(
   },
   (error) => {
     // 响应异常时处理
-    message.error('Response Error');
+    const res = error.response.data;
+    message.error(`${res.code} | ${res.message}`);
     return Promise.reject(error);
   }
 );
