@@ -41,21 +41,13 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
   };
 
   const handleOk = async () => {
+    const role: API.RoleParams = form.getFieldsValue();
     setIsOpen(false);
-    // 提交到后台处理需要把权限id值转为number类型
-    const formData: API.RoleParams = form.getFieldsValue();
-    const permissions = formData.permissions?.map((item) => Number(item));
-    const role = {
-      id: formData.id,
-      name: formData.name,
-      info: formData.info,
-      permissions
-    };
-    // 编辑角色
+    form.resetFields();
+    role.permissions = role.permissions?.map((item) => Number(item));
     const editResult = await editRole(role);
     if (!editResult.data) {
       message.error(t('pages.role.edit.tip.fail'));
-      form.resetFields();
       return;
     }
     // 编辑角色成功后重新获取角色列表数据
@@ -71,7 +63,6 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
       setRoleData(data);
     }
     message.success(t('pages.role.edit.tip.success'));
-    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -105,13 +96,13 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item label="id" name="id" hidden={true}>
+          <Form.Item label="id" name="id" hidden={true} rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.role.name')} name="name">
+          <Form.Item label={t('pages.role.name')} name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.role.info')} name="info">
+          <Form.Item label={t('pages.role.info')} name="info" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item label={t('pages.role.permission')} name="permissions">

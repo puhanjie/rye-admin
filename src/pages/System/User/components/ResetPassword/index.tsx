@@ -31,8 +31,9 @@ const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
   };
 
   const handleOk = async () => {
-    setIsOpen(false);
     const formData: ResetPasswordForm = form.getFieldsValue();
+    setIsOpen(false);
+    form.resetFields();
     // 重置密码
     const res = await updatePassword({
       userId: formData.userId,
@@ -44,7 +45,6 @@ const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
     }
     message.success(t('pages.user.resetPassword.tip.success'));
     clearSelectData();
-    form.resetFields();
   };
 
   const handleCancel = () => {

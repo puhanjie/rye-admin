@@ -20,20 +20,13 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = async () => {
+    const role: API.RoleParams = form.getFieldsValue();
     setIsOpen(false);
-    // 提交到后台处理需要把权限id值转为number类型
-    const formData: API.RoleParams = form.getFieldsValue();
-    const permissions = formData.permissions?.map((item) => Number(item));
-    const role = {
-      name: formData.name,
-      info: formData.info,
-      permissions
-    };
-    // 新增角色
+    form.resetFields();
+    role.permissions = role.permissions?.map((item) => Number(item));
     const addResult = await addRole(role);
     if (!addResult.data) {
       message.error(t('pages.role.add.tip.fail'));
-      form.resetFields();
       return;
     }
     // 新增角色成功后重新获取角色列表数据
@@ -49,7 +42,6 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
       setRoleData(data);
     }
     message.success(t('pages.role.add.tip.success'));
-    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -77,10 +69,10 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
         }}
       >
         <Form name="addRole" form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-          <Form.Item label={t('pages.role.name')} name="name">
+          <Form.Item label={t('pages.role.name')} name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.role.info')} name="info">
+          <Form.Item label={t('pages.role.info')} name="info" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item label={t('pages.role.permission')} name="permissions">

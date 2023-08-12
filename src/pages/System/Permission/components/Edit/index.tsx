@@ -28,13 +28,12 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = async () => {
-    setIsOpen(false);
-    // 编辑权限
     const permission: API.PermissionParams = form.getFieldsValue();
+    setIsOpen(false);
+    form.resetFields();
     const editResult = await editPermission(permission);
     if (!editResult.data) {
       message.error(t('pages.permission.edit.tip.fail'));
-      form.resetFields();
       return;
     }
     // 编辑权限成功后重新获取权限列表数据
@@ -50,7 +49,6 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
       setPermissionData(data);
     }
     message.success(t('pages.permission.edit.tip.success'));
-    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -84,16 +82,16 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 17 }}
         >
-          <Form.Item label="id" name="id" hidden={true}>
+          <Form.Item label="id" name="id" hidden={true} rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.permission.name')} name="name">
+          <Form.Item label={t('pages.permission.name')} name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.permission.info')} name="info">
+          <Form.Item label={t('pages.permission.info')} name="info" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.permission.menu')} name="menu">
+          <Form.Item label={t('pages.permission.menu')} name="menu" rules={[{ required: true }]}>
             <TreeSelect
               treeData={getMenuTree(menuData)}
               allowClear

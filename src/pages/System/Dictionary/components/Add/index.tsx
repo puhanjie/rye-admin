@@ -18,13 +18,12 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
   const [form] = Form.useForm();
 
   const handleOk = async () => {
-    setIsOpen(false);
-    // 新增字典
     const dictionary: API.DictionaryParams = form.getFieldsValue();
+    setIsOpen(false);
+    form.resetFields();
     const addResult = await addDictionary(dictionary);
     if (!addResult.data) {
       message.error(t('pages.dictionary.add.tip.fail'));
-      form.resetFields();
       return;
     }
     // 新增字典成功后重新获取字典列表数据
@@ -40,7 +39,6 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
       setDictionaryData(data);
     }
     message.success(t('pages.dictionary.add.tip.success'));
-    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -68,16 +66,32 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
         }}
       >
         <Form name="addDictionary" form={form} labelCol={{ span: 7 }} wrapperCol={{ span: 17 }}>
-          <Form.Item label={t('pages.dictionary.dictName')} name="dictName">
+          <Form.Item
+            label={t('pages.dictionary.dictName')}
+            name="dictName"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.dictionary.dictText')} name="dictText">
+          <Form.Item
+            label={t('pages.dictionary.dictText')}
+            name="dictText"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.dictionary.itemValue')} name="itemValue">
+          <Form.Item
+            label={t('pages.dictionary.itemValue')}
+            name="itemValue"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.dictionary.itemText')} name="itemText">
+          <Form.Item
+            label={t('pages.dictionary.itemText')}
+            name="itemText"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
           <Form.Item label={t('pages.dictionary.description')} name="description">

@@ -2,7 +2,7 @@ import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/genera
 import { Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo } from '../..';
+import type { TableUserInfo, UserFormData } from '../..';
 import { editUser, getUserList } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
@@ -30,24 +30,22 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
   const [form] = Form.useForm();
 
   const handleOk = async () => {
+    const formData: UserFormData = form.getFieldsValue();
     setIsOpen(false);
-    // 提交到后台处理需要把权限id值转为number类型
-    const formData: API.UserParams = form.getFieldsValue();
-    const roles = formData.roles?.map((item) => Number(item));
+    form.resetFields();
     const user: API.UserParams = {
       id: formData.id,
       username: formData.username,
-      password: formData.password,
+      nickname: formData.nickname,
+      userStatus: formData.userStatus && formData.userStatus[0],
       phone: formData.phone,
       avatar: formData.avatar,
       email: formData.email,
-      roles
+      roles: formData.roles?.map((item) => Number(item))
     };
-    // 编辑用户
     const editResult = await editUser(user);
     if (!editResult.data) {
       message.error(t('pages.user.edit.tip.fail'));
-      form.resetFields();
       return;
     }
     // 修改用户成功后重新获取用户列表数据
@@ -97,16 +95,20 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item label="id" name="id" hidden={true}>
+          <Form.Item label="id" name="id" hidden={true} rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.username')} name="username">
+          <Form.Item label={t('pages.user.username')} name="username" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.nickname')} name="nickname">
+          <Form.Item label={t('pages.user.nickname')} name="nickname" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.userStatus')} name="userStatus">
+          <Form.Item
+            label={t('pages.user.userStatus')}
+            name="userStatus"
+            rules={[{ required: true }]}
+          >
             <Select
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -125,10 +127,10 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
               placeholder={t('pages.user.modal.role.placeholder')}
             />
           </Form.Item>
-          <Form.Item label={t('pages.user.phone')} name="phone">
+          <Form.Item label={t('pages.user.phone')} name="phone" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.email')} name="email">
+          <Form.Item label={t('pages.user.email')} name="email" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
         </Form>

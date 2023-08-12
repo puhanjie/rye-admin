@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo } from '../..';
+import type { TableUserInfo, UserFormData } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 import MD5 from 'crypto-js/md5';
 
@@ -20,23 +20,22 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
   const [form] = Form.useForm();
 
   const handleOk = async () => {
+    const formData: UserFormData = form.getFieldsValue();
     setIsOpen(false);
-    // 提交到后台处理需要把权限id值转为number类型
-    const formData: API.UserParams = form.getFieldsValue();
-    const roles = formData.roles?.map((item) => Number(item));
+    form.resetFields();
     const user: API.UserParams = {
       username: formData.username,
+      nickname: formData.nickname,
+      userStatus: formData.userStatus && formData.userStatus[0],
       password: formData.password && MD5(formData.password).toString(),
       phone: formData.phone,
       avatar: formData.avatar,
       email: formData.email,
-      roles
+      roles: formData.roles?.map((item) => Number(item))
     };
-    // 新增用户
     const addResult = await addUser(user);
     if (!addResult.data) {
       message.error(t('pages.user.add.tip.fail'));
-      form.resetFields();
       return;
     }
     // 新增用户成功后重新获取用户列表数据
@@ -52,7 +51,6 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
       setUserData(data);
     }
     message.success(t('pages.user.add.tip.success'));
-    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -79,14 +77,19 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Form name="add" form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-          <Form.Item label={t('pages.user.username')} name="username">
+        <Form name="addUser" form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+          <Form.Item label={t('pages.user.username')} name="username" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.nickname')} name="nickname">
+          <Form.Item label={t('pages.user.nickname')} name="nickname" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.userStatus')} name="userStatus" initialValue={['0']}>
+          <Form.Item
+            label={t('pages.user.userStatus')}
+            name="userStatus"
+            initialValue={['0']}
+            rules={[{ required: true }]}
+          >
             <Select
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -105,13 +108,13 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
               placeholder={t('pages.user.modal.role.placeholder')}
             />
           </Form.Item>
-          <Form.Item label={t('pages.user.password')} name="password">
+          <Form.Item label={t('pages.user.password')} name="password" rules={[{ required: true }]}>
             <Input.Password />
           </Form.Item>
-          <Form.Item label={t('pages.user.phone')} name="phone">
+          <Form.Item label={t('pages.user.phone')} name="phone" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.email')} name="email">
+          <Form.Item label={t('pages.user.email')} name="email" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
         </Form>

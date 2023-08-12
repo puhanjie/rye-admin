@@ -145,6 +145,8 @@ declare namespace API {
   type UserParams = {
     id?: number | string;
     username?: string;
+    nickname?: string;
+    userStatus?: string;
     password?: string;
     phone?: string;
     avatar?: string;

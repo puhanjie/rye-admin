@@ -21,13 +21,12 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = async () => {
-    setIsOpen(false);
-    // 新增权限
     const permission: API.PermissionParams = form.getFieldsValue();
+    setIsOpen(false);
+    form.resetFields();
     const addResult = await addPermission(permission);
     if (!addResult.data) {
       message.error(t('pages.permission.add.tip.fail'));
-      form.resetFields();
       return;
     }
     // 新增权限成功后重新获取权限列表数据
@@ -43,7 +42,6 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
       setPermissionData(data);
     }
     message.success(t('pages.permission.add.tip.success'));
-    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -71,13 +69,13 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
         }}
       >
         <Form name="addPermission" form={form} labelCol={{ span: 7 }} wrapperCol={{ span: 17 }}>
-          <Form.Item label={t('pages.permission.name')} name="name">
+          <Form.Item label={t('pages.permission.name')} name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.permission.info')} name="info">
+          <Form.Item label={t('pages.permission.info')} name="info" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.permission.menu')} name="menu">
+          <Form.Item label={t('pages.permission.menu')} name="menu" rules={[{ required: true }]}>
             <TreeSelect
               treeData={getMenuTree(menuData)}
               allowClear
