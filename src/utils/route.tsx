@@ -10,7 +10,7 @@ import Loading from '@/components/Loading';
  * @param {*} parentPath
  * @returns
  */
-export function getDefaultPath(route: RouteConfig, parentPath: string = ''): string {
+export function getDefaultPath(route: RouteConfig, parentPath: string = '') {
   const defaultPath = resolve(parentPath, route.path);
   if (route?.children) {
     return getDefaultPath(route.children[0], defaultPath);
@@ -58,4 +58,24 @@ export function renderAuthRoutes(routes: RouteObject[]): RouteObject[] {
     }
     return item;
   });
+}
+
+/**
+ * 根据当前路由判断用户权限中是否有权访问
+ * @param route
+ * @param permissions
+ * @returns
+ */
+export function hasPermission(
+  route: RouteConfig | null | undefined,
+  permissions: string[] | undefined
+) {
+  if (!route || !permissions) {
+    return false;
+  }
+  // admin则不进行权限校验
+  if (permissions.includes('app:admin')) {
+    return true;
+  }
+  return permissions.filter((item) => item === route.meta?.access).length > 0 ? true : false;
 }

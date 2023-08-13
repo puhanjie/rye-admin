@@ -32,12 +32,12 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
   const handleOk = async () => {
     const user: API.UserParams = form.getFieldsValue();
     setIsOpen(false);
-    form.resetFields();
     user.userStatus = user.userStatus && user.userStatus[0];
     user.roles = user.roles?.map((item) => Number(item));
     const editResult = await editUser(user);
     if (!editResult.data) {
       message.error(t('pages.user.edit.tip.fail'));
+      form.resetFields();
       return;
     }
     // 修改用户成功后重新获取用户列表数据
@@ -53,7 +53,6 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
       setUserData(data);
     }
     message.success(t('pages.user.edit.tip.success'));
-    form.resetFields();
   };
 
   const handleCancel = () => {

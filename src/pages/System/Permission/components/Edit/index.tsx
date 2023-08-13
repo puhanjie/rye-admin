@@ -30,10 +30,10 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
   const handleOk = async () => {
     const permission: API.PermissionParams = form.getFieldsValue();
     setIsOpen(false);
-    form.resetFields();
     const editResult = await editPermission(permission);
     if (!editResult.data) {
       message.error(t('pages.permission.edit.tip.fail'));
+      form.resetFields();
       return;
     }
     // 编辑权限成功后重新获取权限列表数据

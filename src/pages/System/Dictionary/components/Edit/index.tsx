@@ -29,10 +29,10 @@ const Edit: React.FC<Props> = ({ dictionaryData, setDictionaryData }) => {
   const handleOk = async () => {
     const dictionary: API.DictionaryParams = form.getFieldsValue();
     setIsOpen(false);
-    form.resetFields();
     const editResult = await editDictionary(dictionary);
     if (!editResult.data) {
       message.error(t('pages.dictionary.edit.tip.fail'));
+      form.resetFields();
       return;
     }
     // 编辑字典成功后重新获取字典列表数据

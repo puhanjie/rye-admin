@@ -2,7 +2,7 @@ export default {
   'menu.*': '*',
   'menu.not-found': '404',
   'menu.login': '登录',
-  'menu.index': 'index',
+  'menu.home': '首页',
   'menu.dashboard': '仪表盘',
   'menu.analysis': '分析页',
   'menu.system': '系统管理',

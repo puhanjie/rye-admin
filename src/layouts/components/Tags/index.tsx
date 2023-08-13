@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import routeConfig from '@/router';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '@/store';
+import { hasPermission } from '@/utils/route';
 
 type TagData = {
   name?: string;
@@ -18,6 +20,7 @@ const Tags: React.FC = () => {
   const [distance, setDistance] = useState(0);
   const [tags, setTags] = useState<TagData[]>([]);
   const scroll = useRef<HTMLInputElement>(null);
+  const { permissions } = useAppSelector((state) => state.user);
 
   const {
     token: { colorPrimary }
@@ -57,13 +60,17 @@ const Tags: React.FC = () => {
   };
 
   const addTags = (routeConfig: RouteConfig[], tags: TagData[]) => {
+    const currentRoute = matchRoutes(routeConfig, pathname)?.slice(-1)[0];
     const findData = tags.filter((item) => item.path === pathname);
-    // 当前path对应的tag已存在则不添加
-    if (findData.length > 0) {
+    const isAccess = hasPermission(
+      currentRoute?.route,
+      permissions?.map((item) => item.name)
+    );
+    // 当前path对应的tag已存在或无访问权限则不添加
+    if (findData.length > 0 || !isAccess) {
       return;
     }
-    const currentRoute = matchRoutes(routeConfig, pathname)?.slice(-1)[0];
-    // 若当前路由匹配对象无title和pathname，则返回空数组
+    // 若当前路由匹配对象无title和pathname，则返回
     if (!(currentRoute?.route.name && currentRoute?.pathname)) {
       return;
     }

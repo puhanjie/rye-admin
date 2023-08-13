@@ -2,7 +2,7 @@ export default {
   'menu.*': '*',
   'menu.not-found': '404',
   'menu.login': 'Login',
-  'menu.index': 'index',
+  'menu.home': 'Home',
   'menu.dashboard': 'Dashboard',
   'menu.analysis': 'Analysis',
   'menu.system': 'System management',

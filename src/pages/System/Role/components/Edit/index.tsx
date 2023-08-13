@@ -43,11 +43,11 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
   const handleOk = async () => {
     const role: API.RoleParams = form.getFieldsValue();
     setIsOpen(false);
-    form.resetFields();
     role.permissions = role.permissions?.map((item) => Number(item));
     const editResult = await editRole(role);
     if (!editResult.data) {
       message.error(t('pages.role.edit.tip.fail'));
+      form.resetFields();
       return;
     }
     // 编辑角色成功后重新获取角色列表数据

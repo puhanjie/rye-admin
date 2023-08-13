@@ -14,7 +14,7 @@ const routeConfig: RouteConfig[] = [
   },
   {
     path: '/',
-    name: 'index',
+    name: 'home',
     component: lazy(() => import('@/layouts')),
     children: [
       {
