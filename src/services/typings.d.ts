@@ -146,7 +146,7 @@ declare namespace API {
     id?: number | string;
     username?: string;
     nickname?: string;
-    userStatus?: string;
+    userStatus?: string | string[];
     password?: string;
     phone?: string;
     avatar?: string;

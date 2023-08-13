@@ -2,7 +2,7 @@ import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/genera
 import { Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo, UserFormData } from '../..';
+import type { TableUserInfo } from '../..';
 import { editUser, getUserList } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
@@ -30,19 +30,11 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
   const [form] = Form.useForm();
 
   const handleOk = async () => {
-    const formData: UserFormData = form.getFieldsValue();
+    const user: API.UserParams = form.getFieldsValue();
     setIsOpen(false);
     form.resetFields();
-    const user: API.UserParams = {
-      id: formData.id,
-      username: formData.username,
-      nickname: formData.nickname,
-      userStatus: formData.userStatus && formData.userStatus[0],
-      phone: formData.phone,
-      avatar: formData.avatar,
-      email: formData.email,
-      roles: formData.roles?.map((item) => Number(item))
-    };
+    user.userStatus = user.userStatus && user.userStatus[0];
+    user.roles = user.roles?.map((item) => Number(item));
     const editResult = await editUser(user);
     if (!editResult.data) {
       message.error(t('pages.user.edit.tip.fail'));

@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo, UserFormData } from '../..';
+import type { TableUserInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 import MD5 from 'crypto-js/md5';
 
@@ -20,19 +20,12 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
   const [form] = Form.useForm();
 
   const handleOk = async () => {
-    const formData: UserFormData = form.getFieldsValue();
+    const user: API.UserParams = form.getFieldsValue();
     setIsOpen(false);
     form.resetFields();
-    const user: API.UserParams = {
-      username: formData.username,
-      nickname: formData.nickname,
-      userStatus: formData.userStatus && formData.userStatus[0],
-      password: formData.password && MD5(formData.password).toString(),
-      phone: formData.phone,
-      avatar: formData.avatar,
-      email: formData.email,
-      roles: formData.roles?.map((item) => Number(item))
-    };
+    user.userStatus = user.userStatus && user.userStatus[0];
+    user.password = user.password && MD5(user.password).toString();
+    user.roles = user.roles?.map((item) => Number(item));
     const addResult = await addUser(user);
     if (!addResult.data) {
       message.error(t('pages.user.add.tip.fail'));

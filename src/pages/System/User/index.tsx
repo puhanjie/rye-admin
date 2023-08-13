@@ -22,18 +22,6 @@ type QueryParams = {
   email?: string;
 };
 
-export type UserFormData = {
-  id?: number | string;
-  username?: string;
-  nickname?: string;
-  userStatus?: string[];
-  password?: string;
-  phone?: string;
-  avatar?: string;
-  email?: string;
-  roles?: number[];
-};
-
 export type TableUserInfo = {
   key?: number;
 } & API.UserInfo;
