@@ -89,7 +89,12 @@ export function hasPermission(
 export function getAuthRoutes(routes: RouteConfig[], permissions: string[]) {
   const authRoutes: RouteConfig[] = [];
   routes.map((item) => {
-    const route: RouteConfig = item;
+    const route: RouteConfig = {
+      path: item.path,
+      name: item.name,
+      component: item.component,
+      meta: item.meta
+    };
     // 权限判断
     if (item.meta?.access) {
       const permissionData = permissions.filter(
