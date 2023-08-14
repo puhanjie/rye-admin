@@ -5,13 +5,21 @@ import './index.less';
 import 'antd/dist/reset.css';
 import '@/locales';
 
+const env = import.meta.env.MODE;
+
 // 开发环境启用mock
-if (import.meta.env.MODE === 'dev') {
+if (env === 'dev') {
   import('../mock/index');
 }
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+const RenderApp = () => {
+  return env === 'dev' ? (
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  ) : (
     <App />
-  </React.StrictMode>
-);
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<RenderApp />);
