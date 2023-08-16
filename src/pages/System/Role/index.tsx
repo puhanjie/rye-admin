@@ -1,6 +1,6 @@
 import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
-import { Divider, Input, Space, Table } from 'antd';
+import { Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getRoleList } from '@/services/role';
@@ -81,7 +81,7 @@ const Role: React.FC = () => {
         const { id, name, info } = record;
         const data = { id, name, info, permissions, permissionList: permissionData };
         return (
-          <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
+          <Space>
             <Edit roleData={data} setRoleData={setRoleData} />
             <Delete selectId={id} setRoleData={setRoleData} />
           </Space>

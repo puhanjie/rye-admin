@@ -1,7 +1,7 @@
 import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
 import { getDictionaryList } from '@/services/dictionary';
-import { Divider, Input, Space, Table } from 'antd';
+import { Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -89,7 +89,7 @@ const Dictionary: React.FC = () => {
         const { id, dictName, dictText, itemValue, itemText, description } = record;
         const data = { id, dictName, dictText, itemValue, itemText, description };
         return (
-          <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
+          <Space>
             <Edit dictionaryData={data} setDictionaryData={setDictionaryData} />
             <Delete selectId={id} setDictionaryData={setDictionaryData} />
           </Space>

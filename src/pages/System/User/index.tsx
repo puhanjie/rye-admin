@@ -1,4 +1,4 @@
-import { Divider, Input, Space, Table, Tag } from 'antd';
+import { Input, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getUserList } from '@/services/user';
@@ -137,7 +137,7 @@ const User: React.FC = () => {
         };
         // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
         return (
-          <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
+          <Space>
             <Edit userData={data} setUserData={setUserData} />
             <Delete selectId={id} setUserData={setUserData} />
           </Space>

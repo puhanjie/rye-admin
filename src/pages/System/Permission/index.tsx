@@ -1,6 +1,6 @@
 import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
-import { Divider, Input, Space, Table, TreeSelect } from 'antd';
+import { Input, Space, Table, TreeSelect } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getPermissionList } from '@/services/permission';
@@ -84,7 +84,7 @@ const Permission: React.FC = () => {
         const { id, name, info, menu } = record;
         const data = { id, name, info, menu };
         return (
-          <Space split={<Divider type="vertical" style={{ margin: '0 1px' }} />}>
+          <Space>
             <Edit permissionData={data} setPermissionData={setPermissionData} />
             <Delete selectId={id} setPermissionData={setPermissionData} />
           </Space>
