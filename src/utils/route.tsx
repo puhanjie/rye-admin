@@ -3,6 +3,7 @@ import { resolve } from './path';
 import RouteGuard from '@/components/RouteGuard';
 import { Suspense } from 'react';
 import Loading from '@/components/Loading';
+import { ADMIN } from '@/config/constant';
 
 /**
  * 获取路由对象的默认路由，若有children，默认返回第一个children的path，无就是自身path
@@ -78,7 +79,7 @@ export function getAuthRoutes(routes: RouteConfig[], permissions: string[]) {
     // 权限判断
     if (item.meta?.access) {
       const permissionData = permissions.filter(
-        (permission) => permission === item.meta?.access || permission === 'app:admin'
+        (permission) => permission === item.meta?.access || permission === ADMIN.name
       );
       // 无路由权限
       if (permissionData.length <= 0) {

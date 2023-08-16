@@ -39,7 +39,7 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
       return <Navigate to="/" replace />;
     }
 
-    // 若该路由为分组，则跳转到子路由中第一个路由
+    // 若该路由为分组,则跳转到子路由中第一个路由
     if (currentRoute?.children) {
       const defaultPath = getDefaultPath(currentRoute);
       return <Navigate to={defaultPath} replace />;
@@ -47,11 +47,11 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
   } else {
     // 无token
     if (pathname !== '/login') {
-      // 访问非登录页面，统一重定向至登录页
+      // 访问非登录页面,统一重定向至登录页
       return <Navigate to="/login" replace />;
     }
   }
-  // 必须用空元素包裹children，否则会报类型错误
+  // 必须用空元素包裹children,否则会报类型错误
   return <>{children}</>;
 };
 

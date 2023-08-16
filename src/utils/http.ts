@@ -49,9 +49,9 @@ http.interceptors.response.use(
   }
 );
 
-// 封装请求对象，避免在借口文件中重复写axios的请求和响应类型定义
+// 封装请求对象,避免在借口文件中重复写axios的请求和响应类型定义
 function request<T>(params: AxiosRequestConfig) {
-  // http后的第一个泛型为请求参数类型，第二个为响应数据类型
+  // http后的第一个泛型为请求参数类型,第二个为响应数据类型
   return http<AxiosRequestConfig, API.Result<T>>(params);
 }
 

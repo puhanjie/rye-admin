@@ -75,7 +75,7 @@ const Role: React.FC = () => {
       align: 'center',
       fixed: 'right',
       render: (_text, record) => {
-        // 处理permissions对象数组，只保留权限id
+        // 处理permissions对象数组,只保留权限id
         const permissions =
           record?.permissions && record.permissions.map((item) => item.id.toString());
         const { id, name, info } = record;

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableRoleInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
+import { ADMIN } from '@/config/constant';
 
 type EditRoleInfo = {
   id: number;
@@ -29,11 +30,13 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
   const getFormInitData = (initValues: EditRoleInfo) => {
     const formInitData: EditRoleInfo = initValues;
     if (initValues?.permissions) {
-      // 筛选出admin权限，id为1的是admin
-      const adminPermission = initValues.permissions?.filter((item) => item === '1');
+      // 筛选出admin权限
+      const adminPermission = initValues.permissions?.filter(
+        (item) => item === ADMIN.id.toString()
+      );
       if (adminPermission.length > 0) {
         const permissionIds = initValues.permissionList.map((item) => item.id.toString());
-        formInitData.permissions = permissionIds.filter((item) => item !== '1');
+        formInitData.permissions = permissionIds.filter((item) => item !== ADMIN.id.toString());
         return formInitData;
       }
     }

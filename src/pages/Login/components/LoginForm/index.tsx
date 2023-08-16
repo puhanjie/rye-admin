@@ -30,7 +30,7 @@ const LoginForm: React.FC<Props> = ({ loginType }) => {
     const res = await login(loginParams);
 
     if (res?.data) {
-      // 登录成功，保存token
+      // 登录成功,保存token
       setToken(res.data.token);
       navigate('/');
     }

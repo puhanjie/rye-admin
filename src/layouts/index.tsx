@@ -72,7 +72,7 @@ const Layouts: React.FC = () => {
     }
     // 刷新时重新获取权限
     if (token && permissions.length === 0) {
-      // IIFE方式调用异步接口获取用户信息和权限数据，存入store
+      // IIFE方式调用异步接口获取用户信息和权限数据,存入store
       (async () => {
         const res = await getInfo();
         dispatch(setUserInfo(res.data));

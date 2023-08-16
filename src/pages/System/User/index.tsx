@@ -120,7 +120,7 @@ const User: React.FC = () => {
       align: 'center',
       fixed: 'right',
       render: (_text, record) => {
-        // 处理roles对象数组，只保留角色id
+        // 处理roles对象数组,只保留角色id
         const roles = record?.roles && record.roles.map((item) => item.id);
         const { id, username, nickname, userStatus, phone, avatar, email } = record;
         const data = {
@@ -135,7 +135,7 @@ const User: React.FC = () => {
           roleList: roleData,
           userStatusList: userStatusData
         };
-        // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致，初始数据才能赋值上
+        // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致,初始数据才能赋值上
         return (
           <Space>
             <Edit userData={data} setUserData={setUserData} />

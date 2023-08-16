@@ -4,13 +4,13 @@ export default {
   'common.button.submit': '提交',
   'common.button.changeAvator': '更换头像',
   'common.tip.batchDelete.title': '批量删除提醒',
-  'common.tip.batchDelete.description': '是否删除选中记录？',
+  'common.tip.batchDelete.description': '是否删除选中记录?',
   'common.tip.delete.title': '删除提醒',
   'common.tip.delete.description': '是否删除该条记录？',
   'common.yes': '是',
   'common.no': '否',
-  'common.tip.selectOne': '请选择一条记录！',
-  'common.tip.select': '请选中需要删除的记录！',
-  'common.tip.id': '无效的选中记录！',
+  'common.tip.selectOne': '请选择一条记录!',
+  'common.tip.select': '请选中需要删除的记录!',
+  'common.tip.id': '无效的选中记录!',
   'common.table.footer': '{{start}} - {{end}} 条 / 共 {{total}} 条'
 };
