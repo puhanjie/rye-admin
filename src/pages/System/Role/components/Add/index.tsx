@@ -77,6 +77,7 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
           </Form.Item>
           <Form.Item label={t('pages.role.permission')} name="permissions">
             <TreeSelect
+              allowClear
               treeData={getPermissionTreeData(menuData, permissionData)}
               maxTagCount={3}
               treeCheckable={true}

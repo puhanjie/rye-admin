@@ -111,6 +111,7 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
           <Form.Item label={t('pages.user.role')} name="roles">
             <Select
               mode="multiple"
+              allowClear
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }

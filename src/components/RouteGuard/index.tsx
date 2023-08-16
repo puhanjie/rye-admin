@@ -14,7 +14,7 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
   const token = getToken();
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
   const routeMatch = matchRoutes(routeConfig, pathname);
   const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
   const { permissions } = useAppSelector((state) => state.user);
@@ -27,25 +27,24 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
 
   // 路由鉴权
   if (token) {
-    const isAccess = hasPermission(
-      currentRoute,
-      permissions?.map((item) => item.name)
-    );
-
-    // 无访问权限则重定向至首页
-    if (!currentRoute?.children && !isAccess) {
-      return <Navigate to="/" replace />;
-    }
-
     if (pathname === '/login') {
       return <Navigate to="/" replace />;
     }
 
     // 若该路由为分组，则跳转到子路由中第一个路由
     const permissionCount = permissions?.length ? permissions.length : 0;
-    if (currentRoute?.children && permissionCount > 0) {
+    if (currentRoute?.children && (!state || state.type !== 'noAccess') && permissionCount > 0) {
       const defaultPath = getDefaultPath(currentRoute);
       return <Navigate to={defaultPath} replace />;
+    }
+
+    const isAccess = hasPermission(
+      currentRoute,
+      permissions?.map((item) => item.name)
+    );
+    // 无访问权限则重定向至首页
+    if (!currentRoute?.children && !isAccess) {
+      return <Navigate to="/" replace state={{ type: 'noAccess' }} />;
     }
   } else {
     // 无token
