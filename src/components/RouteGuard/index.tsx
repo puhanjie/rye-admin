@@ -1,7 +1,7 @@
 import routeConfig from '@/router';
 import { useAppSelector } from '@/store';
 import { getToken } from '@/utils/auth';
-import { getDefaultPath, hasPermission } from '@/utils/route';
+import { getAuthRoutes, getDefaultPath } from '@/utils/route';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, matchRoutes, useLocation } from 'react-router-dom';
@@ -14,10 +14,18 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
   const token = getToken();
-  const { pathname, state } = useLocation();
-  const routeMatch = matchRoutes(routeConfig, pathname);
-  const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
+  const { pathname } = useLocation();
+
   const { permissions } = useAppSelector((state) => state.user);
+  let authRoutes: RouteConfig[] = [];
+  if (permissions) {
+    authRoutes = getAuthRoutes(
+      routeConfig,
+      permissions.map((item) => item.name)
+    );
+  }
+  const routeMatch = matchRoutes(authRoutes, pathname);
+  const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
 
   useEffect(() => {
     if (currentRoute?.name) {
@@ -32,19 +40,9 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
     }
 
     // 若该路由为分组，则跳转到子路由中第一个路由
-    const permissionCount = permissions?.length ? permissions.length : 0;
-    if (currentRoute?.children && (!state || state.type !== 'noAccess') && permissionCount > 0) {
+    if (currentRoute?.children) {
       const defaultPath = getDefaultPath(currentRoute);
       return <Navigate to={defaultPath} replace />;
-    }
-
-    const isAccess = hasPermission(
-      currentRoute,
-      permissions?.map((item) => item.name)
-    );
-    // 无访问权限则重定向至首页
-    if (!currentRoute?.children && !isAccess) {
-      return <Navigate to="/" replace state={{ type: 'noAccess' }} />;
     }
   } else {
     // 无token

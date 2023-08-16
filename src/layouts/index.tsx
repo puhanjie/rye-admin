@@ -16,6 +16,7 @@ import Loading from '@/components/Loading';
 import Tags from './components/Tags';
 import { resolve } from '@/utils/path';
 import { useTranslation } from 'react-i18next';
+import { getAuthRoutes } from '@/utils/route';
 
 type MenuItem = {
   key: string;
@@ -36,11 +37,7 @@ const Layouts: React.FC = () => {
   const token = getToken();
 
   // 获取菜单数据
-  const getMenuItems = (
-    routes: RouteConfig[],
-    parentPath: string,
-    permissions: { id: number; name: string; info: string }[]
-  ): MenuItem[] => {
+  const getMenuItems = (routes: RouteConfig[], parentPath: string = '') => {
     const menus = new Array<MenuItem>();
     routes.map((item) => {
       const tmp: MenuItem = {
@@ -49,22 +46,8 @@ const Layouts: React.FC = () => {
         icon: item?.meta?.icon
       };
 
-      if (item?.meta?.access) {
-        // 无菜单权限，不添加到菜单数组
-        const hasPermissions = permissions.filter(
-          (permission) => permission.name === item.meta?.access || permission.name === 'app:admin'
-        );
-        if (hasPermissions.length <= 0) {
-          return;
-        }
-      }
-
       if (item?.children) {
-        tmp.children = getMenuItems(item.children, tmp.key, permissions);
-        // 都无菜单分组下子菜单的权限，则屏蔽该菜单分组的显示
-        if (tmp.children.length === 0) {
-          return;
-        }
+        tmp.children = getMenuItems(item.children, tmp.key);
       }
 
       menus.push(tmp);
@@ -99,11 +82,20 @@ const Layouts: React.FC = () => {
   }, [pathname, token]);
 
   // 根据路由配置获取菜单项
-  const menuRoutes = routeConfig.filter((item) => item.path === '/')[0].children;
-  // menuRoutes和permissions不为空才返回menuItems
-  const menuItems = menuRoutes && permissions && getMenuItems(menuRoutes, '', permissions);
+  let authRoutes: RouteConfig[] = [];
+  let menuItems: MenuItem[] = [];
+  if (permissions && permissions.length > 0) {
+    authRoutes = getAuthRoutes(
+      routeConfig,
+      permissions.map((item) => item.name)
+    );
+    const menuRoutes = authRoutes.filter((item) => item.path === '/')[0].children;
+    if (menuRoutes) {
+      menuItems = getMenuItems(menuRoutes);
+    }
+  }
 
-  const [openKeys, selectKeys] = getActiveMenus(routeConfig, pathname);
+  const [openKeys, selectKeys] = getActiveMenus(authRoutes, pathname);
 
   // 获取antd的背景色token值
   const {

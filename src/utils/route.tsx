@@ -61,21 +61,41 @@ export function renderAuthRoutes(routes: RouteObject[]): RouteObject[] {
 }
 
 /**
- * 根据当前路由判断用户权限中是否有权访问
- * @param route
+ * 获取权限路由
+ * @param routes
  * @param permissions
  * @returns
  */
-export function hasPermission(
-  route: RouteConfig | null | undefined,
-  permissions: string[] | undefined
-) {
-  if (!route || !permissions) {
-    return false;
-  }
-  // admin则不进行权限校验
-  if (permissions.includes('app:admin')) {
-    return true;
-  }
-  return permissions.filter((item) => item === route.meta?.access).length > 0 ? true : false;
+export function getAuthRoutes(routes: RouteConfig[], permissions: string[]) {
+  const authRoutes: RouteConfig[] = [];
+  routes.map((item) => {
+    const route: RouteConfig = {
+      path: item.path,
+      name: item.name,
+      component: item.component,
+      meta: item.meta
+    };
+    // 权限判断
+    if (item.meta?.access) {
+      const permissionData = permissions.filter(
+        (permission) => permission === item.meta?.access || permission === 'app:admin'
+      );
+      // 无路由权限
+      if (permissionData.length <= 0) {
+        return;
+      }
+    }
+
+    if (item.children) {
+      route.children = getAuthRoutes(item.children, permissions);
+      // 若路由对象无children则不添加到认证路由列表
+      if (route.children?.length === 0) {
+        return;
+      }
+    }
+
+    authRoutes.push(route);
+  });
+
+  return authRoutes;
 }
