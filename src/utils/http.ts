@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { getToken } from './auth';
+import { clearToken, getToken } from './auth';
 import { message } from 'antd';
 
 const http = axios.create({
@@ -39,6 +39,11 @@ http.interceptors.response.use(
   (error) => {
     // 响应异常时处理
     const res = error.response.data;
+    if (res.code === 10000) {
+      // token失效
+      clearToken();
+      window.location.href = '/login';
+    }
     message.error(`${res.code} | ${res.message}`);
     return Promise.reject(error);
   }
