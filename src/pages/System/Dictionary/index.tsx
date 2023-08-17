@@ -32,28 +32,56 @@ const Dictionary: React.FC = () => {
       if (!dictionaryDataRes.data) {
         return;
       }
-      const tablePages: API.PageInfo<TableDictionaryInfo[]> = {
+      const dictionaryData: API.PageInfo<TableDictionaryInfo[]> = {
         records: dictionaryDataRes.data.records.map((item) => ({ key: item.id, ...item })),
         total: dictionaryDataRes.data.total,
         size: dictionaryDataRes.data.size,
         current: dictionaryDataRes.data.current,
         pages: dictionaryDataRes.data.pages
       };
-      setDictionaryData(tablePages);
+      setDictionaryData(dictionaryData);
       setLoading(false);
     })();
   }, []);
+
+  /**
+   * 获取记录的column列的行占位数
+   * @param record 表格单条记录数据
+   * @param column 需要合并的行所在的列属性名
+   * @returns
+   */
+  const getRowSpan = (record: TableDictionaryInfo, column: string) => {
+    const data = dictionaryData?.records.filter(
+      (item) => item[column as keyof typeof item] === record[column as keyof typeof item]
+    );
+    const ids = data?.map((item) => item.id);
+    if (!ids || ids.length === 0) {
+      return 1;
+    }
+    const minId = Math.min(...ids);
+    return record.id === minId ? ids.length : 0;
+  };
 
   const tableColumns: ColumnsType<TableDictionaryInfo> = [
     {
       title: t('pages.dictionary.dictName'),
       dataIndex: 'dictName',
-      align: 'center'
+      align: 'center',
+      onCell: (record) => {
+        return {
+          rowSpan: getRowSpan(record, 'dictName')
+        };
+      }
     },
     {
       title: t('pages.dictionary.dictText'),
       dataIndex: 'dictText',
-      align: 'center'
+      align: 'center',
+      onCell: (record) => {
+        return {
+          rowSpan: getRowSpan(record, 'dictText')
+        };
+      }
     },
     {
       title: t('pages.dictionary.itemValue'),

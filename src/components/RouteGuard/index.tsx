@@ -31,7 +31,7 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
     if (currentRoute?.name) {
       document.title = `${t('app.abbreviation')} - ${t(`menu.${currentRoute.name}`)}`;
     }
-  }, [pathname, language]);
+  }, [pathname, language, permissions]);
 
   // 路由鉴权
   if (token) {

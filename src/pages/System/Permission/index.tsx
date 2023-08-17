@@ -36,14 +36,14 @@ const Permission: React.FC = () => {
       if (!permissionDataRes.data) {
         return;
       }
-      const tablePages: API.PageInfo<TablePermissionInfo[]> = {
+      const permissionData: API.PageInfo<TablePermissionInfo[]> = {
         records: permissionDataRes.data.records.map((item) => ({ key: item.id, ...item })),
         total: permissionDataRes.data.total,
         size: permissionDataRes.data.size,
         current: permissionDataRes.data.current,
         pages: permissionDataRes.data.pages
       };
-      setPermissionData(tablePages);
+      setPermissionData(permissionData);
       setLoading(false);
     })();
   }, []);
