@@ -6,7 +6,7 @@ import Loading from '@/components/Loading';
 import { ADMIN } from '@/config/constant';
 
 /**
- * 获取路由对象的默认路由，若有children，默认返回第一个children的path，无就是自身path
+ * 获取路由对象的默认路由,若有children,默认返回第一个children的path,无就是自身path
  * @param {*} route
  * @param {*} parentPath
  * @returns
@@ -35,7 +35,7 @@ export function renderRoutes(routes: RouteConfig[]): RouteObject[] {
         </Suspense>
       );
     } else {
-      // 无component配置项的路由为菜单分组，用<Outlet />代替
+      // 无component配置项的路由为菜单分组,用<Outlet />代替
       route.element = <Outlet />;
     }
     if (item?.children) {
