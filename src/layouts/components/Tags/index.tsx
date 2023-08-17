@@ -66,9 +66,10 @@ const Tags: React.FC = () => {
     // 未发现路由则跳转至首页
     if (currentRoute?.route.name === 'not-found') {
       navigate('/');
+      return;
     }
-    // 当前path对应的tag已存在或没匹配到路由,则不添加
-    if (findData.length > 0) {
+    // 当前path对应的tag已存在或为根路由,则不添加
+    if (findData.length > 0 || currentRoute?.pathname === '/') {
       return;
     }
     // 若当前路由匹配对象无title和pathname,则返回

@@ -40,7 +40,7 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
     }
 
     // 若该路由为分组,则跳转到子路由中第一个路由
-    if (currentRoute?.children) {
+    if (currentRoute?.children && currentRoute.children.length > 0) {
       const defaultPath = getDefaultPath(currentRoute);
       return <Navigate to={defaultPath} replace />;
     }

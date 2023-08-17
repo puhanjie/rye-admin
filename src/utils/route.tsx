@@ -90,7 +90,7 @@ export function getAuthRoutes(routes: RouteConfig[], permissions: string[]) {
     if (item.children) {
       route.children = getAuthRoutes(item.children, permissions);
       // 若路由对象无children则不添加到认证路由列表
-      if (route.children?.length === 0) {
+      if (route.children?.length === 0 && route.path !== '/') {
         return;
       }
     }
