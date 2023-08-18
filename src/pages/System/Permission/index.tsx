@@ -12,6 +12,7 @@ import Delete from './components/Delete';
 import { getMenuTree } from '@/utils/general';
 import routeConfig from '@/router';
 import PageWrapper from '@/components/PageWrapper';
+import { Key } from 'antd/es/table/interface';
 
 type QueryParams = {
   name?: string;
@@ -20,16 +21,15 @@ type QueryParams = {
 };
 
 export type TablePermissionInfo = {
-  key?: number;
+  key: number;
 } & API.PermissionInfo;
 
 const Permission: React.FC = () => {
   const { t } = useTranslation();
   const [permissionData, setPermissionData] = useState<API.PageInfo<TablePermissionInfo[]>>();
-  const [selectData, setSelectData] = useState<TablePermissionInfo[]>([]);
+  const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
-  const filterRoute = routeConfig.filter((item) => item.path === '/')[0].children;
-  const menuData = filterRoute ? filterRoute.filter((item) => item.name !== 'home') : [];
+  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   useEffect(() => {
     (async () => {
@@ -142,13 +142,22 @@ const Permission: React.FC = () => {
     queryData();
   };
 
+  const getSelectData = (keys: Key[]) => {
+    return permissionData?.records
+      ? permissionData.records.filter((item) => keys.indexOf(item.key) >= 0)
+      : [];
+  };
+
   return (
     <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add setPermissionData={setPermissionData} />
-          <BatchDelete selectData={selectData} setPermissionData={setPermissionData} />
+          <BatchDelete
+            selectData={getSelectData(selectKeys)}
+            setPermissionData={setPermissionData}
+          />
         </Space>
         <Table
           bordered
@@ -158,10 +167,25 @@ const Permission: React.FC = () => {
           size="small"
           rowSelection={{
             type: 'checkbox',
-            onChange: (_selectedRowKeys, selectedRows) => {
-              setSelectData(selectedRows);
+            selectedRowKeys: selectKeys,
+            onChange: (selectedRowKeys) => {
+              setSelectKeys(selectedRowKeys);
             }
           }}
+          onRow={(record) => ({
+            onClick: () => {
+              if (selectKeys.indexOf(record.key) < 0) {
+                // 添加选中数据
+                const keys = selectKeys.concat();
+                keys.push(record.key);
+                setSelectKeys(keys);
+              } else {
+                // 清除选中数据
+                const keys = selectKeys.filter((item) => item !== record.key);
+                setSelectKeys(keys);
+              }
+            }
+          })}
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

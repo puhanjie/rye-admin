@@ -10,6 +10,7 @@ import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
 import PageWrapper from '@/components/PageWrapper';
+import { Key } from 'antd/es/table/interface';
 
 type QueryParams = {
   dictName?: string;
@@ -17,13 +18,13 @@ type QueryParams = {
 };
 
 export type TableDictionaryInfo = {
-  key?: number;
+  key: number;
 } & API.DictionaryInfo;
 
 const Dictionary: React.FC = () => {
   const { t } = useTranslation();
   const [dictionaryData, setDictionaryData] = useState<API.PageInfo<TableDictionaryInfo[]>>();
-  const [selectData, setSelectData] = useState<TableDictionaryInfo[]>([]);
+  const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -162,13 +163,22 @@ const Dictionary: React.FC = () => {
     queryData();
   };
 
+  const getSelectData = (keys: Key[]) => {
+    return dictionaryData?.records
+      ? dictionaryData.records.filter((item) => keys.indexOf(item.key) >= 0)
+      : [];
+  };
+
   return (
     <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add setDictionaryData={setDictionaryData} />
-          <BatchDelete selectData={selectData} setDictionaryData={setDictionaryData} />
+          <BatchDelete
+            selectData={getSelectData(selectKeys)}
+            setDictionaryData={setDictionaryData}
+          />
         </Space>
         <Table
           bordered
@@ -178,10 +188,25 @@ const Dictionary: React.FC = () => {
           size="small"
           rowSelection={{
             type: 'checkbox',
-            onChange: (_selectedRowKeys, selectedRows) => {
-              setSelectData(selectedRows);
+            selectedRowKeys: selectKeys,
+            onChange: (selectedRowKeys) => {
+              setSelectKeys(selectedRowKeys);
             }
           }}
+          onRow={(record) => ({
+            onClick: () => {
+              if (selectKeys.indexOf(record.key) < 0) {
+                // 添加选中数据
+                const keys = selectKeys.concat();
+                keys.push(record.key);
+                setSelectKeys(keys);
+              } else {
+                // 清除选中数据
+                const keys = selectKeys.filter((item) => item !== record.key);
+                setSelectKeys(keys);
+              }
+            }
+          })}
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

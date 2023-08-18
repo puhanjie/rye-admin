@@ -118,7 +118,7 @@ const Tags: React.FC = () => {
       <Tag
         className={styles['tag']}
         key={item.path} //key要唯一,不能使用索引值,否则会导致close标签的时候关闭两个
-        closable={item.path !== '/home'}
+        closable
         onClick={() => navigate(item.path)}
         onClose={() => removeTags(item, tags)}
         color={item.path === pathname ? colorPrimary : 'default'}

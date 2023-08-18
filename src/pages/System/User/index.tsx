@@ -23,7 +23,7 @@ type QueryParams = {
 };
 
 export type TableUserInfo = {
-  key?: number;
+  key: number;
 } & API.UserInfo;
 
 const User: React.FC = () => {
@@ -31,7 +31,7 @@ const User: React.FC = () => {
   const [userData, setUserData] = useState<API.PageInfo<TableUserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
   const [userStatusData, setUserStatusData] = useState<API.DictionaryInfo[]>([]);
-  const [selectData, setSelectData] = useState<TableUserInfo[]>([]);
+  // const [selectData, setSelectData] = useState<TableUserInfo[]>([]);
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -191,14 +191,18 @@ const User: React.FC = () => {
     queryData();
   };
 
+  const getSelectData = (keys: Key[]) => {
+    return userData?.records ? userData.records.filter((item) => keys.indexOf(item.key) >= 0) : [];
+  };
+
   return (
     <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />
-          <ResetPassword selectData={selectData} clearSelectData={clearSelectData} />
-          <BatchDelete selectData={selectData} setUserData={setUserData} />
+          <ResetPassword selectData={getSelectData(selectKeys)} clearSelectData={clearSelectData} />
+          <BatchDelete selectData={getSelectData(selectKeys)} setUserData={setUserData} />
         </Space>
         <Table
           bordered
@@ -209,11 +213,24 @@ const User: React.FC = () => {
           rowSelection={{
             type: 'checkbox',
             selectedRowKeys: selectKeys,
-            onChange: (selectedRowKeys, selectedRows) => {
+            onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);
-              setSelectData(selectedRows);
             }
           }}
+          onRow={(record) => ({
+            onClick: () => {
+              if (selectKeys.indexOf(record.key) < 0) {
+                // 添加选中数据
+                const keys = selectKeys.concat();
+                keys.push(record.key);
+                setSelectKeys(keys);
+              } else {
+                // 清除选中数据
+                const keys = selectKeys.filter((item) => item !== record.key);
+                setSelectKeys(keys);
+              }
+            }
+          })}
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

@@ -17,8 +17,6 @@ export default {
   // Layouts页
   'pages.layouts.header.settings': '个人设置',
   'pages.layouts.header.signOut': '退出登录',
-  // 首页
-  'pages.home.title': '欢迎!',
   // 用户管理页
   'pages.user.queryForm.username': '用户名',
   'pages.user.queryForm.username.placeholder': '请输入用户名',

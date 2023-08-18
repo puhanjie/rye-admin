@@ -11,6 +11,7 @@ import BatchDelete from './components/BatchDelete';
 import Edit from './components/Edit';
 import Delete from './components/Delete';
 import PageWrapper from '@/components/PageWrapper';
+import { Key } from 'antd/es/table/interface';
 
 type QueryParams = {
   name?: string;
@@ -18,14 +19,14 @@ type QueryParams = {
 };
 
 export type TableRoleInfo = {
-  key?: number;
+  key: number;
 } & API.RoleInfo;
 
 const Role: React.FC = () => {
   const { t } = useTranslation();
   const [roleData, setRoleData] = useState<API.PageInfo<TableRoleInfo[]>>();
   const [permissionData, setPermissionData] = useState<API.PermissionInfo[]>([]);
-  const [selectData, setSelectData] = useState<TableRoleInfo[]>([]);
+  const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const Role: React.FC = () => {
       if (!roleDataRes.data || !permissionDataRes.data) {
         return;
       }
-      const roleData: API.PageInfo<API.RoleInfo[]> = {
+      const roleData: API.PageInfo<TableRoleInfo[]> = {
         records: roleDataRes.data.records.map((item) => ({ key: item.id, ...item })),
         total: roleDataRes.data.total,
         size: roleDataRes.data.size,
@@ -126,13 +127,17 @@ const Role: React.FC = () => {
     queryData();
   };
 
+  const getSelectData = (keys: Key[]) => {
+    return roleData?.records ? roleData.records.filter((item) => keys.indexOf(item.key) >= 0) : [];
+  };
+
   return (
     <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add permissionData={permissionData} setRoleData={setRoleData} />
-          <BatchDelete selectData={selectData} setRoleData={setRoleData} />
+          <BatchDelete selectData={getSelectData(selectKeys)} setRoleData={setRoleData} />
         </Space>
         <Table
           bordered
@@ -142,10 +147,25 @@ const Role: React.FC = () => {
           size="small"
           rowSelection={{
             type: 'checkbox',
-            onChange: (_selectedRowKeys, selectedRows) => {
-              setSelectData(selectedRows);
+            selectedRowKeys: selectKeys,
+            onChange: (selectedRowKeys) => {
+              setSelectKeys(selectedRowKeys);
             }
           }}
+          onRow={(record) => ({
+            onClick: () => {
+              if (selectKeys.indexOf(record.key) < 0) {
+                // 添加选中数据
+                const keys = selectKeys.concat();
+                keys.push(record.key);
+                setSelectKeys(keys);
+              } else {
+                // 清除选中数据
+                const keys = selectKeys.filter((item) => item !== record.key);
+                setSelectKeys(keys);
+              }
+            }
+          })}
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

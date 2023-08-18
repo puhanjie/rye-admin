@@ -40,7 +40,7 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
     }
 
     if (pathname === '/login') {
-      return navigate('/home', { replace: true });
+      return navigate('/', { replace: true });
     }
 
     // 若该路由为分组,则跳转到子路由中第一个路由

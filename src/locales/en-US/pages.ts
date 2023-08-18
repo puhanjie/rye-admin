@@ -17,8 +17,6 @@ export default {
   // Layouts page
   'pages.layouts.header.settings': 'Account settings',
   'pages.layouts.header.signOut': 'Sign out',
-  // Home Page
-  'pages.home.title': 'Welcome!',
   // User management page
   'pages.user.queryForm.username': 'Username',
   'pages.user.queryForm.username.placeholder': 'Please input username',
