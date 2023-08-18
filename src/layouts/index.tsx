@@ -82,18 +82,11 @@ const Layouts: React.FC = () => {
   }, [pathname, token]);
 
   // 根据路由配置获取菜单项
-  let authRoutes: RouteConfig[] = [];
-  let menuItems: MenuItem[] = [];
-  if (permissions && permissions.length > 0) {
-    authRoutes = getAuthRoutes(
-      routeConfig,
-      permissions.map((item) => item.name)
-    );
-    const menuRoutes = authRoutes.filter((item) => item.path === '/')[0].children;
-    if (menuRoutes) {
-      menuItems = getMenuItems(menuRoutes);
-    }
-  }
+  const permissionList =
+    permissions && permissions.length > 0 ? permissions.map((item) => item.name) : [];
+  const authRoutes = getAuthRoutes(routeConfig, permissionList);
+  const menuRoutes = authRoutes.filter((item) => item.path === '/')[0].children;
+  const menuItems = menuRoutes ? getMenuItems(menuRoutes) : [];
 
   const [openKeys, selectKeys] = getActiveMenus(authRoutes, pathname);
 

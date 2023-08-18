@@ -25,7 +25,8 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
-  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
+  const filterRoute = routeConfig.filter((item) => item.path === '/')[0].children;
+  const menuData = filterRoute ? filterRoute.filter((item) => item.name !== 'home') : [];
 
   const handleOk = async () => {
     const permission: API.PermissionParams = form.getFieldsValue();

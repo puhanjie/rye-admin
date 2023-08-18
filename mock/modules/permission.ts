@@ -12,14 +12,6 @@ const permissionData = [
   },
   {
     id: 2,
-    name: 'analysis:view',
-    info: '查看',
-    menu: 'analysis',
-    createTime: '2023-06-09 11:15:24',
-    updateTime: '2023-06-09 11:15:24'
-  },
-  {
-    id: 3,
     name: 'user:add',
     info: '新增',
     menu: 'user',
@@ -27,7 +19,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 4,
+    id: 3,
     name: 'user:delete',
     info: '删除',
     menu: 'user',
@@ -35,7 +27,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 5,
+    id: 4,
     name: 'user:update',
     info: '修改',
     menu: 'user',
@@ -43,7 +35,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 6,
+    id: 5,
     name: 'user:view',
     info: '查看',
     menu: 'user',
@@ -51,7 +43,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 7,
+    id: 6,
     name: 'user:resetPassword',
     info: '重置密码',
     menu: 'user',
@@ -59,7 +51,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 8,
+    id: 7,
     name: 'user:batchDelete',
     info: '批量删除',
     menu: 'user',
@@ -67,7 +59,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 9,
+    id: 8,
     name: 'role:add',
     info: '新增',
     menu: 'role',
@@ -75,7 +67,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 10,
+    id: 9,
     name: 'role:delete',
     info: '删除',
     menu: 'role',
@@ -83,7 +75,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 11,
+    id: 10,
     name: 'role:update',
     info: '修改',
     menu: 'role',
@@ -91,7 +83,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 12,
+    id: 11,
     name: 'role:view',
     info: '查看',
     menu: 'role',
@@ -99,7 +91,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 13,
+    id: 12,
     name: 'role:batchDelete',
     info: '批量删除',
     menu: 'role',
@@ -107,7 +99,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 14,
+    id: 13,
     name: 'permission:add',
     info: '新增',
     menu: 'permission',
@@ -115,7 +107,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 15,
+    id: 14,
     name: 'permission:delete',
     info: '删除',
     menu: 'permission',
@@ -123,7 +115,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 16,
+    id: 15,
     name: 'permission:update',
     info: '修改',
     menu: 'permission',
@@ -131,7 +123,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 17,
+    id: 16,
     name: 'permission:view',
     info: '查看',
     menu: 'permission',
@@ -139,7 +131,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 18,
+    id: 17,
     name: 'permission:batchDelete',
     info: '批量删除',
     menu: 'permission',
@@ -147,7 +139,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 19,
+    id: 18,
     name: 'dictionary:add',
     info: '新增',
     menu: 'dictionary',
@@ -155,7 +147,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 20,
+    id: 19,
     name: 'dictionary:delete',
     info: '删除',
     menu: 'dictionary',
@@ -163,7 +155,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 21,
+    id: 20,
     name: 'dictionary:update',
     info: '修改',
     menu: 'dictionary',
@@ -171,7 +163,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 22,
+    id: 21,
     name: 'dictionary:view',
     info: '查看',
     menu: 'dictionary',
@@ -179,7 +171,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 23,
+    id: 22,
     name: 'dictionary:batchDelete',
     info: '批量删除',
     menu: 'dictionary',
@@ -187,7 +179,7 @@ const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 24,
+    id: 23,
     name: 'settings:view',
     info: '查看',
     menu: 'settings',

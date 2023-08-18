@@ -4,7 +4,7 @@ import { getToken } from '@/utils/auth';
 import { getAuthRoutes, getDefaultPath } from '@/utils/route';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, matchRoutes, useLocation } from 'react-router-dom';
+import { matchRoutes, useLocation, useNavigate } from 'react-router-dom';
 
 type Props = {
   children: React.ReactNode;
@@ -15,6 +15,7 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
   const language = i18n.language;
   const token = getToken();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const { permissions } = useAppSelector((state) => state.user);
   let authRoutes: RouteConfig[] = [];
@@ -28,29 +29,27 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
   const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
 
   useEffect(() => {
-    if (currentRoute?.name) {
-      document.title = `${t('app.abbreviation')} - ${t(`menu.${currentRoute.name}`)}`;
-    }
-  }, [pathname, language, permissions]);
+    document.title =
+      currentRoute?.name && currentRoute.path !== '/'
+        ? `${t('app.abbreviation')} - ${t(`menu.${currentRoute.name}`)}`
+        : t('app.abbreviation');
 
-  // 路由鉴权
-  if (token) {
+    // 无token
+    if (!token) {
+      return navigate('/login', { replace: true });
+    }
+
     if (pathname === '/login') {
-      return <Navigate to="/" replace />;
+      return navigate('/home', { replace: true });
     }
 
     // 若该路由为分组,则跳转到子路由中第一个路由
     if (currentRoute?.children && currentRoute.children.length > 0) {
       const defaultPath = getDefaultPath(currentRoute);
-      return <Navigate to={defaultPath} replace />;
+      return navigate(defaultPath, { replace: true });
     }
-  } else {
-    // 无token
-    if (pathname !== '/login') {
-      // 访问非登录页面,统一重定向至登录页
-      return <Navigate to="/login" replace />;
-    }
-  }
+  }, [pathname, language, permissions, token]);
+
   // 必须用空元素包裹children,否则会报类型错误
   return <>{children}</>;
 };

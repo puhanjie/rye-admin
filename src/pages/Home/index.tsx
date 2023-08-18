@@ -1,17 +1,15 @@
 import PageWrapper from '@/components/PageWrapper';
 import { Result } from 'antd';
 import styles from './index.module.less';
+import { useTranslation } from 'react-i18next';
 
-const Analysis: React.FC = () => {
+const Home: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <PageWrapper className={styles['container']}>
-      <Result
-        status="success"
-        title="Welcome!"
-        subTitle="Cloud server configuration takes 1-5 minutes, please wait."
-      />
+      <Result status="success" title={t('pages.home.title')} />
     </PageWrapper>
   );
 };
 
-export default Analysis;
+export default Home;

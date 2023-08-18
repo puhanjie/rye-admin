@@ -1,4 +1,4 @@
-import { AppstoreOutlined, DashboardOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { lazy } from 'react';
 
 const routeConfig: RouteConfig[] = [
@@ -14,25 +14,16 @@ const routeConfig: RouteConfig[] = [
   },
   {
     path: '/',
-    name: 'home',
+    name: '/',
     component: lazy(() => import('@/layouts')),
     children: [
       {
-        path: 'dashboard',
-        name: 'dashboard',
+        path: 'home',
+        name: 'home',
+        component: lazy(() => import('@/pages/Home')),
         meta: {
-          icon: <DashboardOutlined />
-        },
-        children: [
-          {
-            path: 'analysis',
-            name: 'analysis',
-            component: lazy(() => import('@/pages/Dashboard/Analysis')),
-            meta: {
-              access: 'analysis:view'
-            }
-          }
-        ]
+          icon: <HomeOutlined />
+        }
       },
       {
         path: 'system',

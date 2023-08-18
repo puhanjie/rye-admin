@@ -32,7 +32,7 @@ const LoginForm: React.FC<Props> = ({ loginType }) => {
     if (res?.data) {
       // 登录成功,保存token
       setToken(res.data.token);
-      navigate('/');
+      navigate('/home');
     }
   };
 

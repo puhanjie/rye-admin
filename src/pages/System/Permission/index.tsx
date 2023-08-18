@@ -28,7 +28,8 @@ const Permission: React.FC = () => {
   const [permissionData, setPermissionData] = useState<API.PageInfo<TablePermissionInfo[]>>();
   const [selectData, setSelectData] = useState<TablePermissionInfo[]>([]);
   const [loading, setLoading] = useState(true);
-  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
+  const filterRoute = routeConfig.filter((item) => item.path === '/')[0].children;
+  const menuData = filterRoute ? filterRoute.filter((item) => item.name !== 'home') : [];
 
   useEffect(() => {
     (async () => {
