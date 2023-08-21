@@ -20,6 +20,10 @@ const HeaderRight: React.FC = () => {
       label: t('pages.layouts.header.settings')
     },
     {
+      // 分割线
+      type: 'divider' as const
+    },
+    {
       key: 'loginout',
       icon: <LoginOutlined />,
       label: t('pages.layouts.header.signOut')
