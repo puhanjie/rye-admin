@@ -1,4 +1,4 @@
-import { Form, Input, Modal, TreeSelect, message } from 'antd';
+import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
@@ -59,9 +59,9 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
   return (
     <div>
       <AuthWrapper permission="permission:edit">
-        <a type="link" onClick={() => setIsOpen(true)}>
+        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
           {t('pages.permission.edit')}
-        </a>
+        </Button>
       </AuthWrapper>
       <Modal
         title={t('pages.permission.editModal.title')}

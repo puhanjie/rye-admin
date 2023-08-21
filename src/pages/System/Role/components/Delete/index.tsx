@@ -1,4 +1,4 @@
-import { Popconfirm, message } from 'antd';
+import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableRoleInfo } from '../..';
 import { getRoleList, removeRole } from '@/services/role';
@@ -47,7 +47,9 @@ const Delete: React.FC<Props> = ({ selectId, setRoleData }) => {
           okText={t('common.yes')}
           cancelText={t('common.no')}
         >
-          <a>{t('pages.role.delete')}</a>
+          <Button type="link" style={{ padding: 0 }}>
+            {t('pages.role.delete')}
+          </Button>
         </Popconfirm>
       </AuthWrapper>
     </div>

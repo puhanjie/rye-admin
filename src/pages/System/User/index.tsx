@@ -31,7 +31,6 @@ const User: React.FC = () => {
   const [userData, setUserData] = useState<API.PageInfo<TableUserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
   const [userStatusData, setUserStatusData] = useState<API.DictionaryInfo[]>([]);
-  // const [selectData, setSelectData] = useState<TableUserInfo[]>([]);
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 

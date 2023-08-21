@@ -1,5 +1,5 @@
 import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/general';
-import { Form, Input, Modal, Select, message } from 'antd';
+import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableUserInfo } from '../..';
@@ -63,9 +63,9 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
   return (
     <div>
       <AuthWrapper permission="user:edit">
-        <a type="link" onClick={() => setIsOpen(true)}>
+        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
           {t('pages.user.edit')}
-        </a>
+        </Button>
       </AuthWrapper>
       <Modal
         title={t('pages.user.editModal.title')}

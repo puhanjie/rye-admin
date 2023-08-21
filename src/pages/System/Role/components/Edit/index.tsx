@@ -1,7 +1,7 @@
 import routeConfig from '@/router';
 import { editRole, getRoleList } from '@/services/role';
 import { getPermissionTreeData } from '@/utils/general';
-import { Form, Input, Modal, TreeSelect, message } from 'antd';
+import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableRoleInfo } from '../..';
@@ -76,9 +76,9 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
   return (
     <div>
       <AuthWrapper permission="role:edit">
-        <a type="link" onClick={() => setIsOpen(true)}>
+        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
           {t('pages.role.edit')}
-        </a>
+        </Button>
       </AuthWrapper>
       <Modal
         title={t('pages.role.editModal.title')}

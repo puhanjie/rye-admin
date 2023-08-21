@@ -1,4 +1,4 @@
-import { Form, Input, Modal, message } from 'antd';
+import { Button, Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TableDictionaryInfo } from '../..';
@@ -60,9 +60,9 @@ const Edit: React.FC<Props> = ({ dictionaryData, setDictionaryData }) => {
   return (
     <div>
       <AuthWrapper permission="dictionary:edit">
-        <a type="link" onClick={() => setIsOpen(true)}>
+        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
           {t('pages.dictionary.edit')}
-        </a>
+        </Button>
       </AuthWrapper>
       <Modal
         title={t('pages.dictionary.editModal.title')}

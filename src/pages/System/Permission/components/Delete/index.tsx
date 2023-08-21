@@ -1,4 +1,4 @@
-import { Popconfirm, message } from 'antd';
+import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TablePermissionInfo } from '../..';
 import { getPermissionList, removePermission } from '@/services/permission';
@@ -49,7 +49,9 @@ const Delete: React.FC<Props> = ({ selectId, setPermissionData }) => {
           okText={t('common.yes')}
           cancelText={t('common.no')}
         >
-          <a>{t('pages.permission.delete')}</a>
+          <Button type="link" style={{ padding: 0 }}>
+            {t('pages.permission.delete')}
+          </Button>
         </Popconfirm>
       </AuthWrapper>
     </div>

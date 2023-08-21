@@ -1,4 +1,4 @@
-import { Popconfirm, message } from 'antd';
+import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -51,7 +51,9 @@ const Delete: React.FC<Props> = ({ selectId, setDictionaryData }) => {
           okText={t('common.yes')}
           cancelText={t('common.no')}
         >
-          <a>{t('pages.dictionary.delete')}</a>
+          <Button type="link" style={{ padding: 0 }}>
+            {t('pages.dictionary.delete')}
+          </Button>
         </Popconfirm>
       </AuthWrapper>
     </div>
