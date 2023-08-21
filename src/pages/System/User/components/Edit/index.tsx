@@ -2,7 +2,6 @@ import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/genera
 import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo } from '../..';
 import { editUser, getUserList } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
@@ -21,7 +20,7 @@ type EditUserInfo = {
 
 type Props = {
   userData: EditUserInfo;
-  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
+  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
 };
 
 const Edit: React.FC<Props> = ({ userData, setUserData }) => {
@@ -42,16 +41,10 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
     }
     // 修改用户成功后重新获取用户列表数据
     const queryResult = await getUserList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableUserInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setUserData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setUserData(queryResult.data);
     message.success(t('pages.user.edit.tip.success'));
   };
 
@@ -63,7 +56,12 @@ const Edit: React.FC<Props> = ({ userData, setUserData }) => {
   return (
     <div>
       <AuthWrapper permission="user:edit">
-        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
+        <Button
+          type="link"
+          size="small"
+          onClick={() => setIsOpen(true)}
+          style={{ padding: 0, border: 0, height: 22 }}
+        >
           {t('pages.user.edit')}
         </Button>
       </AuthWrapper>

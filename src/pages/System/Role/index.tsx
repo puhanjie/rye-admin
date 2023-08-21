@@ -18,38 +18,27 @@ type QueryParams = {
   info?: string;
 };
 
-export type TableRoleInfo = {
-  key: number;
-} & API.RoleInfo;
-
 const Role: React.FC = () => {
   const { t } = useTranslation();
-  const [roleData, setRoleData] = useState<API.PageInfo<TableRoleInfo[]>>();
+  const [roleData, setRoleData] = useState<API.PageInfo<API.RoleInfo[]>>();
   const [permissionData, setPermissionData] = useState<API.PermissionInfo[]>([]);
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const roleDataRes = await getRoleList();
-      const permissionDataRes = await getPermissions();
-      if (!roleDataRes.data || !permissionDataRes.data) {
+      const roleRes = await getRoleList();
+      const permissionRes = await getPermissions();
+      if (!roleRes.data || !permissionRes.data) {
         return;
       }
-      const roleData: API.PageInfo<TableRoleInfo[]> = {
-        records: roleDataRes.data.records.map((item) => ({ key: item.id, ...item })),
-        total: roleDataRes.data.total,
-        size: roleDataRes.data.size,
-        current: roleDataRes.data.current,
-        pages: roleDataRes.data.pages
-      };
-      setRoleData(roleData);
-      setPermissionData(permissionDataRes.data);
+      setRoleData(roleRes.data);
+      setPermissionData(permissionRes.data);
       setLoading(false);
     })();
   }, []);
 
-  const tableColumns: ColumnsType<TableRoleInfo> = [
+  const tableColumns: ColumnsType<API.RoleInfo> = [
     {
       title: t('pages.role.name'),
       dataIndex: 'name',
@@ -106,16 +95,10 @@ const Role: React.FC = () => {
 
   const queryData = async (params?: API.PermissionPageQuery) => {
     const res = await getRoleList(params);
-    if (res.data) {
-      const data: API.PageInfo<TableRoleInfo[]> = {
-        records: res.data.records.map((item) => ({ key: item.id, ...item })),
-        total: res.data.total,
-        size: res.data.size,
-        current: res.data.current,
-        pages: res.data.pages
-      };
-      setRoleData(data);
+    if (!res.data) {
+      return;
     }
+    setRoleData(res.data);
   };
 
   const handleQuery = (values: QueryParams) => {
@@ -128,7 +111,7 @@ const Role: React.FC = () => {
   };
 
   const getSelectData = (keys: Key[]) => {
-    return roleData?.records ? roleData.records.filter((item) => keys.indexOf(item.key) >= 0) : [];
+    return roleData?.records ? roleData.records.filter((item) => keys.indexOf(item.id) >= 0) : [];
   };
 
   return (
@@ -154,18 +137,19 @@ const Role: React.FC = () => {
           }}
           onRow={(record) => ({
             onClick: () => {
-              if (selectKeys.indexOf(record.key) < 0) {
+              if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
                 const keys = selectKeys.concat();
-                keys.push(record.key);
+                keys.push(record.id);
                 setSelectKeys(keys);
               } else {
                 // 清除选中数据
-                const keys = selectKeys.filter((item) => item !== record.key);
+                const keys = selectKeys.filter((item) => item !== record.id);
                 setSelectKeys(keys);
               }
             }
           })}
+          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

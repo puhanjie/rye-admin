@@ -2,13 +2,12 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 import { addDictionary, getDictionaryList } from '@/services/dictionary';
 
 type Props = {
   setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<TableDictionaryInfo[]> | undefined>
+    React.SetStateAction<API.PageInfo<API.DictionaryInfo[]> | undefined>
   >;
 };
 
@@ -28,16 +27,10 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
     }
     // 新增字典成功后重新获取字典列表数据
     const queryResult = await getDictionaryList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableDictionaryInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setDictionaryData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setDictionaryData(queryResult.data);
     message.success(t('pages.dictionary.add.tip.success'));
   };
 

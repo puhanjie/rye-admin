@@ -1,14 +1,13 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 import { getDictionaryList, removeDictionary } from '@/services/dictionary';
 
 type Props = {
-  selectData: TableDictionaryInfo[];
+  selectData: API.DictionaryInfo[];
   setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<TableDictionaryInfo[]> | undefined>
+    React.SetStateAction<API.PageInfo<API.DictionaryInfo[]> | undefined>
   >;
 };
 
@@ -28,16 +27,10 @@ const BatchDelete: React.FC<Props> = ({ selectData, setDictionaryData }) => {
     }
     // 删除成功后重新获取字典列表数据
     const queryResult = await getDictionaryList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableDictionaryInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setDictionaryData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setDictionaryData(queryResult.data);
     message.success(t('pages.dictionary.batchDelete.tip.success'));
   };
 

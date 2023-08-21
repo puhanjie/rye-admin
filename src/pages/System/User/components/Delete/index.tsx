@@ -1,12 +1,11 @@
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo } from '../..';
 import { getUserList, removeUser } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   selectId: number;
-  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
+  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
 };
 
 const Delete: React.FC<Props> = ({ selectId, setUserData }) => {
@@ -24,16 +23,10 @@ const Delete: React.FC<Props> = ({ selectId, setUserData }) => {
     }
     // 删除用户成功后重新获取用户列表数据
     const queryResult = await getUserList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableUserInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setUserData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setUserData(queryResult.data);
     message.success(t('pages.user.delete.tip.success'));
   };
 
@@ -47,7 +40,7 @@ const Delete: React.FC<Props> = ({ selectId, setUserData }) => {
           okText={t('common.yes')}
           cancelText={t('common.no')}
         >
-          <Button type="link" style={{ padding: 0 }}>
+          <Button type="link" size="small" style={{ padding: 0, border: 0, height: 22 }}>
             {t('pages.user.delete')}
           </Button>
         </Popconfirm>

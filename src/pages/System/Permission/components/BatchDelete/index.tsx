@@ -1,14 +1,13 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import type { TablePermissionInfo } from '../..';
 import { getPermissionList, removePermission } from '@/services/permission';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  selectData: TablePermissionInfo[];
+  selectData: API.PermissionInfo[];
   setPermissionData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<TablePermissionInfo[]> | undefined>
+    React.SetStateAction<API.PageInfo<API.PermissionInfo[]> | undefined>
   >;
 };
 
@@ -28,16 +27,10 @@ const BatchDelete: React.FC<Props> = ({ selectData, setPermissionData }) => {
     }
     // 删除成功后重新获取权限列表数据
     const queryResult = await getPermissionList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TablePermissionInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setPermissionData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setPermissionData(queryResult.data);
     message.success(t('pages.permission.batchDelete.tip.success'));
   };
 

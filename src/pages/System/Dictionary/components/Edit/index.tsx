@@ -1,7 +1,6 @@
 import { Button, Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableDictionaryInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 import { editDictionary, getDictionaryList } from '@/services/dictionary';
 
@@ -17,7 +16,7 @@ type EditDictionaryInfo = {
 type Props = {
   dictionaryData: EditDictionaryInfo;
   setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<TableDictionaryInfo[]> | undefined>
+    React.SetStateAction<API.PageInfo<API.DictionaryInfo[]> | undefined>
   >;
 };
 
@@ -37,18 +36,10 @@ const Edit: React.FC<Props> = ({ dictionaryData, setDictionaryData }) => {
     }
     // 编辑字典成功后重新获取字典列表数据
     const queryResult = await getDictionaryList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableDictionaryInfo[]> = {
-        records: queryResult.data.records.map((item) => {
-          return { key: item.id, ...item };
-        }),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setDictionaryData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setDictionaryData(queryResult.data);
     message.success(t('pages.dictionary.edit.tip.success'));
   };
 
@@ -60,7 +51,12 @@ const Edit: React.FC<Props> = ({ dictionaryData, setDictionaryData }) => {
   return (
     <div>
       <AuthWrapper permission="dictionary:edit">
-        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
+        <Button
+          type="link"
+          size="small"
+          onClick={() => setIsOpen(true)}
+          style={{ padding: 0, border: 0, height: 22 }}
+        >
           {t('pages.dictionary.edit')}
         </Button>
       </AuthWrapper>

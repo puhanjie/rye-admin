@@ -5,12 +5,11 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableRoleInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   permissionData: API.PermissionInfo[];
-  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<TableRoleInfo[]> | undefined>>;
+  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<API.RoleInfo[]> | undefined>>;
 };
 
 const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
@@ -31,16 +30,10 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
     }
     // 新增角色成功后重新获取角色列表数据
     const queryResult = await getRoleList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableRoleInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setRoleData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setRoleData(queryResult.data);
     message.success(t('pages.role.add.tip.success'));
   };
 

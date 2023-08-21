@@ -20,36 +20,25 @@ type QueryParams = {
   menu?: string;
 };
 
-export type TablePermissionInfo = {
-  key: number;
-} & API.PermissionInfo;
-
 const Permission: React.FC = () => {
   const { t } = useTranslation();
-  const [permissionData, setPermissionData] = useState<API.PageInfo<TablePermissionInfo[]>>();
+  const [permissionData, setPermissionData] = useState<API.PageInfo<API.PermissionInfo[]>>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   useEffect(() => {
     (async () => {
-      const permissionDataRes = await getPermissionList();
-      if (!permissionDataRes.data) {
+      const permissionRes = await getPermissionList();
+      if (!permissionRes.data) {
         return;
       }
-      const permissionData: API.PageInfo<TablePermissionInfo[]> = {
-        records: permissionDataRes.data.records.map((item) => ({ key: item.id, ...item })),
-        total: permissionDataRes.data.total,
-        size: permissionDataRes.data.size,
-        current: permissionDataRes.data.current,
-        pages: permissionDataRes.data.pages
-      };
-      setPermissionData(permissionData);
+      setPermissionData(permissionRes.data);
       setLoading(false);
     })();
   }, []);
 
-  const tableColumns: ColumnsType<TablePermissionInfo> = [
+  const tableColumns: ColumnsType<API.PermissionInfo> = [
     {
       title: t('pages.permission.name'),
       dataIndex: 'name',
@@ -121,16 +110,10 @@ const Permission: React.FC = () => {
 
   const queryData = async (params?: API.PermissionPageQuery) => {
     const res = await getPermissionList(params);
-    if (res.data) {
-      const data: API.PageInfo<TablePermissionInfo[]> = {
-        records: res.data.records.map((item) => ({ key: item.id, ...item })),
-        total: res.data.total,
-        size: res.data.size,
-        current: res.data.current,
-        pages: res.data.pages
-      };
-      setPermissionData(data);
+    if (!res.data) {
+      return;
     }
+    setPermissionData(res.data);
   };
 
   const handleQuery = (values: QueryParams) => {
@@ -144,7 +127,7 @@ const Permission: React.FC = () => {
 
   const getSelectData = (keys: Key[]) => {
     return permissionData?.records
-      ? permissionData.records.filter((item) => keys.indexOf(item.key) >= 0)
+      ? permissionData.records.filter((item) => keys.indexOf(item.id) >= 0)
       : [];
   };
 
@@ -174,18 +157,19 @@ const Permission: React.FC = () => {
           }}
           onRow={(record) => ({
             onClick: () => {
-              if (selectKeys.indexOf(record.key) < 0) {
+              if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
                 const keys = selectKeys.concat();
-                keys.push(record.key);
+                keys.push(record.id);
                 setSelectKeys(keys);
               } else {
                 // 清除选中数据
-                const keys = selectKeys.filter((item) => item !== record.key);
+                const keys = selectKeys.filter((item) => item !== record.id);
                 setSelectKeys(keys);
               }
             }
           })}
+          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

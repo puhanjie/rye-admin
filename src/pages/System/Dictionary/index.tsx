@@ -17,30 +17,19 @@ type QueryParams = {
   itemText?: string;
 };
 
-export type TableDictionaryInfo = {
-  key: number;
-} & API.DictionaryInfo;
-
 const Dictionary: React.FC = () => {
   const { t } = useTranslation();
-  const [dictionaryData, setDictionaryData] = useState<API.PageInfo<TableDictionaryInfo[]>>();
+  const [dictionaryData, setDictionaryData] = useState<API.PageInfo<API.DictionaryInfo[]>>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const dictionaryDataRes = await getDictionaryList();
-      if (!dictionaryDataRes.data) {
+      const dictionaryRes = await getDictionaryList();
+      if (!dictionaryRes.data) {
         return;
       }
-      const dictionaryData: API.PageInfo<TableDictionaryInfo[]> = {
-        records: dictionaryDataRes.data.records.map((item) => ({ key: item.id, ...item })),
-        total: dictionaryDataRes.data.total,
-        size: dictionaryDataRes.data.size,
-        current: dictionaryDataRes.data.current,
-        pages: dictionaryDataRes.data.pages
-      };
-      setDictionaryData(dictionaryData);
+      setDictionaryData(dictionaryRes.data);
       setLoading(false);
     })();
   }, []);
@@ -51,7 +40,7 @@ const Dictionary: React.FC = () => {
    * @param column 需要合并的行所在的列属性名
    * @returns
    */
-  const getRowSpan = (record: TableDictionaryInfo, column: string) => {
+  const getRowSpan = (record: API.DictionaryInfo, column: string) => {
     const data = dictionaryData?.records.filter(
       (item) => item[column as keyof typeof item] === record[column as keyof typeof item]
     );
@@ -63,7 +52,7 @@ const Dictionary: React.FC = () => {
     return record.id === minId ? ids.length : 0;
   };
 
-  const tableColumns: ColumnsType<TableDictionaryInfo> = [
+  const tableColumns: ColumnsType<API.DictionaryInfo> = [
     {
       title: t('pages.dictionary.dictName'),
       dataIndex: 'dictName',
@@ -142,16 +131,10 @@ const Dictionary: React.FC = () => {
 
   const queryData = async (params?: API.DictionaryPageQuery) => {
     const res = await getDictionaryList(params);
-    if (res.data) {
-      const data: API.PageInfo<TableDictionaryInfo[]> = {
-        records: res.data.records.map((item) => ({ key: item.id, ...item })),
-        total: res.data.total,
-        size: res.data.size,
-        current: res.data.current,
-        pages: res.data.pages
-      };
-      setDictionaryData(data);
+    if (!res.data) {
+      return;
     }
+    setDictionaryData(res.data);
   };
 
   const handleQuery = (values: QueryParams) => {
@@ -165,7 +148,7 @@ const Dictionary: React.FC = () => {
 
   const getSelectData = (keys: Key[]) => {
     return dictionaryData?.records
-      ? dictionaryData.records.filter((item) => keys.indexOf(item.key) >= 0)
+      ? dictionaryData.records.filter((item) => keys.indexOf(item.id) >= 0)
       : [];
   };
 
@@ -195,18 +178,19 @@ const Dictionary: React.FC = () => {
           }}
           onRow={(record) => ({
             onClick: () => {
-              if (selectKeys.indexOf(record.key) < 0) {
+              if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
                 const keys = selectKeys.concat();
-                keys.push(record.key);
+                keys.push(record.id);
                 setSelectKeys(keys);
               } else {
                 // 清除选中数据
-                const keys = selectKeys.filter((item) => item !== record.key);
+                const keys = selectKeys.filter((item) => item !== record.id);
                 setSelectKeys(keys);
               }
             }
           })}
+          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

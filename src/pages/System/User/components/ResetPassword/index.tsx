@@ -1,6 +1,5 @@
 import { Button, Form, Input, Modal, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo } from '../..';
 import { useState } from 'react';
 import { updatePassword } from '@/services/user';
 import { ReloadOutlined } from '@ant-design/icons';
@@ -8,7 +7,7 @@ import AuthWrapper from '@/components/AuthWrapper';
 import MD5 from 'crypto-js/md5';
 
 type Props = {
-  selectData: TableUserInfo[];
+  selectData: API.UserInfo[];
   clearSelectData: () => void;
 };
 

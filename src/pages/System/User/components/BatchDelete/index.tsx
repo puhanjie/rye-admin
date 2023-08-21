@@ -1,13 +1,12 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo } from '../..';
 import { getUserList, removeUser } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  selectData: TableUserInfo[];
-  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
+  selectData: API.UserInfo[];
+  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
 };
 
 const BatchDelete: React.FC<Props> = ({ selectData, setUserData }) => {
@@ -26,16 +25,10 @@ const BatchDelete: React.FC<Props> = ({ selectData, setUserData }) => {
     }
     // 删除成功后重新获取用户列表数据
     const queryResult = await getUserList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableUserInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setUserData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setUserData(queryResult.data);
     message.success(t('pages.user.batchDelete.tip.success'));
   };
 

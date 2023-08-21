@@ -22,13 +22,9 @@ type QueryParams = {
   email?: string;
 };
 
-export type TableUserInfo = {
-  key: number;
-} & API.UserInfo;
-
 const User: React.FC = () => {
   const { t } = useTranslation();
-  const [userData, setUserData] = useState<API.PageInfo<TableUserInfo[]>>();
+  const [userData, setUserData] = useState<API.PageInfo<API.UserInfo[]>>();
   const [roleData, setRoleData] = useState<API.RoleInfo[]>([]);
   const [userStatusData, setUserStatusData] = useState<API.DictionaryInfo[]>([]);
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
@@ -36,27 +32,20 @@ const User: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const userDataRes = await getUserList();
-      const roleDataRes = await getRoles();
+      const userRes = await getUserList();
+      const roleRes = await getRoles();
       const userStatusDataRes = await getDictionarys({ dictName: 'user_status' });
-      if (!userDataRes.data || !roleDataRes.data || !userStatusDataRes.data) {
+      if (!userRes.data || !roleRes.data || !userStatusDataRes.data) {
         return;
       }
-      const userData: API.PageInfo<TableUserInfo[]> = {
-        records: userDataRes.data.records.map((item) => ({ key: item.id, ...item })),
-        total: userDataRes.data.total,
-        size: userDataRes.data.size,
-        current: userDataRes.data.current,
-        pages: userDataRes.data.pages
-      };
-      setUserData(userData);
-      setRoleData(roleDataRes.data);
+      setUserData(userRes.data);
+      setRoleData(roleRes.data);
       setUserStatusData(userStatusDataRes.data);
       setLoading(false);
     })();
   }, []);
 
-  const tableColumns: ColumnsType<TableUserInfo> = [
+  const tableColumns: ColumnsType<API.UserInfo> = [
     {
       title: t('pages.user.username'),
       dataIndex: 'username',
@@ -169,16 +158,10 @@ const User: React.FC = () => {
 
   const queryData = async (params?: API.UserPageQuery) => {
     const res = await getUserList(params);
-    if (res.data) {
-      const data: API.PageInfo<TableUserInfo[]> = {
-        records: res.data.records.map((item) => ({ key: item.id, ...item })),
-        total: res.data.total,
-        size: res.data.size,
-        current: res.data.current,
-        pages: res.data.pages
-      };
-      setUserData(data);
+    if (!res.data) {
+      return;
     }
+    setUserData(res.data);
   };
 
   const handleQuery = (values: QueryParams) => {
@@ -191,7 +174,7 @@ const User: React.FC = () => {
   };
 
   const getSelectData = (keys: Key[]) => {
-    return userData?.records ? userData.records.filter((item) => keys.indexOf(item.key) >= 0) : [];
+    return userData?.records ? userData.records.filter((item) => keys.indexOf(item.id) >= 0) : [];
   };
 
   return (
@@ -218,18 +201,19 @@ const User: React.FC = () => {
           }}
           onRow={(record) => ({
             onClick: () => {
-              if (selectKeys.indexOf(record.key) < 0) {
+              if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
                 const keys = selectKeys.concat();
-                keys.push(record.key);
+                keys.push(record.id);
                 setSelectKeys(keys);
               } else {
                 // 清除选中数据
-                const keys = selectKeys.filter((item) => item !== record.key);
+                const keys = selectKeys.filter((item) => item !== record.id);
                 setSelectKeys(keys);
               }
             }
           })}
+          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
           scroll={{ x: 'max-content' }}
           pagination={{
             defaultPageSize: 10,

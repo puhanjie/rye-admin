@@ -4,7 +4,6 @@ import { getPermissionTreeData } from '@/utils/general';
 import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableRoleInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 import { ADMIN } from '@/config/constant';
 
@@ -18,7 +17,7 @@ type EditRoleInfo = {
 
 type Props = {
   roleData: EditRoleInfo;
-  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<TableRoleInfo[]> | undefined>>;
+  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<API.RoleInfo[]> | undefined>>;
 };
 
 const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
@@ -55,16 +54,10 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
     }
     // 编辑角色成功后重新获取角色列表数据
     const queryResult = await getRoleList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableRoleInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setRoleData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setRoleData(queryResult.data);
     message.success(t('pages.role.edit.tip.success'));
   };
 
@@ -76,7 +69,12 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
   return (
     <div>
       <AuthWrapper permission="role:edit">
-        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
+        <Button
+          type="link"
+          size="small"
+          onClick={() => setIsOpen(true)}
+          style={{ padding: 0, border: 0, height: 22 }}
+        >
           {t('pages.role.edit')}
         </Button>
       </AuthWrapper>

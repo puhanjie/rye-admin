@@ -1,7 +1,6 @@
 import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TablePermissionInfo } from '../..';
 import { editPermission, getPermissionList } from '@/services/permission';
 import routeConfig from '@/router';
 import { getMenuTree } from '@/utils/general';
@@ -17,7 +16,7 @@ type EditPermissionInfo = {
 type Props = {
   permissionData: EditPermissionInfo;
   setPermissionData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<TablePermissionInfo[]> | undefined>
+    React.SetStateAction<API.PageInfo<API.PermissionInfo[]> | undefined>
   >;
 };
 
@@ -38,16 +37,10 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
     }
     // 编辑权限成功后重新获取权限列表数据
     const queryResult = await getPermissionList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TablePermissionInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setPermissionData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setPermissionData(queryResult.data);
     message.success(t('pages.permission.edit.tip.success'));
   };
 
@@ -59,7 +52,12 @@ const Edit: React.FC<Props> = ({ permissionData, setPermissionData }) => {
   return (
     <div>
       <AuthWrapper permission="permission:edit">
-        <Button type="link" onClick={() => setIsOpen(true)} style={{ padding: 0 }}>
+        <Button
+          type="link"
+          size="small"
+          onClick={() => setIsOpen(true)}
+          style={{ padding: 0, border: 0, height: 22 }}
+        >
           {t('pages.permission.edit')}
         </Button>
       </AuthWrapper>

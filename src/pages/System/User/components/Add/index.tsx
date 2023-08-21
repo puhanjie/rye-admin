@@ -4,14 +4,13 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { TableUserInfo } from '../..';
 import AuthWrapper from '@/components/AuthWrapper';
 import MD5 from 'crypto-js/md5';
 
 type Props = {
   roleData: API.RoleInfo[];
   userStatus: API.DictionaryInfo[];
-  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<TableUserInfo[]> | undefined>>;
+  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
 };
 
 const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
@@ -33,16 +32,10 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
     }
     // 新增用户成功后重新获取用户列表数据
     const queryResult = await getUserList();
-    if (queryResult.data) {
-      const data: API.PageInfo<TableUserInfo[]> = {
-        records: queryResult.data.records.map((item) => ({ key: item.id, ...item })),
-        total: queryResult.data.total,
-        size: queryResult.data.size,
-        current: queryResult.data.current,
-        pages: queryResult.data.pages
-      };
-      setUserData(data);
+    if (!queryResult.data) {
+      return;
     }
+    setUserData(queryResult.data);
     message.success(t('pages.user.add.tip.success'));
   };
 
