@@ -28,16 +28,10 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
 
   const getFormInitData = (initValues: EditRoleInfo) => {
     const formInitData: EditRoleInfo = initValues;
-    if (initValues?.permissions) {
-      // 筛选出admin权限
-      const adminPermission = initValues.permissions?.filter(
-        (item) => item === ADMIN.id.toString()
-      );
-      if (adminPermission.length > 0) {
-        const permissionIds = initValues.permissionList.map((item) => item.id.toString());
-        formInitData.permissions = permissionIds.filter((item) => item !== ADMIN.id.toString());
-        return formInitData;
-      }
+    // 管理员返回所有权限
+    const isAdmin = initValues.name === ADMIN.name ? true : false;
+    if (isAdmin) {
+      formInitData.permissions = initValues.permissionList.map((item) => item.id.toString());
     }
     return formInitData;
   };

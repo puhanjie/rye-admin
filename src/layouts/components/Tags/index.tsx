@@ -1,12 +1,10 @@
 import { Tag, theme } from 'antd';
-import { matchRoutes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
 import { useEffect, useRef, useState } from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import routeConfig from '@/router';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@/store';
-import { getAuthRoutes } from '@/utils/route';
+import { useRouter } from '@/hooks/useRouter';
 
 type TagData = {
   name?: string;
@@ -20,7 +18,7 @@ const Tags: React.FC = () => {
   const [distance, setDistance] = useState(0);
   const [tags, setTags] = useState<TagData[]>([]);
   const scroll = useRef<HTMLInputElement>(null);
-  const { permissions } = useAppSelector((state) => state.user);
+  const { currentRoute } = useRouter();
 
   const {
     token: { colorPrimary }
@@ -59,8 +57,7 @@ const Tags: React.FC = () => {
     return false;
   };
 
-  const addTags = (route: RouteConfig[], tags: TagData[]) => {
-    const currentRoute = matchRoutes(route, pathname)?.slice(-1)[0];
+  const addTags = (tags: TagData[]) => {
     const findData = tags.filter((item) => item.path === pathname);
 
     // 未发现路由则跳转至首页
@@ -103,14 +100,7 @@ const Tags: React.FC = () => {
   };
 
   useEffect(() => {
-    let authRoutes: RouteConfig[] = [];
-    if (permissions) {
-      authRoutes = getAuthRoutes(
-        routeConfig,
-        permissions.map((item) => item.name)
-      );
-    }
-    addTags(authRoutes, tags);
+    addTags(tags);
   }, [pathname]);
 
   const MenuTags = tags.map((item) => {

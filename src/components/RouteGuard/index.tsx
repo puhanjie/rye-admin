@@ -1,10 +1,10 @@
-import routeConfig from '@/router';
+import { useRouter } from '@/hooks/useRouter';
 import { useAppSelector } from '@/store';
 import { getToken } from '@/utils/auth';
-import { getAuthRoutes, getDefaultPath } from '@/utils/route';
+import { getDefaultPath } from '@/utils/route';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { matchRoutes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type Props = {
   children: React.ReactNode;
@@ -12,26 +12,18 @@ type Props = {
 
 const RouteGuard: React.FC<Props> = ({ children }) => {
   const { t, i18n } = useTranslation();
-  const language = i18n.language;
-  const token = getToken();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
   const { permissions } = useAppSelector((state) => state.user);
-  let authRoutes: RouteConfig[] = [];
-  if (permissions) {
-    authRoutes = getAuthRoutes(
-      routeConfig,
-      permissions.map((item) => item.name)
-    );
-  }
-  const routeMatch = matchRoutes(authRoutes, pathname);
-  const currentRoute = routeMatch && routeMatch.slice(-1)[0].route;
+  const { currentRoute } = useRouter();
+
+  const language = i18n.language;
+  const token = getToken();
 
   useEffect(() => {
     document.title =
-      currentRoute?.name && currentRoute.path !== '/'
-        ? `${t('app.abbreviation')} - ${t(`menu.${currentRoute.name}`)}`
+      currentRoute?.route.name && currentRoute.route.path !== '/'
+        ? `${t('app.abbreviation')} - ${t(`menu.${currentRoute.route.name}`)}`
         : t('app.abbreviation');
 
     // 无token
@@ -44,8 +36,8 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
     }
 
     // 若该路由为分组,则跳转到子路由中第一个路由
-    if (currentRoute?.children && currentRoute.children.length > 0) {
-      const defaultPath = getDefaultPath(currentRoute);
+    if (currentRoute?.route.children && currentRoute.route.children.length > 0) {
+      const defaultPath = getDefaultPath(currentRoute.route);
       return navigate(defaultPath, { replace: true });
     }
   }, [pathname, language, permissions, token]);

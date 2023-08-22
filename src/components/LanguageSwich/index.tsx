@@ -1,29 +1,31 @@
+import { Dropdown } from 'antd';
 import styles from './index.module.less';
 import { useTranslation } from 'react-i18next';
 
 const LanguageSwich: React.FC = () => {
   const { i18n } = useTranslation();
 
+  const items = [
+    {
+      key: 'zhCN',
+      label: '简体中文'
+    },
+    {
+      key: 'enUS',
+      label: 'English'
+    }
+  ];
+
+  const onClick = ({ key }: { key: string }) => {
+    i18n.changeLanguage(key);
+  };
+
   return (
-    <div
-      className={styles.language}
-      onClick={() => i18n.changeLanguage(i18n.language === 'zhCN' ? 'enUS' : 'zhCN')}
-    >
-      <span
-        className={`${styles['language-zh']} ${
-          i18n.language === 'zhCN' ? styles['language-top'] : styles['language-bottom']
-        }`}
-      >
-        中
+    <Dropdown menu={{ items, selectedKeys: [i18n.language], onClick }}>
+      <span className={styles['container']}>
+        <img src="/src/assets/language.svg" className={styles['language']} />
       </span>
-      <span
-        className={`${styles['language-en']} ${
-          i18n.language === 'enUS' ? styles['language-top'] : styles['language-bottom']
-        }`}
-      >
-        En
-      </span>
-    </div>
+    </Dropdown>
   );
 };
 

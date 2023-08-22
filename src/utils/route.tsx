@@ -3,7 +3,7 @@ import { resolve } from './path';
 import RouteGuard from '@/components/RouteGuard';
 import { Suspense } from 'react';
 import Loading from '@/components/Loading';
-import { ADMIN } from '@/config/constant';
+// import { ADMIN } from '@/config/constant';
 
 /**
  * 获取路由对象的默认路由,若有children,默认返回第一个children的path,无就是自身path
@@ -67,7 +67,7 @@ export function renderAuthRoutes(routes: RouteObject[]): RouteObject[] {
  * @param permissions
  * @returns
  */
-export function getAuthRoutes(routes: RouteConfig[], permissions: string[]) {
+export function getAuthRoutes(routes: RouteConfig[], permissions: string[], isAdmin: boolean) {
   const authRoutes: RouteConfig[] = [];
   routes.map((item) => {
     const route: RouteConfig = {
@@ -79,7 +79,7 @@ export function getAuthRoutes(routes: RouteConfig[], permissions: string[]) {
     // 权限判断
     if (item.meta?.access) {
       const permissionData = permissions.filter(
-        (permission) => permission === item.meta?.access || permission === ADMIN.name
+        (permission) => permission === item.meta?.access || isAdmin
       );
       // 无路由权限
       if (permissionData.length <= 0) {
@@ -88,7 +88,7 @@ export function getAuthRoutes(routes: RouteConfig[], permissions: string[]) {
     }
 
     if (item.children) {
-      route.children = getAuthRoutes(item.children, permissions);
+      route.children = getAuthRoutes(item.children, permissions, isAdmin);
       // 若路由对象无children则不添加到认证路由列表
       if (route.children?.length === 0 && route.path !== '/') {
         return;

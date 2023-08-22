@@ -1,6 +1,5 @@
 import { Layout, Menu, theme } from 'antd';
 import styles from './index.module.less';
-import routeConfig from '../router';
 import { Outlet, matchRoutes, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';
@@ -16,7 +15,7 @@ import Loading from '@/components/Loading';
 import Tags from './components/Tags';
 import { resolve } from '@/utils/path';
 import { useTranslation } from 'react-i18next';
-import { getAuthRoutes } from '@/utils/route';
+import { useRouter } from '@/hooks/useRouter';
 
 type MenuItem = {
   key: string;
@@ -34,11 +33,12 @@ const Layouts: React.FC = () => {
   const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState(permissions && permissions.length > 0 ? false : true);
+  const { routes } = useRouter();
   const token = getToken();
 
   // 获取菜单数据
   const getMenuItems = (routes: RouteConfig[], parentPath: string = '') => {
-    const menus = new Array<MenuItem>();
+    const menus: MenuItem[] = [];
     routes.map((item) => {
       const tmp: MenuItem = {
         key: resolve(parentPath, item.path),
@@ -82,13 +82,11 @@ const Layouts: React.FC = () => {
   }, [pathname, token]);
 
   // 根据路由配置获取菜单项
-  const permissionList =
-    permissions && permissions.length > 0 ? permissions.map((item) => item.name) : [];
-  const authRoutes = getAuthRoutes(routeConfig, permissionList);
-  const menuRoutes = authRoutes.filter((item) => item.path === '/')[0].children;
+  const menuRoutes =
+    routes.length > 0 ? routes.filter((item) => item.path === '/')[0].children : [];
   const menuItems = menuRoutes ? getMenuItems(menuRoutes) : [];
 
-  const [openKeys, selectKeys] = getActiveMenus(authRoutes, pathname);
+  const [openKeys, selectKeys] = getActiveMenus(routes, pathname);
 
   // 获取antd的背景色token值
   const {

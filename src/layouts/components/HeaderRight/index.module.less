@@ -1,19 +1,22 @@
-.user {
+.container {
+  width: 90px;
   height: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
   }
-}
 
-.info {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+  .avatar {
+    margin-right: 3px;
+  }
 
-  span {
-    margin: 0 3px;
+  .user {
     line-height: 48px;
-    font-size: 14px;
+    margin-left: 3px;
   }
 }

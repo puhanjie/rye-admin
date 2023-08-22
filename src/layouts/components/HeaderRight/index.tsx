@@ -58,11 +58,11 @@ const HeaderRight: React.FC = () => {
   const { username, avatar } = useAppSelector((state) => state.user);
 
   return (
-    <Space align="center">
-      <Dropdown menu={{ items, onClick }} placement="bottom" className={styles['user']}>
-        <span className={styles['info']}>
-          <Avatar src={avatar} size={26} alt="avatar" />
-          <span>{username}</span>
+    <Space align="center" size={0}>
+      <Dropdown menu={{ items, onClick }}>
+        <span className={styles['container']}>
+          <Avatar src={avatar} size={26} alt="avatar" className={styles['avatar']} />
+          <span className={styles['user']}>{username}</span>
         </span>
       </Dropdown>
       <LanguageSwich />
