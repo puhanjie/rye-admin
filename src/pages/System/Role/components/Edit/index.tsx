@@ -5,7 +5,6 @@ import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { ADMIN } from '@/config/constant';
 
 type EditRoleInfo = {
   id: number;
@@ -25,16 +24,6 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
-
-  const getFormInitData = (initValues: EditRoleInfo) => {
-    const formInitData: EditRoleInfo = initValues;
-    // 管理员返回所有权限
-    const isAdmin = initValues.name === ADMIN.name ? true : false;
-    if (isAdmin) {
-      formInitData.permissions = initValues.permissionList.map((item) => item.id.toString());
-    }
-    return formInitData;
-  };
 
   const handleOk = async () => {
     const role: API.RoleParams = form.getFieldsValue();
@@ -87,7 +76,7 @@ const Edit: React.FC<Props> = ({ roleData, setRoleData }) => {
         <Form
           name="editRole"
           form={form}
-          initialValues={getFormInitData(roleData)}
+          initialValues={roleData}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >

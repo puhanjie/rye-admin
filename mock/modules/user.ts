@@ -1,6 +1,7 @@
 import Mock from 'mockjs';
 import { url, fail, success } from '../utils';
 import { getToken } from '@/utils/auth';
+import { permissionData } from './permission';
 
 const userData = [
   {
@@ -21,13 +22,7 @@ const userData = [
         info: '管理员'
       }
     ],
-    permissions: [
-      {
-        id: 1,
-        name: 'app:admin',
-        info: '管理员'
-      }
-    ]
+    permissions: [...permissionData]
   },
   {
     id: 2,
@@ -49,7 +44,7 @@ const userData = [
     ],
     permissions: [
       {
-        id: 23,
+        id: 22,
         name: 'settings:view',
         info: '查看'
       }
