@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react';
 import { getPermissionList } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
-import BatchDelete from './components/BatchDelete';
-import Edit from './components/Edit';
 import Delete from './components/Delete';
+import Edit from './components/Edit';
 import { getMenuTree } from '@/utils/general';
 import routeConfig from '@/router';
 import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
+import View from './components/View';
 
 type QueryParams = {
   name?: string;
@@ -64,22 +64,6 @@ const Permission: React.FC = () => {
       title: t('pages.permission.updateTime'),
       dataIndex: 'updateTime',
       align: 'center'
-    },
-    {
-      title: t('pages.permission.action'),
-      dataIndex: 'action',
-      align: 'center',
-      fixed: 'right',
-      render: (_text, record) => {
-        const { id, name, info, menu } = record;
-        const data = { id, name, info, menu };
-        return (
-          <Space>
-            <Edit permissionData={data} setPermissionData={setPermissionData} />
-            <Delete selectId={id} setPermissionData={setPermissionData} />
-          </Space>
-        );
-      }
     }
   ];
 
@@ -137,10 +121,9 @@ const Permission: React.FC = () => {
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add setPermissionData={setPermissionData} />
-          <BatchDelete
-            selectData={getSelectData(selectKeys)}
-            setPermissionData={setPermissionData}
-          />
+          <Edit data={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
+          <View data={getSelectData(selectKeys)} />
+          <Delete selectData={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
         </Space>
         <Table
           bordered
@@ -150,6 +133,7 @@ const Permission: React.FC = () => {
           size="small"
           rowSelection={{
             type: 'checkbox',
+            selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);

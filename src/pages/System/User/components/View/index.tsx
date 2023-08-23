@@ -2,17 +2,15 @@ import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/genera
 import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { editUser, getUserList } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 import type { UserDetail } from '../..';
-import { EditOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 
 type Props = {
   data: UserDetail;
-  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
 };
 
-const Edit: React.FC<Props> = ({ data, setUserData }) => {
+const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -33,7 +31,7 @@ const Edit: React.FC<Props> = ({ data, setUserData }) => {
     };
   };
 
-  const handleEdit = () => {
+  const handleView = () => {
     if (data.selectData.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
@@ -42,23 +40,8 @@ const Edit: React.FC<Props> = ({ data, setUserData }) => {
   };
 
   const handleOk = async () => {
-    const user: API.UserParams = form.getFieldsValue();
     setIsOpen(false);
-    user.userStatus = user.userStatus && user.userStatus[0];
-    user.roles = user.roles?.map((item) => Number(item));
-    const editResult = await editUser(user);
-    if (!editResult.data) {
-      message.error(t('pages.user.edit.tip.fail'));
-      form.resetFields();
-      return;
-    }
-    // 修改用户成功后重新获取用户列表数据
-    const queryResult = await getUserList();
-    if (!queryResult.data) {
-      return;
-    }
-    setUserData(queryResult.data);
-    message.success(t('pages.user.edit.tip.success'));
+    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -68,13 +51,13 @@ const Edit: React.FC<Props> = ({ data, setUserData }) => {
 
   return (
     <div>
-      <AuthWrapper permission="user:edit">
-        <Button icon={<EditOutlined />} onClick={handleEdit}>
-          {t('pages.user.edit')}
+      <AuthWrapper permission="user:view">
+        <Button icon={<EyeOutlined />} onClick={handleView}>
+          {t('pages.user.view')}
         </Button>
       </AuthWrapper>
       <Modal
-        title={t('pages.user.editModal.title')}
+        title={t('pages.user.viewModal.title')}
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -87,9 +70,9 @@ const Edit: React.FC<Props> = ({ data, setUserData }) => {
       >
         {data.selectData.length === 1 && (
           <Form
-            name="editUser"
+            name="viewUser"
             form={form}
-            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
+            disabled
             preserve={false}
             initialValues={getInitData()}
             labelCol={{ span: 6 }}
@@ -149,4 +132,4 @@ const Edit: React.FC<Props> = ({ data, setUserData }) => {
   );
 };
 
-export default Edit;
+export default View;

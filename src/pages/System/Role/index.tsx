@@ -7,15 +7,20 @@ import { getRoleList } from '@/services/role';
 import { getPermissions } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
-import BatchDelete from './components/BatchDelete';
-import Edit from './components/Edit';
 import Delete from './components/Delete';
+import Edit from './components/Edit';
 import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
+import View from './components/View';
 
 type QueryParams = {
   name?: string;
   info?: string;
+};
+
+export type RoleDetail = {
+  selectData: API.RoleInfo[];
+  permissionList: API.PermissionInfo[];
 };
 
 const Role: React.FC = () => {
@@ -58,25 +63,6 @@ const Role: React.FC = () => {
       title: t('pages.role.updateTime'),
       dataIndex: 'updateTime',
       align: 'center'
-    },
-    {
-      title: t('pages.role.action'),
-      dataIndex: 'action',
-      align: 'center',
-      fixed: 'right',
-      render: (_text, record) => {
-        // 处理permissions对象数组,只保留权限id
-        const permissions =
-          record?.permissions && record.permissions.map((item) => item.id.toString());
-        const { id, name, info } = record;
-        const data = { id, name, info, permissions, permissionList: permissionData };
-        return (
-          <Space>
-            <Edit roleData={data} setRoleData={setRoleData} />
-            <Delete selectId={id} setRoleData={setRoleData} />
-          </Space>
-        );
-      }
     }
   ];
 
@@ -114,13 +100,23 @@ const Role: React.FC = () => {
     return roleData?.records ? roleData.records.filter((item) => keys.indexOf(item.id) >= 0) : [];
   };
 
+  const getDetail = () => {
+    const data: RoleDetail = {
+      selectData: getSelectData(selectKeys),
+      permissionList: permissionData
+    };
+    return data;
+  };
+
   return (
     <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add permissionData={permissionData} setRoleData={setRoleData} />
-          <BatchDelete selectData={getSelectData(selectKeys)} setRoleData={setRoleData} />
+          <Edit data={getDetail()} setRoleData={setRoleData} />
+          <View data={getDetail()} />
+          <Delete selectData={getSelectData(selectKeys)} setRoleData={setRoleData} />
         </Space>
         <Table
           bordered
@@ -130,6 +126,7 @@ const Role: React.FC = () => {
           size="small"
           rowSelection={{
             type: 'checkbox',
+            selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);

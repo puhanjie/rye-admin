@@ -1,29 +1,31 @@
+import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { getRoleList, removeRole } from '@/services/role';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  selectId: number;
+  selectData: API.RoleInfo[];
   setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<API.RoleInfo[]> | undefined>>;
 };
 
-const Delete: React.FC<Props> = ({ selectId, setRoleData }) => {
+const Delete: React.FC<Props> = ({ selectData, setRoleData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
-    if (!selectId) {
-      message.error(t('common.tip.id'));
+    if (selectData.length <= 0) {
+      message.warning(t('common.tip.select'));
       return;
     }
-    const deleteResult = await removeRole([selectId]);
+    const ids = selectData.map((item) => item.id);
+    const deleteResult = await removeRole(ids);
     if (!deleteResult.data) {
       message.error(t('pages.role.delete.tip.fail'));
       return;
     }
     // 删除成功后重新获取角色列表数据
     const queryResult = await getRoleList();
-    if (queryResult.data) {
+    if (!queryResult.data) {
       return;
     }
     setRoleData(queryResult.data);
@@ -40,7 +42,7 @@ const Delete: React.FC<Props> = ({ selectId, setRoleData }) => {
           okText={t('common.yes')}
           cancelText={t('common.no')}
         >
-          <Button type="link" size="small" style={{ padding: 0, border: 0, height: 22 }}>
+          <Button danger icon={<DeleteOutlined />}>
             {t('pages.role.delete')}
           </Button>
         </Popconfirm>

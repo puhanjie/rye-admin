@@ -2,22 +2,18 @@ import { Button, Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { editDictionary, getDictionaryList } from '@/services/dictionary';
-import { EditOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 
 type Props = {
   data: API.DictionaryInfo[];
-  setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<API.DictionaryInfo[]> | undefined>
-  >;
 };
 
-const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
+const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const handleEdit = () => {
+  const handleView = () => {
     if (data.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
@@ -26,21 +22,8 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
   };
 
   const handleOk = async () => {
-    const dictionary: API.DictionaryParams = form.getFieldsValue();
     setIsOpen(false);
-    const editResult = await editDictionary(dictionary);
-    if (!editResult.data) {
-      message.error(t('pages.dictionary.edit.tip.fail'));
-      form.resetFields();
-      return;
-    }
-    // 编辑字典成功后重新获取字典列表数据
-    const queryResult = await getDictionaryList();
-    if (!queryResult.data) {
-      return;
-    }
-    setDictionaryData(queryResult.data);
-    message.success(t('pages.dictionary.edit.tip.success'));
+    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -50,13 +33,13 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
 
   return (
     <div>
-      <AuthWrapper permission="dictionary:edit">
-        <Button icon={<EditOutlined />} onClick={handleEdit}>
-          {t('pages.dictionary.edit')}
+      <AuthWrapper permission="dictionary:view">
+        <Button icon={<EyeOutlined />} onClick={handleView}>
+          {t('pages.dictionary.view')}
         </Button>
       </AuthWrapper>
       <Modal
-        title={t('pages.dictionary.editModal.title')}
+        title={t('pages.dictionary.viewModal.title')}
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -69,8 +52,9 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
       >
         {data.length === 1 && (
           <Form
-            name="editDictionary"
+            name="viewDictionary"
             form={form}
+            disabled
             // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
             preserve={false}
             initialValues={data[0]}
@@ -117,4 +101,4 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
     </div>
   );
 };
-export default Edit;
+export default View;

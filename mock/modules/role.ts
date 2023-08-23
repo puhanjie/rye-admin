@@ -24,7 +24,7 @@ const roleData = [
     updateTime: '2023-06-09 11:15:24',
     permissions: [
       {
-        id: 22,
+        id: 18,
         name: 'settings:view',
         info: '查看'
       }

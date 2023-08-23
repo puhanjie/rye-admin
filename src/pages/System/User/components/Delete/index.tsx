@@ -1,27 +1,29 @@
+import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { getUserList, removeUser } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  selectId: number;
+  selectData: API.UserInfo[];
   setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
 };
 
-const Delete: React.FC<Props> = ({ selectId, setUserData }) => {
+const Delete: React.FC<Props> = ({ selectData, setUserData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
-    if (!selectId) {
-      message.error(t('common.tip.id'));
+    if (selectData.length <= 0) {
+      message.warning(t('common.tip.select'));
       return;
     }
-    const deleteResult = await removeUser([selectId]);
+    const ids = selectData.map((item) => item.id);
+    const deleteResult = await removeUser(ids);
     if (!deleteResult.data) {
       message.error(t('pages.user.delete.tip.fail'));
       return;
     }
-    // 删除用户成功后重新获取用户列表数据
+    // 删除成功后重新获取用户列表数据
     const queryResult = await getUserList();
     if (!queryResult.data) {
       return;
@@ -40,7 +42,7 @@ const Delete: React.FC<Props> = ({ selectId, setUserData }) => {
           okText={t('common.yes')}
           cancelText={t('common.no')}
         >
-          <Button type="link" size="small" style={{ padding: 0, border: 0, height: 22 }}>
+          <Button danger icon={<DeleteOutlined />}>
             {t('pages.user.delete')}
           </Button>
         </Popconfirm>

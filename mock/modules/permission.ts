@@ -21,7 +21,7 @@ export const permissionData = [
   {
     id: 3,
     name: 'user:edit',
-    info: '修改',
+    info: '编辑',
     menu: 'user',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
@@ -44,14 +44,6 @@ export const permissionData = [
   },
   {
     id: 6,
-    name: 'user:batchDelete',
-    info: '批量删除',
-    menu: 'user',
-    createTime: '2023-06-09 11:15:24',
-    updateTime: '2023-06-09 11:15:24'
-  },
-  {
-    id: 7,
     name: 'role:add',
     info: '新增',
     menu: 'role',
@@ -59,7 +51,7 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 8,
+    id: 7,
     name: 'role:delete',
     info: '删除',
     menu: 'role',
@@ -67,15 +59,15 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 9,
+    id: 8,
     name: 'role:edit',
-    info: '修改',
+    info: '编辑',
     menu: 'role',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 10,
+    id: 9,
     name: 'role:view',
     info: '查看',
     menu: 'role',
@@ -83,15 +75,7 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 11,
-    name: 'role:batchDelete',
-    info: '批量删除',
-    menu: 'role',
-    createTime: '2023-06-09 11:15:24',
-    updateTime: '2023-06-09 11:15:24'
-  },
-  {
-    id: 12,
+    id: 10,
     name: 'permission:add',
     info: '新增',
     menu: 'permission',
@@ -99,7 +83,7 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 13,
+    id: 11,
     name: 'permission:delete',
     info: '删除',
     menu: 'permission',
@@ -107,15 +91,15 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 14,
+    id: 12,
     name: 'permission:edit',
-    info: '修改',
+    info: '编辑',
     menu: 'permission',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 15,
+    id: 13,
     name: 'permission:view',
     info: '查看',
     menu: 'permission',
@@ -123,15 +107,7 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 16,
-    name: 'permission:batchDelete',
-    info: '批量删除',
-    menu: 'permission',
-    createTime: '2023-06-09 11:15:24',
-    updateTime: '2023-06-09 11:15:24'
-  },
-  {
-    id: 17,
+    id: 14,
     name: 'dictionary:add',
     info: '新增',
     menu: 'dictionary',
@@ -139,7 +115,7 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 18,
+    id: 15,
     name: 'dictionary:delete',
     info: '删除',
     menu: 'dictionary',
@@ -147,15 +123,15 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 19,
+    id: 16,
     name: 'dictionary:edit',
-    info: '修改',
+    info: '编辑',
     menu: 'dictionary',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 20,
+    id: 17,
     name: 'dictionary:view',
     info: '查看',
     menu: 'dictionary',
@@ -163,15 +139,7 @@ export const permissionData = [
     updateTime: '2023-06-09 11:15:24'
   },
   {
-    id: 21,
-    name: 'dictionary:batchDelete',
-    info: '批量删除',
-    menu: 'dictionary',
-    createTime: '2023-06-09 11:15:24',
-    updateTime: '2023-06-09 11:15:24'
-  },
-  {
-    id: 22,
+    id: 18,
     name: 'settings:view',
     info: '查看',
     menu: 'settings',

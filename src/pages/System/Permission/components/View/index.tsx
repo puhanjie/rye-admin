@@ -1,26 +1,22 @@
 import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { editPermission, getPermissionList } from '@/services/permission';
 import routeConfig from '@/router';
 import { getMenuTree } from '@/utils/general';
 import AuthWrapper from '@/components/AuthWrapper';
-import { EditOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 
 type Props = {
   data: API.PermissionInfo[];
-  setPermissionData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<API.PermissionInfo[]> | undefined>
-  >;
 };
 
-const Edit: React.FC<Props> = ({ data, setPermissionData }) => {
+const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
-  const handleEdit = () => {
+  const handleView = () => {
     if (data.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
@@ -29,21 +25,8 @@ const Edit: React.FC<Props> = ({ data, setPermissionData }) => {
   };
 
   const handleOk = async () => {
-    const permission: API.PermissionParams = form.getFieldsValue();
     setIsOpen(false);
-    const editResult = await editPermission(permission);
-    if (!editResult.data) {
-      message.error(t('pages.permission.edit.tip.fail'));
-      form.resetFields();
-      return;
-    }
-    // 编辑权限成功后重新获取权限列表数据
-    const queryResult = await getPermissionList();
-    if (!queryResult.data) {
-      return;
-    }
-    setPermissionData(queryResult.data);
-    message.success(t('pages.permission.edit.tip.success'));
+    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -53,13 +36,13 @@ const Edit: React.FC<Props> = ({ data, setPermissionData }) => {
 
   return (
     <div>
-      <AuthWrapper permission="permission:edit">
-        <Button icon={<EditOutlined />} onClick={handleEdit}>
-          {t('pages.permission.edit')}
+      <AuthWrapper permission="permission:view">
+        <Button icon={<EyeOutlined />} onClick={handleView}>
+          {t('pages.permission.view')}
         </Button>
       </AuthWrapper>
       <Modal
-        title={t('pages.permission.editModal.title')}
+        title={t('pages.permission.viewModal.title')}
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -72,8 +55,9 @@ const Edit: React.FC<Props> = ({ data, setPermissionData }) => {
       >
         {data.length === 1 && (
           <Form
-            name="editPermission"
+            name="viewPermission"
             form={form}
+            disabled
             // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
             preserve={false}
             initialValues={data[0]}
@@ -104,4 +88,4 @@ const Edit: React.FC<Props> = ({ data, setPermissionData }) => {
     </div>
   );
 };
-export default Edit;
+export default View;

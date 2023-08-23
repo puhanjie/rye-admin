@@ -6,11 +6,11 @@ import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
-import BatchDelete from './components/BatchDelete';
-import Edit from './components/Edit';
 import Delete from './components/Delete';
+import Edit from './components/Edit';
 import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
+import View from './components/View';
 
 type QueryParams = {
   dictName?: string;
@@ -97,22 +97,6 @@ const Dictionary: React.FC = () => {
       title: t('pages.dictionary.updateTime'),
       dataIndex: 'updateTime',
       align: 'center'
-    },
-    {
-      title: t('pages.dictionary.action'),
-      dataIndex: 'action',
-      align: 'center',
-      fixed: 'right',
-      render: (_text, record) => {
-        const { id, dictName, dictText, itemValue, itemText, description } = record;
-        const data = { id, dictName, dictText, itemValue, itemText, description };
-        return (
-          <Space>
-            <Edit dictionaryData={data} setDictionaryData={setDictionaryData} />
-            <Delete selectId={id} setDictionaryData={setDictionaryData} />
-          </Space>
-        );
-      }
     }
   ];
 
@@ -158,10 +142,9 @@ const Dictionary: React.FC = () => {
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add setDictionaryData={setDictionaryData} />
-          <BatchDelete
-            selectData={getSelectData(selectKeys)}
-            setDictionaryData={setDictionaryData}
-          />
+          <Edit data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
+          <View data={getSelectData(selectKeys)} />
+          <Delete selectData={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
         </Space>
         <Table
           bordered
@@ -171,6 +154,7 @@ const Dictionary: React.FC = () => {
           size="small"
           rowSelection={{
             type: 'checkbox',
+            selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);

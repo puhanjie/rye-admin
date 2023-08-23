@@ -8,18 +8,24 @@ import { getRoles } from '@/services/role';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
 import ResetPassword from './components/ResetPassword';
-import BatchDelete from './components/BatchDelete';
-import Edit from './components/Edit';
 import Delete from './components/Delete';
+import Edit from './components/Edit';
 import type { Key } from 'antd/es/table/interface';
 import { getDictionarys } from '@/services/dictionary';
 import { userStatusTagColor } from '@/config/statusTagConfig';
 import PageWrapper from '@/components/PageWrapper';
+import View from './components/View';
 
 type QueryParams = {
   username?: string;
   phone?: string;
   email?: string;
+};
+
+export type UserDetail = {
+  selectData: API.UserInfo[];
+  roleList: API.RoleInfo[];
+  userStatusList: API.DictionaryInfo[];
 };
 
 const User: React.FC = () => {
@@ -101,36 +107,6 @@ const User: React.FC = () => {
       title: t('pages.user.updateTime'),
       dataIndex: 'updateTime',
       align: 'center'
-    },
-    {
-      title: t('pages.user.action'),
-      dataIndex: 'action',
-      align: 'center',
-      fixed: 'right',
-      render: (_text, record) => {
-        // 处理roles对象数组,只保留角色id
-        const roles = record?.roles && record.roles.map((item) => item.id);
-        const { id, username, nickname, userStatus, phone, avatar, email } = record;
-        const data = {
-          id,
-          username,
-          nickname,
-          userStatus: userStatus.itemValue,
-          phone,
-          avatar,
-          email,
-          roles,
-          roleList: roleData,
-          userStatusList: userStatusData
-        };
-        // 传入的data属性名必须和编辑表单中Form.Item的name属性值保持一致,初始数据才能赋值上
-        return (
-          <Space>
-            <Edit userData={data} setUserData={setUserData} />
-            <Delete selectId={id} setUserData={setUserData} />
-          </Space>
-        );
-      }
     }
   ];
 
@@ -177,14 +153,25 @@ const User: React.FC = () => {
     return userData?.records ? userData.records.filter((item) => keys.indexOf(item.id) >= 0) : [];
   };
 
+  const getDetail = () => {
+    const data: UserDetail = {
+      selectData: getSelectData(selectKeys),
+      roleList: roleData,
+      userStatusList: userStatusData
+    };
+    return data;
+  };
+
   return (
     <PageWrapper>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
       <PageContent>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />
+          <Edit data={getDetail()} setUserData={setUserData} />
+          <View data={getDetail()} />
           <ResetPassword selectData={getSelectData(selectKeys)} clearSelectData={clearSelectData} />
-          <BatchDelete selectData={getSelectData(selectKeys)} setUserData={setUserData} />
+          <Delete selectData={getSelectData(selectKeys)} setUserData={setUserData} />
         </Space>
         <Table
           bordered
@@ -194,6 +181,7 @@ const User: React.FC = () => {
           size="small"
           rowSelection={{
             type: 'checkbox',
+            selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);

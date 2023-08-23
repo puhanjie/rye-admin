@@ -44,7 +44,7 @@ const userData = [
     ],
     permissions: [
       {
-        id: 22,
+        id: 18,
         name: 'settings:view',
         info: '查看'
       }

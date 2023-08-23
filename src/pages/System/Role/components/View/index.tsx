@@ -1,19 +1,17 @@
 import routeConfig from '@/router';
-import { editRole, getRoleList } from '@/services/role';
 import { getPermissionTreeData } from '@/utils/general';
 import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import type { RoleDetail } from '../..';
-import { EditOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 
 type Props = {
   data: RoleDetail;
-  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<API.RoleInfo[]> | undefined>>;
 };
 
-const Edit: React.FC<Props> = ({ data, setRoleData }) => {
+const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -30,7 +28,7 @@ const Edit: React.FC<Props> = ({ data, setRoleData }) => {
     };
   };
 
-  const handleEdit = () => {
+  const handleView = () => {
     if (data.selectData.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
@@ -39,22 +37,8 @@ const Edit: React.FC<Props> = ({ data, setRoleData }) => {
   };
 
   const handleOk = async () => {
-    const role: API.RoleParams = form.getFieldsValue();
     setIsOpen(false);
-    role.permissions = role.permissions?.map((item) => Number(item));
-    const editResult = await editRole(role);
-    if (!editResult.data) {
-      message.error(t('pages.role.edit.tip.fail'));
-      form.resetFields();
-      return;
-    }
-    // 编辑角色成功后重新获取角色列表数据
-    const queryResult = await getRoleList();
-    if (!queryResult.data) {
-      return;
-    }
-    setRoleData(queryResult.data);
-    message.success(t('pages.role.edit.tip.success'));
+    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -64,13 +48,13 @@ const Edit: React.FC<Props> = ({ data, setRoleData }) => {
 
   return (
     <div>
-      <AuthWrapper permission="role:edit">
-        <Button icon={<EditOutlined />} onClick={handleEdit}>
-          {t('pages.role.edit')}
+      <AuthWrapper permission="role:view">
+        <Button icon={<EyeOutlined />} onClick={handleView}>
+          {t('pages.role.view')}
         </Button>
       </AuthWrapper>
       <Modal
-        title={t('pages.role.editModal.title')}
+        title={t('pages.role.viewModal.title')}
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -83,8 +67,9 @@ const Edit: React.FC<Props> = ({ data, setRoleData }) => {
       >
         {data.selectData.length === 1 && (
           <Form
-            name="editRole"
+            name="viewRole"
             form={form}
+            disabled
             // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
             preserve={false}
             initialValues={getInitData()}
@@ -117,4 +102,4 @@ const Edit: React.FC<Props> = ({ data, setRoleData }) => {
   );
 };
 
-export default Edit;
+export default View;
