@@ -73,6 +73,7 @@ const View: React.FC<Props> = ({ data }) => {
             name="viewUser"
             form={form}
             disabled
+            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
             preserve={false}
             initialValues={getInitData()}
             labelCol={{ span: 6 }}
