@@ -1,8 +1,6 @@
-import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
+import { Button, type DescriptionsProps, Modal, message, Descriptions } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import routeConfig from '@/router';
-import { getMenuTree } from '@/utils/general';
 import AuthWrapper from '@/components/AuthWrapper';
 import { EyeOutlined } from '@ant-design/icons';
 
@@ -13,8 +11,27 @@ type Props = {
 const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [form] = Form.useForm();
-  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
+
+  const items: DescriptionsProps['items'] =
+    data.length === 1
+      ? [
+          {
+            key: 'name',
+            label: '权限名',
+            children: data[0].name
+          },
+          {
+            key: 'info',
+            label: '权限信息',
+            children: data[0].info
+          },
+          {
+            key: 'menu',
+            label: '菜单',
+            children: t(`menu.${data[0].menu}`)
+          }
+        ]
+      : [];
 
   const handleView = () => {
     if (data.length !== 1) {
@@ -26,12 +43,10 @@ const View: React.FC<Props> = ({ data }) => {
 
   const handleOk = async () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   return (
@@ -53,37 +68,11 @@ const View: React.FC<Props> = ({ data }) => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        {data.length === 1 && (
-          <Form
-            name="viewPermission"
-            form={form}
-            disabled
-            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
-            preserve={false}
-            initialValues={data[0]}
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 17 }}
-          >
-            <Form.Item label="id" name="id" hidden={true} rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.permission.name')} name="name" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.permission.info')} name="info" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.permission.menu')} name="menu" rules={[{ required: true }]}>
-              <TreeSelect
-                treeData={getMenuTree(menuData)}
-                allowClear
-                treeDefaultExpandedKeys={data[0].menu ? [data[0].menu] : []}
-                showCheckedStrategy="SHOW_CHILD"
-                placeholder={t('pages.permission.modal.menu.placeholder')}
-              />
-            </Form.Item>
-          </Form>
-        )}
+        <Descriptions
+          column={1}
+          items={items}
+          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
+        />
       </Modal>
     </div>
   );

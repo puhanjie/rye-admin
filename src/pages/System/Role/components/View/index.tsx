@@ -1,6 +1,6 @@
 import routeConfig from '@/router';
 import { getPermissionTreeData } from '@/utils/general';
-import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
+import { Button, type DescriptionsProps, Modal, message, Descriptions, Tree } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -14,7 +14,6 @@ type Props = {
 const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const getInitData = () => {
@@ -28,6 +27,43 @@ const View: React.FC<Props> = ({ data }) => {
     };
   };
 
+  const items: DescriptionsProps['items'] =
+    data.selectData.length === 1
+      ? [
+          {
+            key: 'name',
+            label: '角色名',
+            children: data.selectData[0].name
+          },
+          {
+            key: 'info',
+            label: '角色信息',
+            children: data.selectData[0].info
+          },
+          {
+            key: 'permissions',
+            label: '权限',
+            children: (
+              <Tree
+                checkable
+                selectable={false}
+                defaultCheckedKeys={data.selectData[0].permissions?.map((item) =>
+                  item.id.toString()
+                )}
+                treeData={getPermissionTreeData(menuData, getInitData().permissionList)}
+                rootClassName="scrollbar-light"
+                rootStyle={{
+                  height: '100px',
+                  width: '100%',
+                  border: '1px solid #e5e6e7',
+                  borderRadius: '4px'
+                }}
+              />
+            )
+          }
+        ]
+      : [];
+
   const handleView = () => {
     if (data.selectData.length !== 1) {
       message.warning(t('common.tip.selectOne'));
@@ -38,12 +74,10 @@ const View: React.FC<Props> = ({ data }) => {
 
   const handleOk = async () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   return (
@@ -65,38 +99,11 @@ const View: React.FC<Props> = ({ data }) => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        {data.selectData.length === 1 && (
-          <Form
-            name="viewRole"
-            form={form}
-            disabled
-            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
-            preserve={false}
-            initialValues={getInitData()}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
-          >
-            <Form.Item label="id" name="id" hidden={true} rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.role.name')} name="name" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.role.info')} name="info" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.role.permission')} name="permissions">
-              <TreeSelect
-                allowClear
-                treeData={getPermissionTreeData(menuData, getInitData().permissionList)}
-                maxTagCount={3}
-                treeCheckable={true}
-                showCheckedStrategy="SHOW_CHILD"
-                placeholder={t('pages.role.modal.permission.placeholder')}
-              />
-            </Form.Item>
-          </Form>
-        )}
+        <Descriptions
+          column={1}
+          items={items}
+          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
+        />
       </Modal>
     </div>
   );

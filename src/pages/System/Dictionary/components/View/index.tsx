@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, message } from 'antd';
+import { Button, type DescriptionsProps, Modal, message, Descriptions } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -11,7 +11,50 @@ type Props = {
 const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [form] = Form.useForm();
+
+  const items: DescriptionsProps['items'] =
+    data.length === 1
+      ? [
+          {
+            key: 'dictName',
+            label: '字典名',
+            children: data[0].dictName
+          },
+          {
+            key: 'dictText',
+            label: '字典文本',
+            children: data[0].dictText
+          },
+          {
+            key: 'itemValue',
+            label: '字典值',
+            children: data[0].itemValue
+          },
+          {
+            key: 'itemText',
+            label: '字典值文本',
+            children: data[0].itemText
+          },
+          {
+            key: 'description',
+            label: '描述',
+            children: (
+              <div
+                className="scrollbar-light"
+                style={{
+                  height: '100px',
+                  width: '100%',
+                  padding: '0 5px',
+                  border: '1px solid #e5e6e7',
+                  borderRadius: '4px'
+                }}
+              >
+                {data[0].description}
+              </div>
+            )
+          }
+        ]
+      : [];
 
   const handleView = () => {
     if (data.length !== 1) {
@@ -23,12 +66,10 @@ const View: React.FC<Props> = ({ data }) => {
 
   const handleOk = async () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   return (
@@ -50,53 +91,11 @@ const View: React.FC<Props> = ({ data }) => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        {data.length === 1 && (
-          <Form
-            name="viewDictionary"
-            form={form}
-            disabled
-            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
-            preserve={false}
-            initialValues={data[0]}
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 17 }}
-          >
-            <Form.Item label="id" name="id" hidden rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.dictName')}
-              name="dictName"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.dictText')}
-              name="dictText"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.itemValue')}
-              name="itemValue"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.itemText')}
-              name="itemText"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.dictionary.description')} name="description">
-              <Input.TextArea />
-            </Form.Item>
-          </Form>
-        )}
+        <Descriptions
+          column={1}
+          items={items}
+          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
+        />
       </Modal>
     </div>
   );

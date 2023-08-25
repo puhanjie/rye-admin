@@ -1,5 +1,6 @@
 import Mock from 'mockjs';
 import { url, success } from '../utils';
+import { permissionData } from './permission';
 
 const roleData = [
   {
@@ -8,13 +9,7 @@ const roleData = [
     info: '管理员',
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24',
-    permissions: [
-      {
-        id: 1,
-        name: 'app:name',
-        info: '管理员'
-      }
-    ]
+    permissions: [...permissionData]
   },
   {
     id: 2,

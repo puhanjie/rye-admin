@@ -1,10 +1,10 @@
-import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/general';
-import { Button, Form, Input, Modal, Select, message } from 'antd';
+import { Button, type DescriptionsProps, Modal, message, Tag, Descriptions } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import type { UserDetail } from '../..';
 import { EyeOutlined } from '@ant-design/icons';
+import { userStatusTagColor } from '@/config/statusTagConfig';
 
 type Props = {
   data: UserDetail;
@@ -13,23 +13,52 @@ type Props = {
 const View: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [form] = Form.useForm();
 
-  const getInitData = () => {
-    const { id, username, nickname, userStatus, phone, avatar, email, roles } = data.selectData[0];
-    return {
-      id,
-      username,
-      nickname,
-      userStatus: userStatus.itemValue,
-      phone,
-      avatar,
-      email,
-      roles: roles?.map((item) => item.id),
-      roleList: data.roleList,
-      userStatusList: data.userStatusList
-    };
-  };
+  const items: DescriptionsProps['items'] =
+    data.selectData.length === 1
+      ? [
+          {
+            key: 'username',
+            label: '用户名',
+            children: data.selectData[0].username
+          },
+          {
+            key: 'nickname',
+            label: '昵称',
+            children: data.selectData[0].nickname
+          },
+          {
+            key: 'userStatus',
+            label: '用户状态',
+            children: (
+              <Tag
+                color={
+                  userStatusTagColor.filter(
+                    (item) => data.selectData[0].userStatus.itemValue === item.value
+                  )[0].color
+                }
+              >
+                {data.selectData[0].userStatus.itemText}
+              </Tag>
+            )
+          },
+          {
+            key: 'roles',
+            label: '角色',
+            children: data.selectData[0].roles?.map((item) => <Tag key={item.id}>{item.info}</Tag>)
+          },
+          {
+            key: 'phone',
+            label: '手机',
+            children: data.selectData[0].phone
+          },
+          {
+            key: 'email',
+            label: '邮箱',
+            children: data.selectData[0].email
+          }
+        ]
+      : [];
 
   const handleView = () => {
     if (data.selectData.length !== 1) {
@@ -41,12 +70,10 @@ const View: React.FC<Props> = ({ data }) => {
 
   const handleOk = async () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    form.resetFields();
   };
 
   return (
@@ -68,66 +95,11 @@ const View: React.FC<Props> = ({ data }) => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        {data.selectData.length === 1 && (
-          <Form
-            name="viewUser"
-            form={form}
-            disabled
-            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
-            preserve={false}
-            initialValues={getInitData()}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
-          >
-            <Form.Item label="id" name="id" hidden={true} rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.user.username')}
-              name="username"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.user.nickname')}
-              name="nickname"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.user.userStatus')}
-              name="userStatus"
-              rules={[{ required: true }]}
-            >
-              <Select
-                filterOption={(input, option) =>
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                options={getUserStatusSelectOptions(getInitData().userStatusList)}
-                placeholder={t('pages.user.modal.role.placeholder')}
-              />
-            </Form.Item>
-            <Form.Item label={t('pages.user.role')} name="roles">
-              <Select
-                mode="multiple"
-                allowClear
-                filterOption={(input, option) =>
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                options={getRoleSelectOptions(getInitData().roleList)}
-                placeholder={t('pages.user.modal.role.placeholder')}
-              />
-            </Form.Item>
-            <Form.Item label={t('pages.user.phone')} name="phone" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.user.email')} name="email" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-          </Form>
-        )}
+        <Descriptions
+          column={1}
+          items={items}
+          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
+        />
       </Modal>
     </div>
   );
