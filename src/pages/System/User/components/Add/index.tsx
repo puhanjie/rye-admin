@@ -98,10 +98,10 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
           <Form.Item label={t('pages.user.password')} name="password" rules={[{ required: true }]}>
             <Input.Password />
           </Form.Item>
-          <Form.Item label={t('pages.user.phone')} name="phone" rules={[{ required: true }]}>
+          <Form.Item label={t('pages.user.phone')} name="phone">
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.email')} name="email" rules={[{ required: true }]}>
+          <Form.Item label={t('pages.user.email')} name="email">
             <Input />
           </Form.Item>
         </Form>

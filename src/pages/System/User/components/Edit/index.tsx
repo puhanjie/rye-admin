@@ -136,10 +136,10 @@ const Edit: React.FC<Props> = ({ data, setUserData }) => {
                 placeholder={t('pages.user.modal.role.placeholder')}
               />
             </Form.Item>
-            <Form.Item label={t('pages.user.phone')} name="phone" rules={[{ required: true }]}>
+            <Form.Item label={t('pages.user.phone')} name="phone">
               <Input />
             </Form.Item>
-            <Form.Item label={t('pages.user.email')} name="email" rules={[{ required: true }]}>
+            <Form.Item label={t('pages.user.email')} name="email">
               <Input />
             </Form.Item>
           </Form>
