@@ -25,7 +25,7 @@ const Edit: React.FC<Props> = ({ data, setRoleData }) => {
       id,
       name,
       info,
-      permissions: permissions?.map((item) => item.id),
+      permissions: permissions?.map((item) => item.id.toString()),
       permissionList: data.permissionList
     };
   };
