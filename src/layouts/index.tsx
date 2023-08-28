@@ -113,9 +113,7 @@ const Layouts: React.FC = () => {
           items={menuItems}
           defaultOpenKeys={openKeys}
           selectedKeys={selectKeys}
-          onClick={(event) => {
-            navigate(event.key);
-          }}
+          onClick={(event) => navigate(event.key)}
           className={`${styles['menu']} scrollbar-dark`}
         />
       </Layout.Sider>
