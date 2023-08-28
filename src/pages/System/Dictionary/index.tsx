@@ -1,7 +1,6 @@
-import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
 import { getDictionaryList } from '@/services/dictionary';
-import { Input, Space, Table } from 'antd';
+import { Card, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +10,7 @@ import Edit from './components/Edit';
 import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
 import View from './components/View';
+import styles from './index.module.less';
 
 type QueryParams = {
   dictName?: string;
@@ -137,9 +137,9 @@ const Dictionary: React.FC = () => {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper className={styles['container']}>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <PageContent>
+      <Card bordered={false} className={styles['content']}>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add setDictionaryData={setDictionaryData} />
           <Edit data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
@@ -187,7 +187,7 @@ const Dictionary: React.FC = () => {
             }
           }}
         />
-      </PageContent>
+      </Card>
     </PageWrapper>
   );
 };

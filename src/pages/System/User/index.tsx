@@ -1,9 +1,8 @@
-import { Input, Space, Table, Tag } from 'antd';
+import { Card, Input, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getUserList } from '@/services/user';
 import Query from '@/components/Query';
-import PageContent from '@/components/PageContent';
 import { getRoles } from '@/services/role';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
@@ -15,6 +14,7 @@ import { getDictionarys } from '@/services/dictionary';
 import { userStatusTagColor } from '@/config/statusTagConfig';
 import PageWrapper from '@/components/PageWrapper';
 import View from './components/View';
+import styles from './index.module.less';
 
 type QueryParams = {
   username?: string;
@@ -163,9 +163,9 @@ const User: React.FC = () => {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper className={styles['container']}>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <PageContent>
+      <Card bordered={false} className={styles['content']}>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />
           <Edit data={getDetail()} setUserData={setUserData} />
@@ -214,7 +214,7 @@ const User: React.FC = () => {
             }
           }}
         />
-      </PageContent>
+      </Card>
     </PageWrapper>
   );
 };

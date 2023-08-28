@@ -1,6 +1,5 @@
-import PageContent from '@/components/PageContent';
 import Query from '@/components/Query';
-import { Input, Space, Table } from 'antd';
+import { Card, Input, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getRoleList } from '@/services/role';
@@ -12,6 +11,7 @@ import Edit from './components/Edit';
 import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
 import View from './components/View';
+import styles from './index.module.less';
 
 type QueryParams = {
   name?: string;
@@ -109,9 +109,9 @@ const Role: React.FC = () => {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper className={styles['container']}>
       <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <PageContent>
+      <Card bordered={false} className={styles['content']}>
         <Space style={{ width: '100%', marginBottom: '10px' }}>
           <Add permissionData={permissionData} setRoleData={setRoleData} />
           <Edit data={getDetail()} setRoleData={setRoleData} />
@@ -159,7 +159,7 @@ const Role: React.FC = () => {
             }
           }}
         />
-      </PageContent>
+      </Card>
     </PageWrapper>
   );
 };
