@@ -1,5 +1,4 @@
-import Query from '@/components/Query';
-import { Card, Input, Space, Table, TreeSelect } from 'antd';
+import { type FormItemProps, Input, Table, TreeSelect } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getPermissionList } from '@/services/permission';
@@ -13,6 +12,7 @@ import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
 import View from './components/View';
 import styles from './index.module.less';
+import TablePro from '@/components/TablePro';
 
 type QueryParams = {
   name?: string;
@@ -67,21 +67,21 @@ const Permission: React.FC = () => {
     }
   ];
 
-  const queryFields: QueryField[] = [
+  const queryItems: FormItemProps[] = [
     {
       label: t('pages.permission.queryForm.name'),
       name: 'name',
-      render: <Input placeholder={t('pages.permission.queryForm.name.placeholder')} />
+      children: <Input placeholder={t('pages.permission.queryForm.name.placeholder')} />
     },
     {
       label: t('pages.permission.queryForm.info'),
       name: 'info',
-      render: <Input placeholder={t('pages.permission.queryForm.info.placeholder')} />
+      children: <Input placeholder={t('pages.permission.queryForm.info.placeholder')} />
     },
     {
       label: t('pages.permission.queryForm.menu'),
       name: 'menu',
-      render: (
+      children: (
         <TreeSelect
           treeData={getMenuTree(menuData)}
           allowClear
@@ -115,31 +115,40 @@ const Permission: React.FC = () => {
       : [];
   };
 
+  const actions: React.ReactNode[] = [
+    <Add setPermissionData={setPermissionData} />,
+    <Edit data={getSelectData(selectKeys)} setPermissionData={setPermissionData} />,
+    <View data={getSelectData(selectKeys)} />,
+    <Delete selectData={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
+  ];
+
   return (
     <PageWrapper className={styles['container']}>
-      <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Card bordered={false} className={styles['content']}>
-        <Space style={{ width: '100%', marginBottom: '10px' }}>
-          <Add setPermissionData={setPermissionData} />
-          <Edit data={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
-          <View data={getSelectData(selectKeys)} />
-          <Delete selectData={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
-        </Space>
-        <Table
-          bordered
-          columns={tableColumns}
-          dataSource={permissionData?.records}
-          loading={loading}
-          size="small"
-          rowSelection={{
+      <TablePro
+        queryItems={queryItems}
+        queryForm={{
+          name: 'permissionQuery',
+          layout: 'inline',
+          onFinish: handleQuery,
+          labelCol: { span: 6 },
+          wrapperCol: { span: 18 }
+        }}
+        actions={actions}
+        queryTable={{
+          bordered: true,
+          columns: tableColumns,
+          dataSource: permissionData?.records,
+          loading: loading,
+          size: 'small',
+          rowSelection: {
             type: 'checkbox',
             selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);
             }
-          }}
-          onRow={(record) => ({
+          },
+          onRow: (record) => ({
             onClick: () => {
               if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
@@ -152,10 +161,10 @@ const Permission: React.FC = () => {
                 setSelectKeys(keys);
               }
             }
-          })}
-          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
-          scroll={{ x: 'max-content' }}
-          pagination={{
+          }),
+          rowKey: (record) => record.id, // 设置每条记录的id为rowKey
+          scroll: { x: 'max-content' },
+          pagination: {
             defaultPageSize: 10,
             total: permissionData?.total,
             showSizeChanger: true,
@@ -164,9 +173,10 @@ const Permission: React.FC = () => {
             onChange: (page, pageSize) => {
               queryData({ pageNum: page, pageSize: pageSize });
             }
-          }}
-        />
-      </Card>
+          }
+        }}
+        onReset={handleReset}
+      />
     </PageWrapper>
   );
 };

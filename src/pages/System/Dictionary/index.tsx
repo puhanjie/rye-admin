@@ -1,6 +1,5 @@
-import Query from '@/components/Query';
 import { getDictionaryList } from '@/services/dictionary';
-import { Card, Input, Space, Table } from 'antd';
+import { type FormItemProps, Input, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +10,7 @@ import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
 import View from './components/View';
 import styles from './index.module.less';
+import TablePro from '@/components/TablePro';
 
 type QueryParams = {
   dictName?: string;
@@ -100,16 +100,16 @@ const Dictionary: React.FC = () => {
     }
   ];
 
-  const queryFields: QueryField[] = [
+  const queryItems: FormItemProps[] = [
     {
       label: t('pages.dictionary.queryForm.dictName'),
       name: 'dictName',
-      render: <Input placeholder={t('pages.dictionary.queryForm.dictName.placeholder')} />
+      children: <Input placeholder={t('pages.dictionary.queryForm.dictName.placeholder')} />
     },
     {
       label: t('pages.dictionary.queryForm.itemText'),
       name: 'itemText',
-      render: <Input placeholder={t('pages.dictionary.queryForm.itemText.placeholder')} />
+      children: <Input placeholder={t('pages.dictionary.queryForm.itemText.placeholder')} />
     }
   ];
 
@@ -136,31 +136,40 @@ const Dictionary: React.FC = () => {
       : [];
   };
 
+  const actions: React.ReactNode[] = [
+    <Add setDictionaryData={setDictionaryData} />,
+    <Edit data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />,
+    <View data={getSelectData(selectKeys)} />,
+    <Delete selectData={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
+  ];
+
   return (
     <PageWrapper className={styles['container']}>
-      <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Card bordered={false} className={styles['content']}>
-        <Space style={{ width: '100%', marginBottom: '10px' }}>
-          <Add setDictionaryData={setDictionaryData} />
-          <Edit data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
-          <View data={getSelectData(selectKeys)} />
-          <Delete selectData={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
-        </Space>
-        <Table
-          bordered
-          columns={tableColumns}
-          dataSource={dictionaryData?.records}
-          loading={loading}
-          size="small"
-          rowSelection={{
+      <TablePro
+        queryItems={queryItems}
+        queryForm={{
+          name: 'dictionaryQuery',
+          layout: 'inline',
+          onFinish: handleQuery,
+          labelCol: { span: 6 },
+          wrapperCol: { span: 18 }
+        }}
+        actions={actions}
+        queryTable={{
+          bordered: true,
+          columns: tableColumns,
+          dataSource: dictionaryData?.records,
+          loading: loading,
+          size: 'small',
+          rowSelection: {
             type: 'checkbox',
             selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);
             }
-          }}
-          onRow={(record) => ({
+          },
+          onRow: (record) => ({
             onClick: () => {
               if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
@@ -173,10 +182,10 @@ const Dictionary: React.FC = () => {
                 setSelectKeys(keys);
               }
             }
-          })}
-          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
-          scroll={{ x: 'max-content' }}
-          pagination={{
+          }),
+          rowKey: (record) => record.id, // 设置每条记录的id为rowKey
+          scroll: { x: 'max-content' },
+          pagination: {
             defaultPageSize: 10,
             total: dictionaryData?.total,
             showSizeChanger: true,
@@ -185,9 +194,10 @@ const Dictionary: React.FC = () => {
             onChange: (page, pageSize) => {
               queryData({ pageNum: page, pageSize: pageSize });
             }
-          }}
-        />
-      </Card>
+          }
+        }}
+        onReset={handleReset}
+      />
     </PageWrapper>
   );
 };

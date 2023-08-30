@@ -1,5 +1,4 @@
-import Query from '@/components/Query';
-import { Card, Input, Space, Table } from 'antd';
+import { type FormItemProps, Input, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getRoleList } from '@/services/role';
@@ -12,6 +11,7 @@ import PageWrapper from '@/components/PageWrapper';
 import { Key } from 'antd/es/table/interface';
 import View from './components/View';
 import styles from './index.module.less';
+import TablePro from '@/components/TablePro';
 
 type QueryParams = {
   name?: string;
@@ -66,16 +66,16 @@ const Role: React.FC = () => {
     }
   ];
 
-  const queryFields: QueryField[] = [
+  const queryItems: FormItemProps[] = [
     {
       label: t('pages.role.queryForm.name'),
       name: 'name',
-      render: <Input placeholder={t('pages.role.queryForm.name.placeholder')} />
+      children: <Input placeholder={t('pages.role.queryForm.name.placeholder')} />
     },
     {
       label: t('pages.role.queryForm.info'),
       name: 'info',
-      render: <Input placeholder={t('pages.role.queryForm.info.placeholder')} />
+      children: <Input placeholder={t('pages.role.queryForm.info.placeholder')} />
     }
   ];
 
@@ -108,31 +108,40 @@ const Role: React.FC = () => {
     return data;
   };
 
+  const actions: React.ReactNode[] = [
+    <Add permissionData={permissionData} setRoleData={setRoleData} />,
+    <Edit data={getDetail()} setRoleData={setRoleData} />,
+    <View data={getDetail()} />,
+    <Delete selectData={getSelectData(selectKeys)} setRoleData={setRoleData} />
+  ];
+
   return (
     <PageWrapper className={styles['container']}>
-      <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Card bordered={false} className={styles['content']}>
-        <Space style={{ width: '100%', marginBottom: '10px' }}>
-          <Add permissionData={permissionData} setRoleData={setRoleData} />
-          <Edit data={getDetail()} setRoleData={setRoleData} />
-          <View data={getDetail()} />
-          <Delete selectData={getSelectData(selectKeys)} setRoleData={setRoleData} />
-        </Space>
-        <Table
-          bordered
-          columns={tableColumns}
-          dataSource={roleData?.records}
-          loading={loading}
-          size="small"
-          rowSelection={{
+      <TablePro
+        queryItems={queryItems}
+        queryForm={{
+          name: 'roleQuery',
+          layout: 'inline',
+          onFinish: handleQuery,
+          labelCol: { span: 6 },
+          wrapperCol: { span: 18 }
+        }}
+        actions={actions}
+        queryTable={{
+          bordered: true,
+          columns: tableColumns,
+          dataSource: roleData?.records,
+          loading: loading,
+          size: 'small',
+          rowSelection: {
             type: 'checkbox',
             selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);
             }
-          }}
-          onRow={(record) => ({
+          },
+          onRow: (record) => ({
             onClick: () => {
               if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
@@ -145,10 +154,10 @@ const Role: React.FC = () => {
                 setSelectKeys(keys);
               }
             }
-          })}
-          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
-          scroll={{ x: 'max-content' }}
-          pagination={{
+          }),
+          rowKey: (record) => record.id, // 设置每条记录的id为rowKey
+          scroll: { x: 'max-content' },
+          pagination: {
             defaultPageSize: 10,
             total: roleData?.total,
             showSizeChanger: true,
@@ -157,9 +166,10 @@ const Role: React.FC = () => {
             onChange: (page, pageSize) => {
               queryData({ pageNum: page, pageSize: pageSize });
             }
-          }}
-        />
-      </Card>
+          }
+        }}
+        onReset={handleReset}
+      />
     </PageWrapper>
   );
 };

@@ -1,8 +1,7 @@
-import { Card, Input, Space, Table, Tag } from 'antd';
+import { type FormItemProps, Input, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { getUserList } from '@/services/user';
-import Query from '@/components/Query';
 import { getRoles } from '@/services/role';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
@@ -15,6 +14,7 @@ import { userStatusTagColor } from '@/config/statusTagConfig';
 import PageWrapper from '@/components/PageWrapper';
 import View from './components/View';
 import styles from './index.module.less';
+import TablePro from '@/components/TablePro';
 
 type QueryParams = {
   username?: string;
@@ -110,21 +110,21 @@ const User: React.FC = () => {
     }
   ];
 
-  const queryFields: QueryField[] = [
+  const queryItems: FormItemProps[] = [
     {
       label: t('pages.user.queryForm.username'),
       name: 'username',
-      render: <Input placeholder={t('pages.user.queryForm.username.placeholder')} />
+      children: <Input placeholder={t('pages.user.queryForm.username.placeholder')} />
     },
     {
       label: t('pages.user.queryForm.phone'),
       name: 'phone',
-      render: <Input placeholder={t('pages.user.queryForm.phone.placeholder')} />
+      children: <Input placeholder={t('pages.user.queryForm.phone.placeholder')} />
     },
     {
       label: t('pages.user.queryForm.email'),
       name: 'email',
-      render: <Input placeholder={t('pages.user.queryForm.email.placeholder')} />
+      children: <Input placeholder={t('pages.user.queryForm.email.placeholder')} />
     }
   ];
 
@@ -162,32 +162,41 @@ const User: React.FC = () => {
     return data;
   };
 
+  const actions: React.ReactNode[] = [
+    <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />,
+    <Edit data={getDetail()} setUserData={setUserData} />,
+    <View data={getDetail()} />,
+    <ResetPassword selectData={getSelectData(selectKeys)} clearSelectData={clearSelectData} />,
+    <Delete selectData={getSelectData(selectKeys)} setUserData={setUserData} />
+  ];
+
   return (
     <PageWrapper className={styles['container']}>
-      <Query queryFields={queryFields} onQuery={handleQuery} onReset={handleReset} />
-      <Card bordered={false} className={styles['content']}>
-        <Space style={{ width: '100%', marginBottom: '10px' }}>
-          <Add roleData={roleData} userStatus={userStatusData} setUserData={setUserData} />
-          <Edit data={getDetail()} setUserData={setUserData} />
-          <View data={getDetail()} />
-          <ResetPassword selectData={getSelectData(selectKeys)} clearSelectData={clearSelectData} />
-          <Delete selectData={getSelectData(selectKeys)} setUserData={setUserData} />
-        </Space>
-        <Table
-          bordered
-          columns={tableColumns}
-          dataSource={userData?.records}
-          loading={loading}
-          size="small"
-          rowSelection={{
+      <TablePro
+        queryItems={queryItems}
+        queryForm={{
+          name: 'userQuery',
+          layout: 'inline',
+          onFinish: handleQuery,
+          labelCol: { span: 6 },
+          wrapperCol: { span: 18 }
+        }}
+        actions={actions}
+        queryTable={{
+          bordered: true,
+          columns: tableColumns,
+          dataSource: userData?.records,
+          loading: loading,
+          size: 'small',
+          rowSelection: {
             type: 'checkbox',
             selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
             selectedRowKeys: selectKeys,
             onChange: (selectedRowKeys) => {
               setSelectKeys(selectedRowKeys);
             }
-          }}
-          onRow={(record) => ({
+          },
+          onRow: (record) => ({
             onClick: () => {
               if (selectKeys.indexOf(record.id) < 0) {
                 // 添加选中数据
@@ -200,10 +209,10 @@ const User: React.FC = () => {
                 setSelectKeys(keys);
               }
             }
-          })}
-          rowKey={(record) => record.id} // 设置每条记录的id为rowKey
-          scroll={{ x: 'max-content' }}
-          pagination={{
+          }),
+          rowKey: (record) => record.id, // 设置每条记录的id为rowKey
+          scroll: { x: 'max-content' },
+          pagination: {
             defaultPageSize: 10,
             total: userData?.total,
             showSizeChanger: true,
@@ -212,9 +221,10 @@ const User: React.FC = () => {
             onChange: (page, pageSize) => {
               queryData({ pageNum: page, pageSize: pageSize });
             }
-          }}
-        />
-      </Card>
+          }
+        }}
+        onReset={handleReset}
+      />
     </PageWrapper>
   );
 };
