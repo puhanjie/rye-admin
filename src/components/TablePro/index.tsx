@@ -12,7 +12,8 @@ import {
   Card,
   Table
 } from 'antd';
-import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { useState } from 'react';
 
 type Props = {
   className?: string;
@@ -37,13 +38,16 @@ const TablePro: React.FC<Props> = ({
   onReset
 }) => {
   const { t } = useTranslation();
+  const [expand, setExpand] = useState(false);
 
   const renderQueryItems = (queryItems?: FormItemProps[]) => {
     if (!queryItems || queryItems.length <= 0) {
       return null;
     }
     const children: React.ReactNode[] = [];
-    for (let i = 0; i < queryItems.length; i++) {
+    const collapseCount = queryItems.length > 3 ? 3 : queryItems.length;
+    const count = expand ? queryItems.length : collapseCount;
+    for (let i = 0; i < count; i++) {
       children.push(
         <Col span={8} key={i} style={{ margin: '5px 0' }}>
           <Form.Item key={i} {...queryItems[i]}>
@@ -124,10 +128,10 @@ const TablePro: React.FC<Props> = ({
         <Card size="small" bordered={false} className={styles['query']}>
           <Form {...getFormProps()}>
             <Row style={{ width: '100%' }} align="middle">
-              <Col span={20}>
+              <Col span={19}>
                 <Row>{renderQueryItems(queryItems)}</Row>
               </Col>
-              <Col span={4} style={{ textAlign: 'center' }}>
+              <Col span={5} style={{ textAlign: 'center' }}>
                 <Space>
                   <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
                     {t('common.button.query')}
@@ -135,6 +139,15 @@ const TablePro: React.FC<Props> = ({
                   <Button htmlType="reset" icon={<ReloadOutlined />} onClick={onReset}>
                     {t('common.button.reset')}
                   </Button>
+                  <a
+                    style={{ fontSize: 14 }}
+                    onClick={() => {
+                      setExpand(!expand);
+                    }}
+                  >
+                    {expand ? t('common.collapse') : t('common.expand')}
+                    <DownOutlined rotate={expand ? 180 : 0} style={{ marginLeft: 5 }} />
+                  </a>
                 </Space>
               </Col>
             </Row>

@@ -10,5 +10,7 @@ export default {
   'common.tip.selectOne': 'Please select a record!',
   'common.tip.select': 'Please select the record you want to delete!',
   'common.tip.id': 'Invalid selection record!',
-  'common.table.footer': '{{start}} - {{end}} / Total of {{total}}'
+  'common.table.footer': '{{start}} - {{end}} / Total of {{total}}',
+  'common.expand': 'Expand',
+  'common.collapse': 'Collapse'
 };

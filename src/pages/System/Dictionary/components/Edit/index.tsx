@@ -62,9 +62,9 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
         onCancel={handleCancel}
         destroyOnClose={true}
         bodyStyle={{
-          padding: '30px',
-          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+          padding: '12px',
+          marginTop: '12px',
+          borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
         {data.length === 1 && (
@@ -74,8 +74,8 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
             // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
             preserve={false}
             initialValues={data[0]}
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 17 }}
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 19 }}
           >
             <Form.Item label="id" name="id" hidden rules={[{ required: true }]}>
               <Input />

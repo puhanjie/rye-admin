@@ -63,9 +63,9 @@ const View: React.FC<Props> = ({ data }) => {
         onCancel={handleCancel}
         destroyOnClose={true}
         bodyStyle={{
-          padding: '30px',
-          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+          padding: '12px',
+          marginTop: '12px',
+          borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
         <Descriptions

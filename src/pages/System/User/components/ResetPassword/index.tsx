@@ -65,9 +65,9 @@ const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
         onCancel={handleCancel}
         destroyOnClose={true}
         bodyStyle={{
-          padding: '30px',
-          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+          padding: '12px',
+          marginTop: '12px',
+          borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
         {selectData.length === 1 && (
@@ -76,8 +76,8 @@ const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
             form={form}
             // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
             preserve={false}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 20 }}
           >
             <Form.Item label="id" name="userId" initialValue={selectData[0].id} hidden>
               <Input />

@@ -53,12 +53,12 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
         onCancel={handleCancel}
         destroyOnClose={true}
         bodyStyle={{
-          padding: '30px',
-          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+          padding: '12px',
+          marginTop: '12px',
+          borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Form name="addDictionary" form={form} labelCol={{ span: 7 }} wrapperCol={{ span: 17 }}>
+        <Form name="addDictionary" form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
           <Form.Item
             label={t('pages.dictionary.dictName')}
             name="dictName"

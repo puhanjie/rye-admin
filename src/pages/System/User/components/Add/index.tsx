@@ -58,12 +58,12 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
         onCancel={handleCancel}
         destroyOnClose={true}
         bodyStyle={{
-          padding: '30px',
-          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-          borderBottom: '1px solid rgba(0, 0, 0, 0.06)'
+          padding: '12px',
+          marginTop: '12px',
+          borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Form name="addUser" form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+        <Form name="addUser" form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
           <Form.Item label={t('pages.user.username')} name="username" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
