@@ -139,15 +139,17 @@ const TablePro: React.FC<Props> = ({
                   <Button htmlType="reset" icon={<ReloadOutlined />} onClick={onReset}>
                     {t('common.button.reset')}
                   </Button>
-                  <a
-                    style={{ fontSize: 14 }}
-                    onClick={() => {
-                      setExpand(!expand);
-                    }}
-                  >
-                    {expand ? t('common.collapse') : t('common.expand')}
-                    <DownOutlined rotate={expand ? 180 : 0} style={{ marginLeft: 5 }} />
-                  </a>
+                  {queryItems.length > 3 && (
+                    <a
+                      style={{ fontSize: 14 }}
+                      onClick={() => {
+                        setExpand(!expand);
+                      }}
+                    >
+                      {expand ? t('common.collapse') : t('common.expand')}
+                      <DownOutlined rotate={expand ? 180 : 0} style={{ marginLeft: 5 }} />
+                    </a>
+                  )}
                 </Space>
               </Col>
             </Row>
