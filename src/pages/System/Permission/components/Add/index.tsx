@@ -1,19 +1,20 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
+import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { addPermission, getPermissionList } from '@/services/permission';
-import { getMenuTree } from '@/utils/general';
+import { getDictSelectOptions, getMenuTree } from '@/utils/general';
 import routeConfig from '@/router';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
+  optionsData?: API.PermissionOptions;
   setPermissionData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<API.PermissionInfo[]> | undefined>
+    React.SetStateAction<API.Page<API.PermissionInfo[]> | undefined>
   >;
 };
 
-const Add: React.FC<Props> = ({ setPermissionData }) => {
+const Add: React.FC<Props> = ({ optionsData, setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -23,6 +24,7 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
     const permission: API.PermissionParams = form.getFieldsValue();
     setIsOpen(false);
     form.resetFields();
+    permission.permissionStatus = permission.permissionStatus && permission.permissionStatus[0];
     const addResult = await addPermission(permission);
     if (!addResult.data) {
       message.error(t('pages.permission.add.tip.fail'));
@@ -54,7 +56,6 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
@@ -62,18 +63,32 @@ const Add: React.FC<Props> = ({ setPermissionData }) => {
         }}
       >
         <Form name="addPermission" form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
+          <Form.Item label={t('pages.permission.code')} name="code" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
           <Form.Item label={t('pages.permission.name')} name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.permission.info')} name="info" rules={[{ required: true }]}>
-            <Input />
+          <Form.Item
+            label={t('pages.permission.permissionStatus')}
+            name="permissionStatus"
+            initialValue={['0']}
+            rules={[{ required: true }]}
+          >
+            <Select
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={getDictSelectOptions(optionsData?.permissionStatus)}
+              placeholder={t('pages.permission.select.placeholder')}
+            />
           </Form.Item>
           <Form.Item label={t('pages.permission.menu')} name="menu" rules={[{ required: true }]}>
             <TreeSelect
               treeData={getMenuTree(menuData)}
               allowClear
               showCheckedStrategy="SHOW_CHILD"
-              placeholder={t('pages.permission.modal.menu.placeholder')}
+              placeholder={t('pages.permission.select.placeholder')}
             />
           </Form.Item>
         </Form>

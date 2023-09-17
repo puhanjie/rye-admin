@@ -8,7 +8,7 @@ import { EditOutlined } from '@ant-design/icons';
 type Props = {
   data: API.DictionaryInfo[];
   setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<API.DictionaryInfo[]> | undefined>
+    React.SetStateAction<API.Page<API.DictionaryInfo[]> | undefined>
   >;
 };
 
@@ -22,6 +22,7 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
       message.warning(t('common.tip.selectOne'));
       return;
     }
+    form.setFieldsValue(data[0]);
     setIsOpen(true);
   };
 
@@ -60,59 +61,48 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
           borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        {data.length === 1 && (
-          <Form
-            name="editDictionary"
-            form={form}
-            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
-            preserve={false}
-            initialValues={data[0]}
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 19 }}
+        <Form name="editDictionary" form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
+          <Form.Item label="id" name="id" hidden rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={t('pages.dictionary.dictType')}
+            name="dictType"
+            rules={[{ required: true }]}
           >
-            <Form.Item label="id" name="id" hidden rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.dictName')}
-              name="dictName"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.dictText')}
-              name="dictText"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.itemValue')}
-              name="itemValue"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label={t('pages.dictionary.itemText')}
-              name="itemText"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.dictionary.description')} name="description">
-              <Input.TextArea />
-            </Form.Item>
-          </Form>
-        )}
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={t('pages.dictionary.dictName')}
+            name="dictName"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={t('pages.dictionary.dictValue')}
+            name="dictValue"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={t('pages.dictionary.dictLabel')}
+            name="dictLabel"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.dictionary.description')} name="description">
+            <Input.TextArea />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );

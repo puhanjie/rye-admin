@@ -5,21 +5,21 @@ import { getPermissionList, removePermission } from '@/services/permission';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  selectData: API.PermissionInfo[];
+  data: API.PermissionInfo[];
   setPermissionData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<API.PermissionInfo[]> | undefined>
+    React.SetStateAction<API.Page<API.PermissionInfo[]> | undefined>
   >;
 };
 
-const Delete: React.FC<Props> = ({ selectData, setPermissionData }) => {
+const Delete: React.FC<Props> = ({ data, setPermissionData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
-    if (selectData.length <= 0) {
+    if (data.length <= 0) {
       message.warning(t('common.tip.select'));
       return;
     }
-    const ids = selectData.map((item) => item.id);
+    const ids = data.map((item) => item.id);
     const deleteResult = await removePermission(ids);
     if (!deleteResult.data) {
       message.error(t('pages.permission.delete.tip.fail'));

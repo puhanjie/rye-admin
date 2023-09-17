@@ -11,7 +11,7 @@ export async function addPermission(data: API.PermissionParams) {
 
 export async function removePermission(ids: number[]) {
   const res = await request<boolean>({
-    url: `/api/v1/permission`,
+    url: '/api/v1/permission',
     method: 'delete',
     data: ids
   });
@@ -27,8 +27,8 @@ export async function editPermission(data: API.PermissionParams) {
   return res;
 }
 
-export async function getPermissionList(params?: API.PermissionPageQuery) {
-  const res = await request<API.PageInfo<API.PermissionInfo[]>>({
+export async function getPermissionList(params?: API.PermissionQuery) {
+  const res = await request<API.Page<API.PermissionInfo[]>>({
     url: '/api/v1/permission/list',
     method: 'get',
     params
@@ -36,9 +36,9 @@ export async function getPermissionList(params?: API.PermissionPageQuery) {
   return res;
 }
 
-export async function getPermissions() {
-  const res = await request<API.PermissionInfo[]>({
-    url: '/api/v1/permission',
+export async function getPermissionOptions() {
+  const res = await request<API.PermissionOptions>({
+    url: '/api/v1/permission/options',
     method: 'get'
   });
   return res;

@@ -11,7 +11,7 @@ export async function addRole(data: API.RoleParams) {
 
 export async function removeRole(ids: number[]) {
   const res = await request<boolean>({
-    url: `/api/v1/role`,
+    url: '/api/v1/role',
     method: 'delete',
     data: ids
   });
@@ -27,8 +27,8 @@ export async function editRole(data: API.RoleParams) {
   return res;
 }
 
-export async function getRoleList(params?: API.RolePageQuery) {
-  const res = await request<API.PageInfo<API.RoleInfo[]>>({
+export async function getRoleList(params?: API.RoleQuery) {
+  const res = await request<API.Page<API.RoleInfo[]>>({
     url: '/api/v1/role/list',
     method: 'get',
     params
@@ -36,9 +36,9 @@ export async function getRoleList(params?: API.RolePageQuery) {
   return res;
 }
 
-export async function getRoles() {
-  const res = await request<API.RoleInfo[]>({
-    url: '/api/v1/role',
+export async function getRoleOptions() {
+  const res = await request<API.RoleOptions>({
+    url: '/api/v1/role/options',
     method: 'get'
   });
   return res;

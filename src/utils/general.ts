@@ -8,19 +8,37 @@ export type SelectOptions = {
 export type SelectTreeOptions = {
   key?: string;
   value?: string;
-  title?: string;
+  title?: React.ReactNode;
   selectable?: boolean;
   children?: SelectTreeOptions[];
 };
 
 /**
- * 通过字典数据获取角色选项框数据
+ * 获取字典选项框数据
  * @param dictionarys
  * @returns
  */
-export function getUserStatusSelectOptions(dictionarys: API.DictionaryInfo[]) {
+export function getDictSelectOptions(dictionarys?: API.Dictionary[]) {
+  if (!dictionarys) {
+    return;
+  }
   const options: SelectOptions[] = dictionarys.map((item) => {
-    return { label: item.itemText, value: item.itemValue };
+    return { label: item.dictLabel, value: item.dictValue };
+  });
+  return options;
+}
+
+/**
+ * 通过用户数据获取用户选项框数据
+ * @param users
+ * @returns
+ */
+export function getUserSelectOptions(users?: API.User[]) {
+  if (!users) {
+    return;
+  }
+  const options: SelectOptions[] = users.map((item) => {
+    return { label: item.name, value: item.id };
   });
   return options;
 }
@@ -30,9 +48,27 @@ export function getUserStatusSelectOptions(dictionarys: API.DictionaryInfo[]) {
  * @param roles
  * @returns
  */
-export function getRoleSelectOptions(roles: API.RoleInfo[]) {
+export function getRoleSelectOptions(roles?: API.Role[]) {
+  if (!roles) {
+    return;
+  }
   const options: SelectOptions[] = roles.map((item) => {
-    return { label: item.info, value: item.id };
+    return { label: item.name, value: item.id };
+  });
+  return options;
+}
+
+/**
+ * 通过岗位数据获取岗位选项框数据
+ * @param roles
+ * @returns
+ */
+export function getPostSelectOptions(posts?: API.Post[]) {
+  if (!posts) {
+    return;
+  }
+  const options: SelectOptions[] = posts.map((item) => {
+    return { label: item.name, value: item.id };
   });
   return options;
 }
@@ -43,16 +79,13 @@ export function getRoleSelectOptions(roles: API.RoleInfo[]) {
  * @param permissions
  * @returns
  */
-export function getMenuPermissions(
-  routeName: string | undefined,
-  permissions: API.PermissionInfo[]
-) {
+export function getMenuPermissions(routeName: string | undefined, permissions: API.Permission[]) {
   const data = permissions.filter((item) => item.menu === routeName);
   const menuPermission: SelectTreeOptions[] = data.map((item) => {
     return {
       key: item.id.toString(),
       value: item.id.toString(),
-      title: item.info
+      title: item.name
     };
   });
   return menuPermission;
@@ -64,10 +97,11 @@ export function getMenuPermissions(
  * @param permissions
  * @returns
  */
-export function getPermissionTreeData(
-  routeConfig: RouteConfig[] | undefined,
-  permissions: API.PermissionInfo[]
-) {
+export function getPermissionTreeData(routeConfig?: RouteConfig[], permissions?: API.Permission[]) {
+  if (!routeConfig || !permissions) {
+    return;
+  }
+
   const treeData: SelectTreeOptions[] = [];
   if (routeConfig) {
     routeConfig.map((item) => {
@@ -107,5 +141,27 @@ export function getMenuTree(routeConfig?: RouteConfig[]) {
       tree.children = getMenuTree(item.children);
     }
     return tree;
+  });
+}
+
+/**
+ * 获取部门树选项数据
+ * @param departmentTree
+ * @returns
+ */
+export function getDeptTree(departmentTree?: API.DepartmentTree[]) {
+  if (!departmentTree) {
+    return;
+  }
+  return departmentTree.map((item) => {
+    const treeItem: SelectTreeOptions = {
+      key: item.id.toString(),
+      value: item.id.toString(),
+      title: item.name
+    };
+    if (item.children && item.children.length !== 0) {
+      treeItem.children = getDeptTree(item.children);
+    }
+    return treeItem;
   });
 }

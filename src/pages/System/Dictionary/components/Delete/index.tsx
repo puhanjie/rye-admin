@@ -5,21 +5,21 @@ import AuthWrapper from '@/components/AuthWrapper';
 import { getDictionaryList, removeDictionary } from '@/services/dictionary';
 
 type Props = {
-  selectData: API.DictionaryInfo[];
+  data: API.DictionaryInfo[];
   setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<API.DictionaryInfo[]> | undefined>
+    React.SetStateAction<API.Page<API.DictionaryInfo[]> | undefined>
   >;
 };
 
-const Delete: React.FC<Props> = ({ selectData, setDictionaryData }) => {
+const Delete: React.FC<Props> = ({ data, setDictionaryData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
-    if (selectData.length <= 0) {
+    if (data.length <= 0) {
       message.warning(t('common.tip.select'));
       return;
     }
-    const ids = selectData.map((item) => item.id);
+    const ids = data.map((item) => item.id);
     const deleteResult = await removeDictionary(ids);
     if (!deleteResult.data) {
       message.error(t('pages.dictionary.delete.tip.fail'));

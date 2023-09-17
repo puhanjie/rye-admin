@@ -11,7 +11,7 @@ export async function addDictionary(data: API.DictionaryParams) {
 
 export async function removeDictionary(ids: number[]) {
   const res = await request<boolean>({
-    url: `/api/v1/dictionary`,
+    url: '/api/v1/dictionary',
     method: 'delete',
     data: ids
   });
@@ -27,8 +27,8 @@ export async function editDictionary(data: API.DictionaryParams) {
   return res;
 }
 
-export async function getDictionaryList(params?: API.DictionaryPageQuery) {
-  const res = await request<API.PageInfo<API.DictionaryInfo[]>>({
+export async function getDictionaryList(params?: API.DictionaryQuery) {
+  const res = await request<API.Page<API.DictionaryInfo[]>>({
     url: '/api/v1/dictionary/list',
     method: 'get',
     params
@@ -36,7 +36,7 @@ export async function getDictionaryList(params?: API.DictionaryPageQuery) {
   return res;
 }
 
-export async function getDictionarys(params: { dictName: string }) {
+export async function getDictionarys(params: { dictType: string }) {
   const res = await request<API.DictionaryInfo[]>({
     url: '/api/v1/dictionary/items',
     method: 'get',

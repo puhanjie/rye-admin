@@ -1,19 +1,23 @@
 import { addUser, getUserList } from '@/services/user';
-import { getRoleSelectOptions, getUserStatusSelectOptions } from '@/utils/general';
+import {
+  getRoleSelectOptions,
+  getDictSelectOptions,
+  getDeptTree,
+  getPostSelectOptions
+} from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Select, message } from 'antd';
+import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import MD5 from 'crypto-js/md5';
 
 type Props = {
-  roleData: API.RoleInfo[];
-  userStatus: API.DictionaryInfo[];
-  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
+  optionsData?: API.UserOptions;
+  setUserData: React.Dispatch<React.SetStateAction<API.Page<API.UserInfo[]> | undefined>>;
 };
 
-const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
+const Add: React.FC<Props> = ({ optionsData, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -22,9 +26,10 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
     const user: API.UserParams = form.getFieldsValue();
     setIsOpen(false);
     form.resetFields();
+    user.department = Number(user.department);
+    user.sex = user.sex && user.sex[0];
     user.userStatus = user.userStatus && user.userStatus[0];
     user.password = user.password && MD5(user.password).toString();
-    user.roles = user.roles?.map((item) => Number(item));
     const addResult = await addUser(user);
     if (!addResult.data) {
       message.error(t('pages.user.add.tip.fail'));
@@ -56,7 +61,6 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
@@ -64,11 +68,36 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
         }}
       >
         <Form name="addUser" form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
+          <Form.Item
+            label={t('pages.user.department')}
+            name="department"
+            rules={[{ required: true }]}
+          >
+            <TreeSelect
+              treeData={getDeptTree(optionsData?.departments)}
+              allowClear
+              placeholder={t('pages.user.select.placeholder')}
+            />
+          </Form.Item>
           <Form.Item label={t('pages.user.username')} name="username" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.user.nickname')} name="nickname" rules={[{ required: true }]}>
+          <Form.Item label={t('pages.user.name')} name="name" rules={[{ required: true }]}>
             <Input />
+          </Form.Item>
+          <Form.Item
+            label={t('pages.user.sex')}
+            name="sex"
+            initialValue={['1']}
+            rules={[{ required: true }]}
+          >
+            <Select
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={getDictSelectOptions(optionsData?.sex)}
+              placeholder={t('pages.user.select.placeholder')}
+            />
           </Form.Item>
           <Form.Item
             label={t('pages.user.userStatus')}
@@ -80,8 +109,19 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
-              options={getUserStatusSelectOptions(userStatus)}
-              placeholder={t('pages.user.modal.role.placeholder')}
+              options={getDictSelectOptions(optionsData?.userStatus)}
+              placeholder={t('pages.user.select.placeholder')}
+            />
+          </Form.Item>
+          <Form.Item label={t('pages.user.post')} name="posts">
+            <Select
+              mode="multiple"
+              allowClear
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={getPostSelectOptions(optionsData?.posts)}
+              placeholder={t('pages.user.select.placeholder')}
             />
           </Form.Item>
           <Form.Item label={t('pages.user.role')} name="roles">
@@ -91,8 +131,8 @@ const Add: React.FC<Props> = ({ roleData, userStatus, setUserData }) => {
               filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
-              options={getRoleSelectOptions(roleData)}
-              placeholder={t('pages.user.modal.role.placeholder')}
+              options={getRoleSelectOptions(optionsData?.roles)}
+              placeholder={t('pages.user.select.placeholder')}
             />
           </Form.Item>
           <Form.Item label={t('pages.user.password')} name="password" rules={[{ required: true }]}>

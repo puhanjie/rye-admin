@@ -1,8 +1,9 @@
-import { Button, type DescriptionsProps, Modal, message, Descriptions } from 'antd';
+import { Button, type DescriptionsProps, Modal, message, Descriptions, Tag } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import { EyeOutlined } from '@ant-design/icons';
+import { permissionStatusTagColor } from '@/config/statusTagConfig';
 
 type Props = {
   data: API.PermissionInfo[];
@@ -16,14 +17,29 @@ const View: React.FC<Props> = ({ data }) => {
     data.length === 1
       ? [
           {
-            key: 'name',
-            label: '权限名',
+            key: 'code',
+            label: t('pages.permission.code'),
             children: data[0].name
           },
           {
-            key: 'info',
-            label: '权限信息',
-            children: data[0].info
+            key: 'name',
+            label: t('pages.permission.name'),
+            children: data[0].name
+          },
+          {
+            key: 'permissionStatus',
+            label: t('pages.permission.permissionStatus'),
+            children: (
+              <Tag
+                color={
+                  permissionStatusTagColor.filter(
+                    (item) => data[0].permissionStatus.dictValue === item.value
+                  )[0].color
+                }
+              >
+                {data[0].permissionStatus.dictLabel}
+              </Tag>
+            )
           },
           {
             key: 'menu',

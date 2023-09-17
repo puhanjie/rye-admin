@@ -2,12 +2,11 @@ import { Button, type DescriptionsProps, Modal, message, Tag, Descriptions } fro
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import type { UserDetail } from '../..';
 import { EyeOutlined } from '@ant-design/icons';
 import { userStatusTagColor } from '@/config/statusTagConfig';
 
 type Props = {
-  data: UserDetail;
+  data: API.UserInfo[];
 };
 
 const View: React.FC<Props> = ({ data }) => {
@@ -15,53 +14,68 @@ const View: React.FC<Props> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const items: DescriptionsProps['items'] =
-    data.selectData.length === 1
+    data.length === 1
       ? [
           {
-            key: 'username',
-            label: '用户名',
-            children: data.selectData[0].username
+            key: 'department',
+            label: t('pages.user.department'),
+            children: data[0].department.name
           },
           {
-            key: 'nickname',
-            label: '昵称',
-            children: data.selectData[0].nickname
+            key: 'username',
+            label: t('pages.user.username'),
+            children: data[0].username
+          },
+          {
+            key: 'name',
+            label: t('pages.user.name'),
+            children: data[0].name
+          },
+          {
+            key: 'sex',
+            label: t('pages.user.sex'),
+            children: data[0].sex.dictLabel
           },
           {
             key: 'userStatus',
-            label: '用户状态',
+            label: t('pages.user.userStatus'),
             children: (
               <Tag
                 color={
                   userStatusTagColor.filter(
-                    (item) => data.selectData[0].userStatus.itemValue === item.value
+                    (item) => data[0].userStatus.dictValue === item.value
                   )[0].color
                 }
               >
-                {data.selectData[0].userStatus.itemText}
+                {data[0].userStatus.dictLabel}
               </Tag>
             )
           },
           {
-            key: 'roles',
-            label: '角色',
-            children: data.selectData[0].roles?.map((item) => <Tag key={item.id}>{item.info}</Tag>)
+            key: 'post',
+            label: t('pages.user.post'),
+            children: data[0].posts?.map((item) => <Tag key={item.id}>{item.name}</Tag>)
+          },
+          {
+            key: 'role',
+            label: t('pages.user.role'),
+            children: data[0].roles?.map((item) => <Tag key={item.id}>{item.name}</Tag>)
           },
           {
             key: 'phone',
-            label: '手机',
-            children: data.selectData[0].phone
+            label: t('pages.user.phone'),
+            children: data[0].phone
           },
           {
             key: 'email',
-            label: '邮箱',
-            children: data.selectData[0].email
+            label: t('pages.user.email'),
+            children: data[0].email
           }
         ]
       : [];
 
   const handleView = () => {
-    if (data.selectData.length !== 1) {
+    if (data.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
     }

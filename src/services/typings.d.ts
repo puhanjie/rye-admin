@@ -13,106 +13,216 @@ declare namespace API {
     type: 'account' | 'phone';
   };
 
-  type UserPageQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
-    username?: string;
-    phone?: string;
-    email?: string;
-  };
-
-  type RolePageQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
-    name?: string;
-    info?: string;
-  };
-
-  type PermissionPageQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
-    name?: string;
-    info?: string;
-    menu?: string;
-  };
-
-  type DictionaryPageQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
-    dictName?: string;
-    itemText?: string;
-  };
-
-  type Token = {
-    token: string;
-  };
-
-  type UserBasicInfo = {
-    id?: number;
-    username?: string;
-    nickname?: string;
-    phone?: string;
-    avatar?: string;
-    email?: string;
-    roles?: {
-      id: number;
-      name: string;
-      info: string;
-    }[];
-    permissions?: {
-      id: number;
-      name: string;
-      info: string;
-    }[];
-  };
-
-  type Password = {
+  type PasswordParams = {
     type?: number = 1; // 默认重置密码(1:重置密码;2:修改密码)
     userId?: number;
     currentPassword?: string;
     newPassword?: string;
   };
 
-  type UserInfo = {
+  type UserParams = {
+    id?: number | string;
+    department?: number;
+    username?: string;
+    name?: string;
+    sex?: string;
+    userStatus?: string;
+    password?: string;
+    phone?: string;
+    email?: string;
+    roles?: number[];
+    posts?: number[];
+  };
+
+  type RoleParams = {
+    id?: number | string;
+    code?: string;
+    name?: string;
+    roleStatus?: string;
+    permissions?: number[];
+  };
+
+  type PermissionParams = {
+    id?: number | string;
+    code?: string;
+    name?: string;
+    menu?: string;
+    permissionStatus?: string;
+  };
+
+  type DictionaryParams = {
+    id?: number | string;
+    dictType?: string;
+    dictName?: string;
+    dictValue?: string;
+    dictLabel?: string;
+    description?: string;
+  };
+
+  type PostParams = {
+    id?: number | string;
+    code?: string;
+    name?: string;
+    postStatus?: string;
+    remark?: string;
+    roles?: number[];
+  };
+
+  type DepartmentParams = {
+    id?: number | string;
+    parentId?: number;
+    code?: string;
+    name?: string;
+    leader?: String;
+    deptStatus?: string;
+    roles?: number[];
+  };
+
+  type UserQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    username?: string;
+    name?: string;
+    phone?: string;
+    email?: string;
+  };
+
+  type RoleQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    code?: string;
+    name?: string;
+  };
+
+  type PermissionQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    code?: string;
+    name?: string;
+    menu?: string;
+  };
+
+  type LogQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    message?: string;
+    operateUser?: string;
+  };
+
+  type DictionaryQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    dictType?: string;
+    dictLabel?: string;
+  };
+
+  type PostQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    code?: string;
+    name?: string;
+  };
+
+  type DepartmentQuery = {
+    code?: string;
+    name?: string;
+  };
+
+  type UserBasicInfo = {
+    id?: number;
+    department?: API.Department;
+    username?: string;
+    name?: string;
+    sex?: API.Dictionary;
+    userStatus?: API.Dictionary;
+    phone?: string;
+    avatar?: string;
+    email?: string;
+    roles?: API.Role[];
+    permissions?: API.Permission[];
+  };
+
+  type User = {
     id: number;
     username: string;
-    nickname: string;
-    userStatus: {
-      itemValue: string;
-      itemText: string;
-    };
+    name: string;
+  };
+
+  type UserInfo = {
+    id: number;
+    department: API.Department;
+    username: string;
+    name: string;
+    sex: API.Dictionary;
+    userStatus: API.Dictionary;
     phone: string;
     avatar: string;
     email: string;
+    createUser: API.User;
+    updateUser: API.User;
     createTime: string;
     updateTime: string;
-    roles?: {
-      id: number;
-      name: string;
-      info: string;
-    }[];
+    roles?: API.Role[];
+    posts?: API.Post[];
+  };
+
+  type UserOptions = {
+    departments: API.DepartmentTree[];
+    posts: API.Post[];
+    roles: API.Role[];
+    sex: API.Dictionary[];
+    userStatus: API.Dictionary[];
+  };
+
+  type Role = {
+    id: number;
+    code: String;
+    name: string;
   };
 
   type RoleInfo = {
     id: number;
+    code: string;
     name: string;
-    info: string;
+    roleStatus: API.Dictionary;
+    createUser: API.User;
+    updateUser: API.User;
     createTime: string;
     updateTime: string;
-    permissions?: {
-      id: number;
-      name: string;
-      info: string;
-    }[];
+    permissions?: API.Permission[];
+  };
+
+  type RoleOptions = {
+    roleStatus: API.Dictionary[];
+    permissions: API.Permission[];
+  };
+
+  type Permission = {
+    id: number;
+    code: string;
+    name: string;
+    menu: string;
   };
 
   type PermissionInfo = {
     id: number;
+    code: string;
     name: string;
-    info: string;
     menu: string;
+    permissionStatus: API.Dictionary;
+    createUser: API.User;
+    updateUser: API.User;
     createTime: string;
     updateTime: string;
+  };
+
+  type PermissionOptions = {
+    permissionStatus: API.Dictionary[];
+  };
+
+  type File = {
+    fileName: string;
+    filePath: string;
   };
 
   type FileInfo = {
@@ -123,61 +233,99 @@ declare namespace API {
     uuid: string;
   };
 
+  type LogInfo = {
+    id: number;
+    url: string;
+    code: number;
+    message: string;
+    operateUser: API.User;
+    operateTime: string;
+  };
+
+  type Dictionary = {
+    dictValue: string;
+    dictLabel: string;
+  };
+
   type DictionaryInfo = {
     id: number;
+    dictType: string;
     dictName: string;
-    dictText: string;
-    itemValue: string;
-    itemText: string;
-    description: string;
+    dictValue: string;
+    dictLabel: string;
+    description?: string | null;
+    createUser: API.User;
+    updateUser: API.User;
     createTime: string;
     updateTime: string;
   };
 
-  type PageInfo<T> = {
+  type Post = {
+    id: number;
+    code: String;
+    name: string;
+  };
+
+  type PostInfo = {
+    id: number;
+    code: String;
+    name: string;
+    postStatus: API.Dictionary;
+    remark?: string | null;
+    createUser: API.User;
+    updateUser: API.User;
+    createTime: string;
+    updateTime: string;
+    roles?: API.Role[];
+  };
+
+  type PostOptions = {
+    postStatus: API.Dictionary[];
+    roles: API.Role[];
+  };
+
+  type Department = {
+    id: number;
+    code: string | null;
+    name: string | null;
+  };
+
+  type DepartmentTree = {
+    id: number;
+    parentId: number;
+    code: string;
+    name: string;
+    children?: API.DepartmentTree[];
+  };
+
+  type DepartmentDetailTree = {
+    id: number;
+    parentId: number;
+    parentDept: API.Department;
+    code: string;
+    name: string;
+    leader: API.User;
+    deptStatus: API.Dictionary;
+    createUser: API.User;
+    updateUser: API.User;
+    createTime: string;
+    updateTime: string;
+    roles?: API.Role[];
+    children?: API.DepartmentDetailTree[];
+  };
+
+  type DepartmentOptions = {
+    deptStatus: API.Dictionary[];
+    users: API.User[];
+    departments: API.DepartmentTree[];
+    roles: API.Role[];
+  };
+
+  type Page<T> = {
     records: T;
     total: number;
     size: number;
     current: number;
     pages: number;
-  };
-
-  type UserParams = {
-    id?: number | string;
-    username?: string;
-    nickname?: string;
-    userStatus?: string | string[];
-    password?: string;
-    phone?: string;
-    avatar?: string;
-    email?: string;
-    roles?: number[];
-  };
-
-  type RoleParams = {
-    id?: number | string;
-    name?: string;
-    info?: string;
-    permissions?: number[];
-  };
-
-  type PermissionParams = {
-    id?: number | string;
-    name?: string;
-    info?: string;
-    menu?: string;
-  };
-
-  type DictionaryParams = {
-    id?: number | string;
-    dictName?: string;
-    dictText?: string;
-    itemValue?: string;
-    itemText?: string;
-    description?: string;
-  };
-
-  type Avatar = {
-    url: string;
   };
 }

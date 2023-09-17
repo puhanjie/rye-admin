@@ -16,28 +16,28 @@ const View: React.FC<Props> = ({ data }) => {
     data.length === 1
       ? [
           {
+            key: 'dictType',
+            label: t('pages.dictionary.dictType'),
+            children: data[0].dictType
+          },
+          {
             key: 'dictName',
-            label: '字典名',
+            label: t('pages.dictionary.dictName'),
             children: data[0].dictName
           },
           {
-            key: 'dictText',
-            label: '字典文本',
-            children: data[0].dictText
+            key: 'dictValue',
+            label: t('pages.dictionary.dictValue'),
+            children: data[0].dictValue
           },
           {
-            key: 'itemValue',
-            label: '字典值',
-            children: data[0].itemValue
-          },
-          {
-            key: 'itemText',
-            label: '字典值文本',
-            children: data[0].itemText
+            key: 'dictLabel',
+            label: t('pages.dictionary.dictLabel'),
+            children: data[0].dictLabel
           },
           {
             key: 'description',
-            label: '描述',
+            label: t('pages.dictionary.description'),
             children: (
               <div
                 className="scrollbar-light"

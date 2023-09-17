@@ -12,14 +12,9 @@ import View from './components/View';
 import styles from './index.module.less';
 import TablePro from '@/components/TablePro';
 
-type QueryParams = {
-  dictName?: string;
-  itemText?: string;
-};
-
 const Dictionary: React.FC = () => {
   const { t } = useTranslation();
-  const [dictionaryData, setDictionaryData] = useState<API.PageInfo<API.DictionaryInfo[]>>();
+  const [dictionaryData, setDictionaryData] = useState<API.Page<API.DictionaryInfo[]>>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,6 +49,16 @@ const Dictionary: React.FC = () => {
 
   const tableColumns: ColumnsType<API.DictionaryInfo> = [
     {
+      title: t('pages.dictionary.dictType'),
+      dataIndex: 'dictType',
+      align: 'center',
+      onCell: (record) => {
+        return {
+          rowSpan: getRowSpan(record, 'dictType')
+        };
+      }
+    },
+    {
       title: t('pages.dictionary.dictName'),
       dataIndex: 'dictName',
       align: 'center',
@@ -64,29 +69,31 @@ const Dictionary: React.FC = () => {
       }
     },
     {
-      title: t('pages.dictionary.dictText'),
-      dataIndex: 'dictText',
-      align: 'center',
-      onCell: (record) => {
-        return {
-          rowSpan: getRowSpan(record, 'dictText')
-        };
-      }
-    },
-    {
-      title: t('pages.dictionary.itemValue'),
-      dataIndex: 'itemValue',
+      title: t('pages.dictionary.dictValue'),
+      dataIndex: 'dictValue',
       align: 'center'
     },
     {
-      title: t('pages.dictionary.itemText'),
-      dataIndex: 'itemText',
+      title: t('pages.dictionary.dictLabel'),
+      dataIndex: 'dictLabel',
       align: 'center'
     },
     {
       title: t('pages.dictionary.description'),
       dataIndex: 'description',
       align: 'center'
+    },
+    {
+      title: t('pages.dictionary.createUser'),
+      dataIndex: 'createUser',
+      align: 'center',
+      render: (_text, record) => record.createUser.name
+    },
+    {
+      title: t('pages.dictionary.updateUser'),
+      dataIndex: 'updateUser',
+      align: 'center',
+      render: (_text, record) => record.updateUser.name
     },
     {
       title: t('pages.dictionary.createTime'),
@@ -102,18 +109,18 @@ const Dictionary: React.FC = () => {
 
   const queryItems: FormItemProps[] = [
     {
-      label: t('pages.dictionary.queryForm.dictName'),
-      name: 'dictName',
-      children: <Input placeholder={t('pages.dictionary.queryForm.dictName.placeholder')} />
+      label: t('pages.dictionary.queryForm.dictType'),
+      name: 'dictType',
+      children: <Input placeholder={t('pages.dictionary.queryForm.dictType.placeholder')} />
     },
     {
-      label: t('pages.dictionary.queryForm.itemText'),
-      name: 'itemText',
-      children: <Input placeholder={t('pages.dictionary.queryForm.itemText.placeholder')} />
+      label: t('pages.dictionary.queryForm.dictLabel'),
+      name: 'dictLabel',
+      children: <Input placeholder={t('pages.dictionary.queryForm.dictLabel.placeholder')} />
     }
   ];
 
-  const queryData = async (params?: API.DictionaryPageQuery) => {
+  const queryData = async (params?: API.DictionaryQuery) => {
     const res = await getDictionaryList(params);
     if (!res.data) {
       return;
@@ -121,7 +128,7 @@ const Dictionary: React.FC = () => {
     setDictionaryData(res.data);
   };
 
-  const handleQuery = (values: QueryParams) => {
+  const handleQuery = (values: API.DictionaryQuery) => {
     // 获取查询数据
     queryData(values);
   };
@@ -140,7 +147,7 @@ const Dictionary: React.FC = () => {
     <Add setDictionaryData={setDictionaryData} />,
     <Edit data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />,
     <View data={getSelectData(selectKeys)} />,
-    <Delete selectData={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
+    <Delete data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
   ];
 
   return (
@@ -186,6 +193,7 @@ const Dictionary: React.FC = () => {
           rowKey: (record) => record.id, // 设置每条记录的id为rowKey
           scroll: { x: 'max-content' },
           pagination: {
+            current: dictionaryData?.current,
             defaultPageSize: 10,
             total: dictionaryData?.total,
             showSizeChanger: true,

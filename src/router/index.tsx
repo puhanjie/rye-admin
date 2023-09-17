@@ -33,6 +33,22 @@ const routeConfig: RouteConfig[] = [
             }
           },
           {
+            path: 'post',
+            name: 'post',
+            component: lazy(() => import('@/pages/System/Post')),
+            meta: {
+              access: 'post:view'
+            }
+          },
+          {
+            path: 'department',
+            name: 'department',
+            component: lazy(() => import('@/pages/System/Department')),
+            meta: {
+              access: 'department:view'
+            }
+          },
+          {
             path: 'role',
             name: 'role',
             component: lazy(() => import('@/pages/System/Role')),
@@ -54,6 +70,14 @@ const routeConfig: RouteConfig[] = [
             component: lazy(() => import('@/pages/System/Dictionary')),
             meta: {
               access: 'dictionary:view'
+            }
+          },
+          {
+            path: 'log',
+            name: 'log',
+            component: lazy(() => import('@/pages/System/Log')),
+            meta: {
+              access: 'log:view'
             }
           }
         ]

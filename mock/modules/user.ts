@@ -2,55 +2,150 @@ import Mock from 'mockjs';
 import { url, fail, success } from '../utils';
 import { getToken } from '@/utils/auth';
 import { permissionData } from './permission';
+import { departmentData } from './department';
+import { postData } from './post';
+import { roleData } from './role';
+import { dictionaryData } from './dictionary';
 
 const userData = [
   {
     id: 1,
+    department: {
+      id: 1,
+      code: '100',
+      name: 'Rye集团'
+    },
     username: 'admin',
-    nickname: '管理员',
-    userStatus: '0',
+    name: '管理员',
+    sex: {
+      dictValue: '1',
+      dictLabel: '男'
+    },
+    userStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
     password: '21232f297a57a5a743894a0e4a801fc3',
     phone: '15887280652',
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
     email: 'hanjie.pu@outlook.com',
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-06 11:15:20',
     updateTime: '2023-06-06 11:15:20',
     roles: [
       {
         id: 1,
-        name: 'admin',
-        info: '管理员'
+        code: 'admin',
+        name: '管理员'
       }
     ],
-    permissions: [...permissionData]
+    permissions: permissionData.map((item) => ({
+      id: item.id,
+      code: item.code,
+      name: item.name,
+      menu: item.menu
+    }))
   },
   {
     id: 2,
+    department: {
+      id: 3,
+      code: '102',
+      name: '财务部'
+    },
     username: 'guest',
-    nickname: '访客',
-    userStatus: '0',
+    name: '访客',
+    sex: {
+      dictValue: '2',
+      dictLabel: '女'
+    },
+    userStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
     password: '084e0343a0486ff05530df6c705c8bb4',
     phone: '18650329448',
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
     email: 'example@exp.com',
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-06 11:15:20',
     updateTime: '2023-06-06 11:15:20',
     roles: [
       {
         id: 2,
-        name: 'guest',
-        info: '访客'
+        code: 'guest',
+        name: '访客'
       }
     ],
     permissions: [
       {
         id: 18,
-        name: 'settings:view',
-        info: '查看'
+        code: 'settings:view',
+        name: '查看',
+        menu: 'settings'
       }
     ]
   }
 ];
+
+const getDeptTreeData = (deptData: API.DepartmentDetailTree[]) => {
+  return deptData.map((item) => {
+    const deptTree: API.DepartmentTree = {
+      id: item.id,
+      parentId: item.parentId,
+      code: item.code,
+      name: item.name
+    };
+    if (item.children && item.children.length !== 0) {
+      deptTree.children = getDeptTreeData(item.children);
+    }
+    return deptTree;
+  });
+};
+
+const userOptions = {
+  departments: getDeptTreeData(departmentData),
+  posts: postData.map((item) => ({
+    id: item.id,
+    code: item.code,
+    name: item.code
+  })),
+  roles: roleData.map((item) => ({
+    id: item.id,
+    code: item.code,
+    name: item.name
+  })),
+  sex: dictionaryData
+    .filter((item) => item.dictType === 'sex')
+    .map((item) => ({
+      dictValue: item.dictValue,
+      dictLabel: item.dictLabel
+    })),
+  userStatus: dictionaryData
+    .filter((item) => item.dictType === 'user_status')
+    .map((item) => ({
+      dictValue: item.dictValue,
+      dictLabel: item.dictLabel
+    }))
+};
 
 Mock.mock(url('/api/v1/user/login'), 'post', (params) => {
   const { username, password } = JSON.parse(params.body);
@@ -59,9 +154,7 @@ Mock.mock(url('/api/v1/user/login'), 'post', (params) => {
   if (user.password !== password) {
     return fail('密码错误');
   }
-  return success<API.Token>({
-    token: `${user.username}-token`
-  });
+  return success<string>(`${user.username}-token`);
 });
 
 Mock.mock(url('/api/v1/user'), 'post', () => {
@@ -82,11 +175,26 @@ Mock.mock(url('/api/v1/user/info'), 'get', () => {
     const username = token.split('-')[0];
     const user = userData.filter((item) => item.username === username)[0];
     if (user) {
-      const { id, username, nickname, phone, avatar, email, roles, permissions } = user;
+      const {
+        id,
+        department,
+        username,
+        name,
+        sex,
+        userStatus,
+        phone,
+        avatar,
+        email,
+        roles,
+        permissions
+      } = user;
       return success<API.UserBasicInfo>({
         id,
+        department,
         username,
-        nickname,
+        name,
+        sex,
+        userStatus,
         phone,
         avatar,
         email,
@@ -99,32 +207,32 @@ Mock.mock(url('/api/v1/user/info'), 'get', () => {
 });
 
 Mock.mock(url('/api/v1/user/list'), 'get', () => {
-  const userList = userData.map((item) => {
+  const userList: API.UserInfo[] = userData.map((item) => {
     return {
       id: item.id,
+      department: item.department,
       username: item.username,
-      nickname: item.nickname,
-      userStatus: {
-        itemValue: '0',
-        itemText: '正常'
-      },
+      name: item.name,
+      sex: item.sex,
+      userStatus: item.userStatus,
       phone: item.phone,
       avatar: item.avatar,
       email: item.email,
+      createUser: item.createUser,
+      updateUser: item.updateUser,
       createTime: item.createTime,
       updateTime: item.updateTime,
-      roles: item.roles,
-      permissions: item.permissions
+      roles: item.roles
     };
   });
-  const pageList: API.PageInfo<API.UserInfo[]> = {
+  const pageList: API.Page<API.UserInfo[]> = {
     records: userList,
     total: userList.length,
     size: 2,
     current: 1,
     pages: 10
   };
-  return success<API.PageInfo<API.UserInfo[]>>(pageList);
+  return success<API.Page<API.UserInfo[]>>(pageList);
 });
 
 Mock.mock(url('/api/v1/user/password'), 'put', () => {
@@ -132,7 +240,11 @@ Mock.mock(url('/api/v1/user/password'), 'put', () => {
 });
 
 Mock.mock(url('/api/v1/user/avatar'), 'put', () => {
-  return success<API.Avatar>({
-    url: 'http://localhost:8088/res/upload/20230726/e041970e-87c8-4009-b434-1ede1aa0ce61.png'
-  });
+  return success<string>(
+    'http://localhost:8088/res/upload/20230726/e041970e-87c8-4009-b434-1ede1aa0ce61.png'
+  );
+});
+
+Mock.mock(url('/api/v1/user/options'), 'get', () => {
+  return success<API.UserOptions>(userOptions);
 });

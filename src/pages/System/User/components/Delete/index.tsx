@@ -5,19 +5,19 @@ import { getUserList, removeUser } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  selectData: API.UserInfo[];
-  setUserData: React.Dispatch<React.SetStateAction<API.PageInfo<API.UserInfo[]> | undefined>>;
+  data: API.UserInfo[];
+  setUserData: React.Dispatch<React.SetStateAction<API.Page<API.UserInfo[]> | undefined>>;
 };
 
-const Delete: React.FC<Props> = ({ selectData, setUserData }) => {
+const Delete: React.FC<Props> = ({ data, setUserData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
-    if (selectData.length <= 0) {
+    if (data.length <= 0) {
       message.warning(t('common.tip.select'));
       return;
     }
-    const ids = selectData.map((item) => item.id);
+    const ids = data.map((item) => item.id);
     const deleteResult = await removeUser(ids);
     if (!deleteResult.data) {
       message.error(t('pages.user.delete.tip.fail'));

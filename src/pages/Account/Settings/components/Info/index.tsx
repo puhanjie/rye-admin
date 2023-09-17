@@ -23,14 +23,14 @@ const Info: React.FC = () => {
     await editUser(values);
   };
 
-  const handleChange = ({ file }: { file: UploadFile<API.Result<API.Avatar>> }) => {
+  const handleChange = ({ file }: { file: UploadFile<API.Result<string>> }) => {
     if (!file.response) {
       return;
     }
     if (!file.response.data) {
       return;
     }
-    const avatar = file.response.data.url;
+    const avatar = file.response.data;
     dispatch(setAvatar(avatar));
   };
 

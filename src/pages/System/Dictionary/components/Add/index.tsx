@@ -7,7 +7,7 @@ import { addDictionary, getDictionaryList } from '@/services/dictionary';
 
 type Props = {
   setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.PageInfo<API.DictionaryInfo[]> | undefined>
+    React.SetStateAction<API.Page<API.DictionaryInfo[]> | undefined>
   >;
 };
 
@@ -51,7 +51,6 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
@@ -60,6 +59,13 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
       >
         <Form name="addDictionary" form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
           <Form.Item
+            label={t('pages.dictionary.dictType')}
+            name="dictType"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label={t('pages.dictionary.dictName')}
             name="dictName"
             rules={[{ required: true }]}
@@ -67,22 +73,15 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
             <Input />
           </Form.Item>
           <Form.Item
-            label={t('pages.dictionary.dictText')}
-            name="dictText"
+            label={t('pages.dictionary.dictValue')}
+            name="dictValue"
             rules={[{ required: true }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label={t('pages.dictionary.itemValue')}
-            name="itemValue"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label={t('pages.dictionary.itemText')}
-            name="itemText"
+            label={t('pages.dictionary.dictLabel')}
+            name="dictLabel"
             rules={[{ required: true }]}
           >
             <Input />

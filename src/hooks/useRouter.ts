@@ -12,7 +12,7 @@ export function useRouter() {
   const { pathname } = useLocation();
 
   const permissionList =
-    permissions && permissions.length > 0 ? permissions.map((item) => item.name) : [];
+    permissions && permissions.length > 0 ? permissions.map((item) => item.code) : [];
 
   // 权限匹配路由对象
   const routes = getAuthRoutes(routeConfig, permissionList);

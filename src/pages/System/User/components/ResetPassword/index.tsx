@@ -7,7 +7,7 @@ import AuthWrapper from '@/components/AuthWrapper';
 import MD5 from 'crypto-js/md5';
 
 type Props = {
-  selectData: API.UserInfo[];
+  data: API.UserInfo[];
   clearSelectData: () => void;
 };
 
@@ -16,24 +16,27 @@ type ResetPasswordForm = {
   newPassword?: string;
 };
 
-const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
+const ResetPassword: React.FC<Props> = ({ data, clearSelectData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
 
   const handleReset = () => {
-    if (selectData.length !== 1) {
+    if (data.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
     }
+    form.setFieldsValue({
+      userId: data[0].id
+    });
     setIsOpen(true);
   };
 
   const handleOk = async () => {
     const formData: ResetPasswordForm = form.getFieldsValue();
     setIsOpen(false);
-    form.resetFields();
     // 重置密码
+    console.log(formData);
     const res = await updatePassword({
       userId: formData.userId,
       newPassword: formData.newPassword && MD5(formData.newPassword).toString()
@@ -63,30 +66,20 @@ const ResetPassword: React.FC<Props> = ({ selectData, clearSelectData }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
           borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        {selectData.length === 1 && (
-          <Form
-            name="resetPassword"
-            form={form}
-            // preserve属性避免modal关闭清空表单后重新打开还是上一次的值
-            preserve={false}
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
-          >
-            <Form.Item label="id" name="userId" initialValue={selectData[0].id} hidden>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.user.resetPasswordModal.newPassword')} name="newPassword">
-              <Input.Password />
-            </Form.Item>
-          </Form>
-        )}
+        <Form name="resetPassword" form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+          <Form.Item label="id" name="userId" hidden>
+            <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.user.resetPasswordModal.newPassword')} name="newPassword">
+            <Input.Password />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );

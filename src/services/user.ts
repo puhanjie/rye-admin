@@ -1,7 +1,7 @@
 import request from '../utils/http';
 
 export async function login(data: API.LoginParams) {
-  const res = await request<API.Token>({
+  const res = await request<string>({
     url: '/api/v1/user/login',
     method: 'post',
     data
@@ -20,7 +20,7 @@ export async function addUser(data: API.UserParams) {
 
 export async function removeUser(ids: number[]) {
   const res = await request<boolean>({
-    url: `/api/v1/user`,
+    url: '/api/v1/user',
     method: 'delete',
     data: ids
   });
@@ -44,8 +44,8 @@ export async function getInfo() {
   return res;
 }
 
-export async function getUserList(params?: API.UserPageQuery) {
-  const res = await request<API.PageInfo<API.UserInfo[]>>({
+export async function getUserList(params?: API.UserQuery) {
+  const res = await request<API.Page<API.UserInfo[]>>({
     url: '/api/v1/user/list',
     method: 'get',
     params
@@ -53,11 +53,19 @@ export async function getUserList(params?: API.UserPageQuery) {
   return res;
 }
 
-export async function updatePassword(data: API.Password) {
+export async function updatePassword(data: API.PasswordParams) {
   const res = await request<number>({
     url: '/api/v1/user/password',
     method: 'put',
     data
+  });
+  return res;
+}
+
+export async function getUserOptions() {
+  const res = await request<API.UserOptions>({
+    url: '/api/v1/user/options',
+    method: 'get'
   });
   return res;
 }

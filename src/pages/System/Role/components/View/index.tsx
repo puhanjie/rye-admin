@@ -1,56 +1,59 @@
 import routeConfig from '@/router';
 import { getPermissionTreeData } from '@/utils/general';
-import { Button, type DescriptionsProps, Modal, message, Descriptions, Tree } from 'antd';
+import { Button, type DescriptionsProps, Modal, message, Descriptions, Tree, Tag } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import type { RoleDetail } from '../..';
 import { EyeOutlined } from '@ant-design/icons';
+import { roleStatusTagColor } from '@/config/statusTagConfig';
 
 type Props = {
-  data: RoleDetail;
+  data: API.RoleInfo[];
+  optionsData?: API.RoleOptions;
 };
 
-const View: React.FC<Props> = ({ data }) => {
+const View: React.FC<Props> = ({ data, optionsData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
-  const getInitData = () => {
-    const { id, name, info, permissions } = data.selectData[0];
-    return {
-      id,
-      name,
-      info,
-      permissions: permissions?.map((item) => item.id.toString()),
-      permissionList: data.permissionList
-    };
-  };
-
   const items: DescriptionsProps['items'] =
-    data.selectData.length === 1
+    data.length === 1
       ? [
           {
-            key: 'name',
-            label: '角色名',
-            children: data.selectData[0].name
+            key: 'code',
+            label: t('pages.role.code'),
+            children: data[0].code
           },
           {
-            key: 'info',
-            label: '角色信息',
-            children: data.selectData[0].info
+            key: 'name',
+            label: t('pages.role.name'),
+            children: data[0].name
+          },
+          {
+            key: 'roleStatus',
+            label: t('pages.role.roleStatus'),
+            children: (
+              <Tag
+                color={
+                  roleStatusTagColor.filter(
+                    (item) => data[0].roleStatus.dictValue === item.value
+                  )[0].color
+                }
+              >
+                {data[0].roleStatus.dictLabel}
+              </Tag>
+            )
           },
           {
             key: 'permissions',
-            label: '权限',
+            label: t('pages.role.permission'),
             children: (
               <Tree
                 checkable
                 selectable={false}
-                defaultCheckedKeys={data.selectData[0].permissions?.map((item) =>
-                  item.id.toString()
-                )}
-                treeData={getPermissionTreeData(menuData, getInitData().permissionList)}
+                defaultCheckedKeys={data[0].permissions?.map((item) => item.id.toString())}
+                treeData={getPermissionTreeData(menuData, optionsData?.permissions)}
                 rootClassName="scrollbar-light"
                 rootStyle={{
                   height: '100px',
@@ -65,7 +68,7 @@ const View: React.FC<Props> = ({ data }) => {
       : [];
 
   const handleView = () => {
-    if (data.selectData.length !== 1) {
+    if (data.length !== 1) {
       message.warning(t('common.tip.selectOne'));
       return;
     }

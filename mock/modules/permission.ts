@@ -1,152 +1,656 @@
 import Mock from 'mockjs';
 import { url, success } from '../utils';
+import { dictionaryData } from './dictionary';
 
 export const permissionData = [
   {
     id: 1,
-    name: 'user:add',
-    info: '新增',
+    code: 'user:add',
+    name: '新增',
     menu: 'user',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 2,
-    name: 'user:delete',
-    info: '删除',
+    code: 'user:delete',
+    name: '删除',
     menu: 'user',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 3,
-    name: 'user:edit',
-    info: '编辑',
+    code: 'user:edit',
+    name: '编辑',
     menu: 'user',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 4,
-    name: 'user:view',
-    info: '查看',
+    code: 'user:view',
+    name: '查看',
     menu: 'user',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 5,
-    name: 'user:resetPassword',
-    info: '重置密码',
+    code: 'user:resetPassword',
+    name: '重置密码',
     menu: 'user',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 6,
-    name: 'role:add',
-    info: '新增',
+    code: 'role:add',
+    name: '新增',
     menu: 'role',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 7,
-    name: 'role:delete',
-    info: '删除',
+    code: 'role:delete',
+    name: '删除',
     menu: 'role',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 8,
-    name: 'role:edit',
-    info: '编辑',
+    code: 'role:edit',
+    name: '编辑',
     menu: 'role',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 9,
-    name: 'role:view',
-    info: '查看',
+    code: 'role:view',
+    name: '查看',
     menu: 'role',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 10,
-    name: 'permission:add',
-    info: '新增',
+    code: 'permission:add',
+    name: '新增',
     menu: 'permission',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 11,
-    name: 'permission:delete',
-    info: '删除',
+    code: 'permission:delete',
+    name: '删除',
     menu: 'permission',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 12,
-    name: 'permission:edit',
-    info: '编辑',
+    code: 'permission:edit',
+    name: '编辑',
     menu: 'permission',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 13,
-    name: 'permission:view',
-    info: '查看',
+    code: 'permission:view',
+    name: '查看',
     menu: 'permission',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 14,
-    name: 'dictionary:add',
-    info: '新增',
+    code: 'dictionary:add',
+    name: '新增',
     menu: 'dictionary',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 15,
-    name: 'dictionary:delete',
-    info: '删除',
+    code: 'dictionary:delete',
+    name: '删除',
     menu: 'dictionary',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 16,
-    name: 'dictionary:edit',
-    info: '编辑',
+    code: 'dictionary:edit',
+    name: '编辑',
     menu: 'dictionary',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 17,
-    name: 'dictionary:view',
-    info: '查看',
+    code: 'dictionary:view',
+    name: '查看',
     menu: 'dictionary',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   },
   {
     id: 18,
-    name: 'settings:view',
-    info: '查看',
+    code: 'settings:view',
+    name: '查看',
     menu: 'settings',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 19,
+    code: 'log:delete',
+    name: '删除',
+    menu: 'log',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 20,
+    code: 'log:empty',
+    name: '清空',
+    menu: 'log',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 21,
+    code: 'log:view',
+    name: '查看',
+    menu: 'log',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 22,
+    code: 'post:add',
+    name: '新增',
+    menu: 'post',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 23,
+    code: 'post:delete',
+    name: '删除',
+    menu: 'post',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 24,
+    code: 'post:edit',
+    name: '编辑',
+    menu: 'post',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 25,
+    code: 'post:view',
+    name: '查看',
+    menu: 'post',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 26,
+    code: 'department:add',
+    name: '新增',
+    menu: 'department',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 27,
+    code: 'department:delete',
+    name: '删除',
+    menu: 'department',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 28,
+    code: 'department:edit',
+    name: '编辑',
+    menu: 'department',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 29,
+    code: 'department:view',
+    name: '查看',
+    menu: 'department',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
   }
 ];
+
+const permissionOptions = {
+  permissionStatus: dictionaryData
+    .filter((item) => item.dictType === 'permission_status')
+    .map((item) => ({
+      dictValue: item.dictValue,
+      dictLabel: item.dictLabel
+    }))
+};
 
 Mock.mock(url('/api/v1/permission'), 'post', () => {
   return success<boolean>(true);
@@ -161,16 +665,16 @@ Mock.mock(url('/api/v1/permission'), 'put', () => {
 });
 
 Mock.mock(url('/api/v1/permission/list'), 'get', () => {
-  const pageList: API.PageInfo<API.PermissionInfo[]> = {
+  const pageList: API.Page<API.PermissionInfo[]> = {
     records: permissionData,
     total: permissionData.length,
     size: 2,
     current: 1,
     pages: 10
   };
-  return success<API.PageInfo<API.PermissionInfo[]>>(pageList);
+  return success<API.Page<API.PermissionInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/permission'), 'get', () => {
-  return success<API.PermissionInfo[]>(permissionData);
+Mock.mock(url('/api/v1/permission/options'), 'get', () => {
+  return success<API.PermissionOptions>(permissionOptions);
 });

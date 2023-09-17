@@ -1,18 +1,18 @@
 import routeConfig from '@/router';
 import { addRole, getRoleList } from '@/services/role';
-import { getPermissionTreeData } from '@/utils/general';
+import { getDictSelectOptions, getPermissionTreeData } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, TreeSelect, message } from 'antd';
+import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  permissionData: API.PermissionInfo[];
-  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<API.RoleInfo[]> | undefined>>;
+  optionsData?: API.RoleOptions;
+  setRoleData: React.Dispatch<React.SetStateAction<API.Page<API.RoleInfo[]> | undefined>>;
 };
 
-const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
+const Add: React.FC<Props> = ({ optionsData, setRoleData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [form] = Form.useForm();
@@ -22,6 +22,7 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
     const role: API.RoleParams = form.getFieldsValue();
     setIsOpen(false);
     form.resetFields();
+    role.roleStatus = role.roleStatus && role.roleStatus[0];
     role.permissions = role.permissions?.map((item) => Number(item));
     const addResult = await addRole(role);
     if (!addResult.data) {
@@ -54,7 +55,6 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
@@ -62,20 +62,34 @@ const Add: React.FC<Props> = ({ permissionData, setRoleData }) => {
         }}
       >
         <Form name="addRole" form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
+          <Form.Item label={t('pages.role.code')} name="code" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
           <Form.Item label={t('pages.role.name')} name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label={t('pages.role.info')} name="info" rules={[{ required: true }]}>
-            <Input />
+          <Form.Item
+            label={t('pages.role.roleStatus')}
+            name="roleStatus"
+            initialValue={['0']}
+            rules={[{ required: true }]}
+          >
+            <Select
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={getDictSelectOptions(optionsData?.roleStatus)}
+              placeholder={t('pages.role.select.placeholder')}
+            />
           </Form.Item>
           <Form.Item label={t('pages.role.permission')} name="permissions">
             <TreeSelect
               allowClear
-              treeData={getPermissionTreeData(menuData, permissionData)}
+              treeData={getPermissionTreeData(menuData, optionsData?.permissions)}
               maxTagCount={3}
               treeCheckable={true}
               showCheckedStrategy="SHOW_CHILD"
-              placeholder={t('pages.role.modal.permission.placeholder')}
+              placeholder={t('pages.role.select.placeholder')}
             />
           </Form.Item>
         </Form>

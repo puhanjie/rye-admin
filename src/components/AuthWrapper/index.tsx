@@ -11,9 +11,7 @@ const AuthWrapper: React.FC<Props> = ({ children, permission }) => {
   if (!permissions) {
     return null;
   }
-  const findData = permissions.filter(
-    (item) => item.name === permission || item.name === 'app:admin'
-  );
+  const findData = permissions.filter((item) => item.code === permission);
   if (findData.length <= 0) {
     return null;
   }

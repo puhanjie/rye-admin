@@ -1,7 +1,7 @@
-import { type FormItemProps, Input, Table, TreeSelect } from 'antd';
+import { type FormItemProps, Input, Table, TreeSelect, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { getPermissionList } from '@/services/permission';
+import { getPermissionList, getPermissionOptions } from '@/services/permission';
 import { useTranslation } from 'react-i18next';
 import Add from './components/Add';
 import Delete from './components/Delete';
@@ -13,16 +13,12 @@ import { Key } from 'antd/es/table/interface';
 import View from './components/View';
 import styles from './index.module.less';
 import TablePro from '@/components/TablePro';
-
-type QueryParams = {
-  name?: string;
-  info?: string;
-  menu?: string;
-};
+import { permissionStatusTagColor } from '@/config/statusTagConfig';
 
 const Permission: React.FC = () => {
   const { t } = useTranslation();
-  const [permissionData, setPermissionData] = useState<API.PageInfo<API.PermissionInfo[]>>();
+  const [permissionData, setPermissionData] = useState<API.Page<API.PermissionInfo[]>>();
+  const [optionsData, setOptionsData] = useState<API.PermissionOptions>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
@@ -30,30 +26,56 @@ const Permission: React.FC = () => {
   useEffect(() => {
     (async () => {
       const permissionRes = await getPermissionList();
-      if (!permissionRes.data) {
+      const optionsRes = await getPermissionOptions();
+      if (!permissionRes.data || !optionsRes.data) {
         return;
       }
       setPermissionData(permissionRes.data);
+      setOptionsData(optionsRes.data);
       setLoading(false);
     })();
   }, []);
 
   const tableColumns: ColumnsType<API.PermissionInfo> = [
     {
+      title: t('pages.permission.code'),
+      dataIndex: 'code',
+      align: 'center'
+    },
+    {
       title: t('pages.permission.name'),
       dataIndex: 'name',
       align: 'center'
     },
     {
-      title: t('pages.permission.info'),
-      dataIndex: 'info',
-      align: 'center'
+      title: t('pages.permission.permissionStatus'),
+      dataIndex: 'permissionStatus',
+      align: 'center',
+      render: (_text, record) => {
+        const status = record.permissionStatus.dictLabel;
+        const tagColor = permissionStatusTagColor.filter(
+          (item) => record.permissionStatus.dictValue === item.value
+        )[0].color;
+        return <Tag color={tagColor}>{status}</Tag>;
+      }
     },
     {
       title: t('pages.permission.menu'),
       dataIndex: 'menu',
       align: 'center',
       render: (_text, record) => t(`menu.${record.menu}`)
+    },
+    {
+      title: t('pages.permission.createUser'),
+      dataIndex: 'createUser',
+      align: 'center',
+      render: (_text, record) => record.createUser.name
+    },
+    {
+      title: t('pages.permission.updateUser'),
+      dataIndex: 'updateUser',
+      align: 'center',
+      render: (_text, record) => record.updateUser.name
     },
     {
       title: t('pages.permission.createTime'),
@@ -69,14 +91,14 @@ const Permission: React.FC = () => {
 
   const queryItems: FormItemProps[] = [
     {
+      label: t('pages.permission.queryForm.code'),
+      name: 'code',
+      children: <Input placeholder={t('pages.permission.queryForm.code.placeholder')} />
+    },
+    {
       label: t('pages.permission.queryForm.name'),
       name: 'name',
       children: <Input placeholder={t('pages.permission.queryForm.name.placeholder')} />
-    },
-    {
-      label: t('pages.permission.queryForm.info'),
-      name: 'info',
-      children: <Input placeholder={t('pages.permission.queryForm.info.placeholder')} />
     },
     {
       label: t('pages.permission.queryForm.menu'),
@@ -92,7 +114,7 @@ const Permission: React.FC = () => {
     }
   ];
 
-  const queryData = async (params?: API.PermissionPageQuery) => {
+  const queryData = async (params?: API.PermissionQuery) => {
     const res = await getPermissionList(params);
     if (!res.data) {
       return;
@@ -100,7 +122,7 @@ const Permission: React.FC = () => {
     setPermissionData(res.data);
   };
 
-  const handleQuery = (values: QueryParams) => {
+  const handleQuery = (values: API.PermissionQuery) => {
     // 获取查询数据
     queryData(values);
   };
@@ -116,10 +138,14 @@ const Permission: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Add setPermissionData={setPermissionData} />,
-    <Edit data={getSelectData(selectKeys)} setPermissionData={setPermissionData} />,
+    <Add optionsData={optionsData} setPermissionData={setPermissionData} />,
+    <Edit
+      data={getSelectData(selectKeys)}
+      optionsData={optionsData}
+      setPermissionData={setPermissionData}
+    />,
     <View data={getSelectData(selectKeys)} />,
-    <Delete selectData={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
+    <Delete data={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
   ];
 
   return (
@@ -165,6 +191,7 @@ const Permission: React.FC = () => {
           rowKey: (record) => record.id, // 设置每条记录的id为rowKey
           scroll: { x: 'max-content' },
           pagination: {
+            current: permissionData?.current,
             defaultPageSize: 10,
             total: permissionData?.total,
             showSizeChanger: true,

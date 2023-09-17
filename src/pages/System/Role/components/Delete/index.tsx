@@ -5,19 +5,19 @@ import { getRoleList, removeRole } from '@/services/role';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
-  selectData: API.RoleInfo[];
-  setRoleData: React.Dispatch<React.SetStateAction<API.PageInfo<API.RoleInfo[]> | undefined>>;
+  data: API.RoleInfo[];
+  setRoleData: React.Dispatch<React.SetStateAction<API.Page<API.RoleInfo[]> | undefined>>;
 };
 
-const Delete: React.FC<Props> = ({ selectData, setRoleData }) => {
+const Delete: React.FC<Props> = ({ data, setRoleData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
-    if (selectData.length <= 0) {
+    if (data.length <= 0) {
       message.warning(t('common.tip.select'));
       return;
     }
-    const ids = selectData.map((item) => item.id);
+    const ids = data.map((item) => item.id);
     const deleteResult = await removeRole(ids);
     if (!deleteResult.data) {
       message.error(t('pages.role.delete.tip.fail'));
