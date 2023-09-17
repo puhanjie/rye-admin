@@ -111,7 +111,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setPermissionData }) => {
             <TreeSelect
               treeData={getMenuTree(menuData)}
               allowClear
-              treeDefaultExpandedKeys={data[0].menu ? [data[0].menu] : []}
+              treeDefaultExpandedKeys={data && data.length === 1 ? [data[0].menu] : []}
               showCheckedStrategy="SHOW_CHILD"
               placeholder={t('pages.permission.select.placeholder')}
             />

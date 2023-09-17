@@ -97,7 +97,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setDeptData }) => {
           <Form.Item
             label={t('pages.department.parentDept')}
             name="parentId"
-            hidden={data && data.length > 0 ? data[0].parentId === 0 : false}
+            hidden={data && data.length === 1 ? data[0].parentId === 0 : false}
             rules={[{ required: true }]}
           >
             <TreeSelect
