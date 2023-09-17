@@ -7,9 +7,11 @@ const logData = [
     url: 'GET /api/v1/user',
     code: 0,
     message: '成功',
-    operateUser: 'admin',
-    ip: '172.1.23.5',
-    address: '昆明',
+    operateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     operateTime: '2023-06-09 11:15:24'
   },
   {
@@ -17,9 +19,11 @@ const logData = [
     url: 'POST /api/v1/user',
     code: 0,
     message: '成功',
-    operateUser: 'admin',
-    ip: '172.1.23.5',
-    address: '昆明',
+    operateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     operateTime: '2023-06-09 11:15:24'
   },
   {
@@ -27,9 +31,11 @@ const logData = [
     url: 'GET /api/v1/role',
     code: -1,
     message: '失败',
-    operateUser: 'admin',
-    ip: '172.1.23.5',
-    address: '昆明',
+    operateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
     operateTime: '2023-06-09 11:15:24'
   }
 ];
