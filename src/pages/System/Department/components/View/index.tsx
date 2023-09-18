@@ -19,10 +19,7 @@ const View: React.FC<Props> = ({ data }) => {
           {
             key: 'parentDept',
             label: t('pages.department.parentDept'),
-            children: data[0].parentDept.name,
-            labelStyle: {
-              visibility: data[0].parentId === 0 ? 'hidden' : 'visible'
-            }
+            children: data[0].parentDept.name
           },
           {
             key: 'code',
@@ -90,18 +87,21 @@ const View: React.FC<Props> = ({ data }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
           borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Descriptions
-          column={1}
-          items={items}
-          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
-        />
+        {data && data.length === 1 && (
+          <Descriptions
+            bordered
+            column={1}
+            items={
+              data[0].parentId === 0 ? items.filter((item) => item.key !== 'parentDept') : items
+            }
+          />
+        )}
       </Modal>
     </div>
   );

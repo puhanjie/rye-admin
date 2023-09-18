@@ -77,18 +77,13 @@ const View: React.FC<Props> = ({ data }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
           borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Descriptions
-          column={1}
-          items={items}
-          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
-        />
+        <Descriptions bordered column={1} items={items} />
       </Modal>
     </div>
   );

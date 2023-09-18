@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import { EyeOutlined } from '@ant-design/icons';
 import { roleStatusTagColor } from '@/config/statusTagConfig';
+import { getAuthRoutes } from '@/utils/route';
 
 type Props = {
   data: API.RoleInfo[];
@@ -15,7 +16,17 @@ type Props = {
 const View: React.FC<Props> = ({ data, optionsData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
+
+  const getMenuRoutes = (routeConfig: RouteConfig[], permissions?: API.Permission[]) => {
+    if (!permissions) {
+      return;
+    }
+    const routes = getAuthRoutes(
+      routeConfig,
+      permissions.map((item) => item.code)
+    );
+    return routes.filter((item) => item.path === '/')[0].children;
+  };
 
   const items: DescriptionsProps['items'] =
     data.length === 1
@@ -50,19 +61,23 @@ const View: React.FC<Props> = ({ data, optionsData }) => {
             label: t('pages.role.permission'),
             children: (
               <Tree
-                checkable
+                showLine
                 selectable={false}
                 defaultCheckedKeys={data[0].permissions?.map((item) => item.id.toString())}
-                treeData={getPermissionTreeData(menuData, optionsData?.permissions)}
+                treeData={getPermissionTreeData(
+                  getMenuRoutes(routeConfig, data[0].permissions),
+                  optionsData?.permissions
+                )}
                 rootClassName="scrollbar-light"
                 rootStyle={{
-                  height: '100px',
-                  width: '100%',
-                  border: '1px solid #e5e6e7',
-                  borderRadius: '4px'
+                  height: '84px',
+                  width: '100%'
                 }}
               />
-            )
+            ),
+            contentStyle: {
+              paddingRight: 0
+            }
           }
         ]
       : [];
@@ -95,18 +110,13 @@ const View: React.FC<Props> = ({ data, optionsData }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
           borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Descriptions
-          column={1}
-          items={items}
-          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
-        />
+        <Descriptions bordered column={1} items={items} />
       </Modal>
     </div>
   );

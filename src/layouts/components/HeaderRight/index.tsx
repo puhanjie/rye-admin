@@ -61,7 +61,12 @@ const HeaderRight: React.FC = () => {
     <Space align="center" size={0}>
       <Dropdown menu={{ items, onClick }}>
         <span className={styles['container']}>
-          <Avatar src={avatar} size={26} alt="avatar" className={styles['avatar']} />
+          <Avatar
+            src={avatar ? avatar : '/src/assets/avatar.png'}
+            size={26}
+            alt="avatar"
+            className={styles['avatar']}
+          />
           <span className={styles['user']}>{username}</span>
         </span>
       </Dropdown>

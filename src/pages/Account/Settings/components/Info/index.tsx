@@ -65,7 +65,11 @@ const Info: React.FC = () => {
           </Form>
         </div>
         <div className={styles['right']}>
-          <Avatar className={styles['avatar']} src={user.avatar} size={128} />
+          <Avatar
+            className={styles['avatar']}
+            src={user.avatar ? user.avatar : '/src/assets/avatar.png'}
+            size={128}
+          />
           <Upload
             className={styles['upload']}
             name="files"

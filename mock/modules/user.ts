@@ -41,6 +41,13 @@ const userData = [
     },
     createTime: '2023-06-06 11:15:20',
     updateTime: '2023-06-06 11:15:20',
+    posts: [
+      {
+        id: 1,
+        code: '100001',
+        name: '董事长'
+      }
+    ],
     roles: [
       {
         id: 1,
@@ -88,6 +95,13 @@ const userData = [
     },
     createTime: '2023-06-06 11:15:20',
     updateTime: '2023-06-06 11:15:20',
+    posts: [
+      {
+        id: 3,
+        code: '102001',
+        name: '财务部总经理'
+      }
+    ],
     roles: [
       {
         id: 2,
@@ -126,7 +140,7 @@ const userOptions = {
   posts: postData.map((item) => ({
     id: item.id,
     code: item.code,
-    name: item.code
+    name: item.name
   })),
   roles: roleData.map((item) => ({
     id: item.id,
@@ -222,6 +236,7 @@ Mock.mock(url('/api/v1/user/list'), 'get', () => {
       updateUser: item.updateUser,
       createTime: item.createTime,
       updateTime: item.updateTime,
+      posts: item.posts,
       roles: item.roles
     };
   });

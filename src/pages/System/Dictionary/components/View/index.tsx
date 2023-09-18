@@ -38,20 +38,7 @@ const View: React.FC<Props> = ({ data }) => {
           {
             key: 'description',
             label: t('pages.dictionary.description'),
-            children: (
-              <div
-                className="scrollbar-light"
-                style={{
-                  height: '100px',
-                  width: '100%',
-                  padding: '0 5px',
-                  border: '1px solid #e5e6e7',
-                  borderRadius: '4px'
-                }}
-              >
-                {data[0].description}
-              </div>
-            )
+            children: data[0].description
           }
         ]
       : [];
@@ -84,18 +71,13 @@ const View: React.FC<Props> = ({ data }) => {
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        destroyOnClose={true}
         bodyStyle={{
           padding: '12px',
           marginTop: '12px',
           borderTop: '2px solid rgba(0, 0, 0, 0.06)'
         }}
       >
-        <Descriptions
-          column={1}
-          items={items}
-          labelStyle={{ justifyContent: 'flex-end', minWidth: 100 }}
-        />
+        <Descriptions bordered column={1} items={items} />
       </Modal>
     </div>
   );
