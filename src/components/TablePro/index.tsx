@@ -156,7 +156,7 @@ const TablePro: React.FC<Props> = ({
           </Form>
         </Card>
       )}
-      <Card bordered={false} className={styles['content']}>
+      <Card size="small" bordered={false} className={styles['content']}>
         {actions && (
           <Space className={styles['action']}>
             {...actions.map((item, index) => <div key={index}>{item}</div>)}

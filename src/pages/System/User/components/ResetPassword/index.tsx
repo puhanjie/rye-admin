@@ -36,7 +36,6 @@ const ResetPassword: React.FC<Props> = ({ data, clearSelectData }) => {
     const formData: ResetPasswordForm = form.getFieldsValue();
     setIsOpen(false);
     // 重置密码
-    console.log(formData);
     const res = await updatePassword({
       userId: formData.userId,
       newPassword: formData.newPassword && MD5(formData.newPassword).toString()

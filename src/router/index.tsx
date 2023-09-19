@@ -73,6 +73,14 @@ const routeConfig: RouteConfig[] = [
             }
           },
           {
+            path: 'file',
+            name: 'file',
+            component: lazy(() => import('@/pages/System/File')),
+            meta: {
+              access: 'file:view'
+            }
+          },
+          {
             path: 'log',
             name: 'log',
             component: lazy(() => import('@/pages/System/Log')),

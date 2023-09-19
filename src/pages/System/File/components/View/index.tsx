@@ -1,12 +1,11 @@
-import { Button, type DescriptionsProps, Modal, message, Descriptions, Tag } from 'antd';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import { EyeOutlined } from '@ant-design/icons';
-import { permissionStatusTagColor } from '@/config/statusTagConfig';
+import { Button, Descriptions, type DescriptionsProps, Modal, message } from 'antd';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
-  data: API.PermissionInfo[];
+  data: API.FileInfo[];
 };
 
 const View: React.FC<Props> = ({ data }) => {
@@ -17,34 +16,24 @@ const View: React.FC<Props> = ({ data }) => {
     data.length === 1
       ? [
           {
-            key: 'code',
-            label: t('pages.permission.code'),
-            children: data[0].code
+            key: 'path',
+            label: t('pages.file.path'),
+            children: data[0].path
           },
           {
             key: 'name',
-            label: t('pages.permission.name'),
+            label: t('pages.file.name'),
             children: data[0].name
           },
           {
-            key: 'permissionStatus',
-            label: t('pages.permission.permissionStatus'),
-            children: (
-              <Tag
-                color={
-                  permissionStatusTagColor.filter(
-                    (item) => data[0].permissionStatus.dictValue === item.value
-                  )[0].color
-                }
-              >
-                {data[0].permissionStatus.dictLabel}
-              </Tag>
-            )
+            key: 'fileSize',
+            label: t('pages.file.fileSize'),
+            children: data[0].fileSize
           },
           {
-            key: 'menu',
-            label: '菜单',
-            children: t(`menu.${data[0].menu}`)
+            key: 'uuid',
+            label: t('pages.file.uuid'),
+            children: data[0].uuid
           }
         ]
       : [];
@@ -67,13 +56,13 @@ const View: React.FC<Props> = ({ data }) => {
 
   return (
     <div>
-      <AuthWrapper permission="permission:view">
+      <AuthWrapper permission="file:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t('pages.permission.view')}
+          {t('pages.file.view')}
         </Button>
       </AuthWrapper>
       <Modal
-        title={t('pages.permission.viewModal.title')}
+        title={t('pages.file.viewModal.title')}
         open={isOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -88,4 +77,5 @@ const View: React.FC<Props> = ({ data }) => {
     </div>
   );
 };
+
 export default View;

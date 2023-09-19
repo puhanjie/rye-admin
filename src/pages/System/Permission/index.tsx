@@ -9,7 +9,7 @@ import Edit from './components/Edit';
 import { getMenuTree } from '@/utils/general';
 import routeConfig from '@/router';
 import PageWrapper from '@/components/PageWrapper';
-import { Key } from 'antd/es/table/interface';
+import type { Key } from 'antd/es/table/interface';
 import View from './components/View';
 import styles from './index.module.less';
 import TablePro from '@/components/TablePro';

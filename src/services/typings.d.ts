@@ -102,6 +102,13 @@ declare namespace API {
     menu?: string;
   };
 
+  type FileQuery = {
+    pageNum?: number = 1;
+    pageSize?: number = 10;
+    name?: string;
+    uploadUser?: string;
+  };
+
   type LogQuery = {
     pageNum?: number = 1;
     pageSize?: number = 10;
@@ -221,8 +228,8 @@ declare namespace API {
   };
 
   type File = {
-    fileName: string;
-    filePath: string;
+    path: string;
+    name: string;
   };
 
   type FileInfo = {
@@ -231,6 +238,8 @@ declare namespace API {
     name: string;
     fileSize: number;
     uuid: string;
+    uploadUser: API.User;
+    uploadTime: string;
   };
 
   type LogInfo = {

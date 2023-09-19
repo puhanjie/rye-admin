@@ -10,6 +10,7 @@ export default {
   'menu.role': '角色管理',
   'menu.permission': '权限管理',
   'menu.dictionary': '字典管理',
+  'menu.file': '文件管理',
   'menu.log': '日志管理',
   'menu.account': '个人中心',
   'menu.settings': '个人设置'

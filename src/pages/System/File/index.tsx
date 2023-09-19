@@ -1,84 +1,112 @@
 import PageWrapper from '@/components/PageWrapper';
+import styles from './index.module.less';
 import TablePro from '@/components/TablePro';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { getFileList } from '@/services/file';
 import type { ColumnsType } from 'antd/es/table';
 import type { Key } from 'antd/es/table/interface';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import styles from './index.module.less';
-import { getLogList } from '@/services/log';
-import { Input, type FormItemProps, Table } from 'antd';
+import { Input, type FormItemProps, Table, Space, Tooltip } from 'antd';
+import Uploads from './components/Uploads';
 import View from './components/View';
+import Download from './components/Download';
 import Delete from './components/Delete';
-import Empty from './components/Empty';
 
-const Log: React.FC = () => {
+const File: React.FC = () => {
   const { t } = useTranslation();
-  const [logData, setLogData] = useState<API.Page<API.LogInfo[]>>();
+  const [fileData, setFileData] = useState<API.Page<API.FileInfo[]>>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const logRes = await getLogList();
-      if (!logRes.data) {
+      const fileRes = await getFileList();
+      if (!fileRes.data) {
         return;
       }
-      setLogData(logRes.data);
+      setFileData(fileRes.data);
       setLoading(false);
     })();
   }, []);
 
-  const tableColumns: ColumnsType<API.LogInfo> = [
+  const tableColumns: ColumnsType<API.FileInfo> = [
     {
-      title: t('pages.log.url'),
-      dataIndex: 'url',
-      align: 'center'
-    },
-    {
-      title: t('pages.log.code'),
-      dataIndex: 'code',
-      align: 'center'
-    },
-    {
-      title: t('pages.log.message'),
-      dataIndex: 'message',
-      align: 'center'
-    },
-    {
-      title: t('pages.log.operateUser'),
-      dataIndex: 'operateUser',
+      title: t('pages.file.path'),
+      dataIndex: 'path',
       align: 'center',
-      render: (_text, record) => record.operateUser.name
+      ellipsis: {
+        showTitle: false
+      },
+      render: (value) => (
+        <Tooltip placement="top" title={value}>
+          {value}
+        </Tooltip>
+      )
     },
     {
-      title: t('pages.log.operateTime'),
-      dataIndex: 'operateTime',
+      title: t('pages.file.name'),
+      dataIndex: 'name',
       align: 'center'
+    },
+    {
+      title: t('pages.file.fileSize'),
+      dataIndex: 'fileSize',
+      align: 'center'
+    },
+    {
+      title: t('pages.file.uuid'),
+      dataIndex: 'uuid',
+      align: 'center'
+    },
+    {
+      title: t('pages.file.uploadUser'),
+      dataIndex: 'uploadUser',
+      align: 'center',
+      render: (_text, record) => record.uploadUser.name
+    },
+    {
+      title: t('pages.file.uploadTime'),
+      dataIndex: 'uploadTime',
+      align: 'center'
+    },
+    {
+      title: t('pages.file.action'),
+      dataIndex: 'action',
+      align: 'center',
+      fixed: 'right',
+      render: (_text, record) => {
+        return (
+          <Space>
+            <Download data={record} />
+            <Delete data={record} setFileData={setFileData} />
+          </Space>
+        );
+      }
     }
   ];
 
   const queryItems: FormItemProps[] = [
     {
-      label: t('pages.log.queryForm.message'),
-      name: 'message',
-      children: <Input placeholder={t('pages.log.queryForm.message.placeholder')} />
+      label: t('pages.file.queryForm.name'),
+      name: 'name',
+      children: <Input placeholder={t('pages.file.queryForm.name.placeholder')} />
     },
     {
-      label: t('pages.log.queryForm.operateUser'),
-      name: 'operateUser',
-      children: <Input placeholder={t('pages.log.queryForm.operateUser.placeholder')} />
+      label: t('pages.file.queryForm.uploadUser'),
+      name: 'uploadUser',
+      children: <Input placeholder={t('pages.file.queryForm.uploadUser.placeholder')} />
     }
   ];
 
-  const queryData = async (params?: API.LogQuery) => {
-    const res = await getLogList(params);
+  const queryData = async (params?: API.FileQuery) => {
+    const res = await getFileList(params);
     if (!res.data) {
       return;
     }
-    setLogData(res.data);
+    setFileData(res.data);
   };
 
-  const handleQuery = (values: API.LogQuery) => {
+  const handleQuery = (values: API.FileQuery) => {
     // 获取查询数据
     queryData(values);
   };
@@ -88,13 +116,12 @@ const Log: React.FC = () => {
   };
 
   const getSelectData = (keys: Key[]) => {
-    return logData?.records ? logData.records.filter((item) => keys.indexOf(item.id) >= 0) : [];
+    return fileData?.records ? fileData.records.filter((item) => keys.indexOf(item.id) >= 0) : [];
   };
 
   const actions: React.ReactNode[] = [
-    <View data={getSelectData(selectKeys)} />,
-    <Delete data={getSelectData(selectKeys)} setLogData={setLogData} />,
-    <Empty setLogData={setLogData} />
+    <Uploads setFileData={setFileData} />,
+    <View data={getSelectData(selectKeys)} />
   ];
 
   return (
@@ -102,7 +129,7 @@ const Log: React.FC = () => {
       <TablePro
         queryItems={queryItems}
         queryForm={{
-          name: 'logQuery',
+          name: 'dictionaryQuery',
           layout: 'inline',
           onFinish: handleQuery,
           labelCol: { span: 6 },
@@ -112,7 +139,7 @@ const Log: React.FC = () => {
         queryTable={{
           bordered: true,
           columns: tableColumns,
-          dataSource: logData?.records,
+          dataSource: fileData?.records,
           loading: loading,
           size: 'small',
           rowSelection: {
@@ -140,9 +167,9 @@ const Log: React.FC = () => {
           rowKey: (record) => record.id, // 设置每条记录的id为rowKey
           scroll: { x: 'max-content' },
           pagination: {
-            current: logData?.current,
+            current: fileData?.current,
             defaultPageSize: 10,
-            total: logData?.total,
+            total: fileData?.total,
             showSizeChanger: true,
             showTotal: (total, range) =>
               t('common.table.footer', { start: range[0], end: range[1], total: total }),
@@ -157,4 +184,4 @@ const Log: React.FC = () => {
   );
 };
 
-export default Log;
+export default File;

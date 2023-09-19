@@ -640,6 +640,94 @@ export const permissionData = [
     },
     createTime: '2023-06-09 11:15:24',
     updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 30,
+    code: 'file:upload',
+    name: '上传',
+    menu: 'file',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 31,
+    code: 'file:delete',
+    name: '删除',
+    menu: 'file',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 32,
+    code: 'file:download',
+    name: '下载',
+    menu: 'file',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
+  },
+  {
+    id: 33,
+    code: 'file:view',
+    name: '查看',
+    menu: 'file',
+    permissionStatus: {
+      dictValue: '0',
+      dictLabel: '正常'
+    },
+    createUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    updateUser: {
+      id: 1,
+      username: 'admin',
+      name: '管理员'
+    },
+    createTime: '2023-06-09 11:15:24',
+    updateTime: '2023-06-09 11:15:24'
   }
 ];
 

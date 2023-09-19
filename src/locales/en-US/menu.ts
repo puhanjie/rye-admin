@@ -10,6 +10,7 @@ export default {
   'menu.role': 'Role management',
   'menu.permission': 'Permission management',
   'menu.dictionary': 'Dictionary management',
+  'menu.file': 'File management',
   'menu.log': 'Log management',
   'menu.account': 'Account Center',
   'menu.settings': 'Account Settings'

@@ -29,6 +29,12 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => {
     const res = response.data;
+
+    // 若响应为文件流,则保存文件描述信息到sessionStorage
+    if (res instanceof Blob) {
+      sessionStorage.setItem('downloadInfo', response.headers['content-disposition']);
+      return res;
+    }
     // 相应状态码不等于0代表错误
     if (res.code !== 0) {
       message.error(`${res.code} | ${res.message}`);
@@ -52,7 +58,7 @@ http.interceptors.response.use(
 // 封装请求对象,避免在借口文件中重复写axios的请求和响应类型定义
 function request<T>(params: AxiosRequestConfig) {
   // http后的第一个泛型为请求参数类型,第二个为响应数据类型
-  return http<AxiosRequestConfig, API.Result<T>>(params);
+  return http<AxiosRequestConfig, T extends Blob ? T : API.Result<T>>(params);
 }
 
 export default request;

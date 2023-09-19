@@ -300,7 +300,7 @@ Mock.mock(url('/api/v1/dictionary/list'), 'get', () => {
   const pageList: API.Page<API.DictionaryInfo[]> = {
     records: dictionaryData,
     total: dictionaryData.length,
-    size: 2,
+    size: 14,
     current: 1,
     pages: 10
   };
