@@ -296,7 +296,7 @@ Mock.mock(url('/api/v1/dictionary'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/dictionary/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/dictionary/list')), 'get', () => {
   const pageList: API.Page<API.DictionaryInfo[]> = {
     records: dictionaryData,
     total: dictionaryData.length,
@@ -307,6 +307,6 @@ Mock.mock(url('/api/v1/dictionary/list'), 'get', () => {
   return success<API.Page<API.DictionaryInfo[]>>(pageList);
 });
 
-Mock.mock(url('/api/v1/dictionary/items?dictType=user_status'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/dictionary/items')), 'get', () => {
   return success<API.DictionaryInfo[]>(dictionaryData);
 });

@@ -223,8 +223,8 @@ export default {
   'pages.file.download.tip.success': 'File download successfully!',
   'pages.file.delete.tip.fail': 'Failed to delete file!',
   'pages.file.delete.tip.success': 'File deleted successfully!',
-  'common.button.upload.text': 'Click or drag file to this area to upload',
-  'common.button.upload.hint':
+  'pages.file.upload.text': 'Click or drag file to this area to upload',
+  'pages.file.upload.hint':
     'Support for a single or bulk upload, The total size must not exceed 50MB',
   // Log page
   'pages.log.queryForm.message': 'Message',

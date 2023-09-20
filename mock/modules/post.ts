@@ -148,7 +148,7 @@ Mock.mock(url('/api/v1/post'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/post/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/post/list')), 'get', () => {
   const pageList: API.Page<API.PostInfo[]> = {
     records: postData,
     total: postData.length,

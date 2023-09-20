@@ -38,10 +38,13 @@ const File: React.FC = () => {
         showTitle: false
       },
       render: (value) => (
-        <Tooltip placement="top" title={value}>
+        <Tooltip placement="topLeft" title={value}>
           {value}
         </Tooltip>
-      )
+      ),
+      onCell: () => ({
+        style: { maxWidth: 160 }
+      })
     },
     {
       title: t('pages.file.name'),

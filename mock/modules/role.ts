@@ -89,7 +89,7 @@ Mock.mock(url('/api/v1/role'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/role/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/role/list')), 'get', () => {
   const pageList: API.Page<API.RoleInfo[]> = {
     records: roleData,
     total: roleData.length,

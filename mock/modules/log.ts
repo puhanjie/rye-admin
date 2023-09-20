@@ -48,7 +48,7 @@ Mock.mock(url('/api/v1/log/empty'), 'delete', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/log/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/log/list')), 'get', () => {
   const pageList: API.Page<API.LogInfo[]> = {
     records: logData,
     total: logData.length,

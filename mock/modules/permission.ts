@@ -752,7 +752,7 @@ Mock.mock(url('/api/v1/permission'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/permission/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/permission/list')), 'get', () => {
   const pageList: API.Page<API.PermissionInfo[]> = {
     records: permissionData,
     total: permissionData.length,

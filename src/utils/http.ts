@@ -30,15 +30,14 @@ http.interceptors.response.use(
   (response) => {
     const res = response.data;
 
+    // 相应状态码不等于0代表错误
+    if (res.code && res.code !== 0) {
+      message.error(`${res.code} | ${res.message}`);
+      return Promise.reject(res);
+    }
     // 若响应为文件流,则保存文件描述信息到sessionStorage
     if (res instanceof Blob) {
       sessionStorage.setItem('downloadInfo', response.headers['content-disposition']);
-      return res;
-    }
-    // 相应状态码不等于0代表错误
-    if (res.code !== 0) {
-      message.error(`${res.code} | ${res.message}`);
-      return Promise.reject(res);
     }
     return res;
   },

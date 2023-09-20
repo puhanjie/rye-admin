@@ -220,7 +220,7 @@ Mock.mock(url('/api/v1/user/info'), 'get', () => {
   return fail('查询失败');
 });
 
-Mock.mock(url('/api/v1/user/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/user/list')), 'get', () => {
   const userList: API.UserInfo[] = userData.map((item) => {
     return {
       id: item.id,

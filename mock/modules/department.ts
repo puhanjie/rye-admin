@@ -218,7 +218,7 @@ Mock.mock(url('/api/v1/department'), 'put', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/department/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/department/list')), 'get', () => {
   return success<API.DepartmentDetailTree[]>(departmentData);
 });
 

@@ -44,7 +44,7 @@ Mock.mock(url('/api/v1/file'), 'delete', () => {
   return success<boolean>(true);
 });
 
-Mock.mock(url('/api/v1/file/list'), 'get', () => {
+Mock.mock(RegExp(url('/api/v1/file/list')), 'get', () => {
   const pageList: API.Page<API.FileInfo[]> = {
     records: fileData,
     total: fileData.length,
@@ -56,5 +56,6 @@ Mock.mock(url('/api/v1/file/list'), 'get', () => {
 });
 
 Mock.mock(RegExp(url('/api/v1/file')), 'get', () => {
+  // mock不好模拟文件下载,此处就直接返回true,让前端处理成功
   return success<boolean>(true);
 });
