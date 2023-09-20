@@ -2,7 +2,6 @@ export default {
   'common.button.query': 'Query',
   'common.button.reset': 'Reset',
   'common.button.submit': 'Submit',
-  'common.button.changeAvator': 'Change avator',
   'common.tip.delete.title': 'Delete remind',
   'common.tip.empty.title': 'Empty remind',
   'common.tip.delete.description': 'Whether to delete the selected record?',

@@ -80,7 +80,7 @@ const Info: React.FC = () => {
             showUploadList={false}
             onChange={handleChange}
           >
-            <Button icon={<UploadOutlined />}>{t('common.button.changeAvator')}</Button>
+            <Button icon={<UploadOutlined />}>{t('pages.settings.changeAvator')}</Button>
           </Upload>
         </div>
       </div>
