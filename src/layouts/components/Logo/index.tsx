@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
 import { useTranslation } from 'react-i18next';
+import logo from '@/assets/logo.svg';
 
 type Props = {
   collapsed?: boolean;
@@ -17,7 +18,7 @@ const Logo: React.FC<Props> = ({ collapsed }) => {
       className={styles['container']}
       onClick={() => navigate('/')}
     >
-      <img src="/src/assets/logo.svg" alt="logo" className={styles['image']} />
+      <img src={logo} alt="logo" className={styles['image']} />
       {!collapsed && <span className={styles['title']}>{t('app.name')}</span>}
     </div>
   );

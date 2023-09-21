@@ -3,6 +3,7 @@ import type { TabsProps } from 'antd';
 import styles from './index.module.less';
 import LoginForm from '../LoginForm';
 import { useTranslation } from 'react-i18next';
+import logo from '@/assets/logo.svg';
 
 type Props = {
   className?: string;
@@ -33,7 +34,7 @@ const LoginContent: React.FC<Props> = ({ className }) => {
     <div className={className}>
       <div className={styles['login-top']}>
         <div className={styles['login-header']}>
-          <img src="/src/assets/logo.svg" alt="logo" className={styles['logo']} />
+          <img src={logo} alt="logo" className={styles['logo']} />
           <span className={styles['login-title']}>{t('app.name')}</span>
         </div>
         <div className={styles['login-desc']}>{t('app.description')}</div>

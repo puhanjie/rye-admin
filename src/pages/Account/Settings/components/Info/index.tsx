@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { getToken } from '@/utils/auth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { setAvatar } from '@/store/modules/user';
+import defaultAvatar from '@/assets/avatar.png';
 
 type UserForm = {
   username: string;
@@ -67,7 +68,7 @@ const Info: React.FC = () => {
         <div className={styles['right']}>
           <Avatar
             className={styles['avatar']}
-            src={user.avatar ? user.avatar : '/src/assets/avatar.png'}
+            src={user.avatar ? user.avatar : defaultAvatar}
             size={128}
           />
           <Upload

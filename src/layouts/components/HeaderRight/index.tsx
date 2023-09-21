@@ -1,12 +1,13 @@
 import { LoginOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Space } from 'antd';
 import styles from './index.module.less';
-import { useAppDispatch, useAppSelector } from '../../../store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { clearToken } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { setUserInfo } from '@/store/modules/user';
 import LanguageSwich from '@/components/LanguageSwich';
 import { useTranslation } from 'react-i18next';
+import defaultAvatar from '@/assets/avatar.png';
 
 const HeaderRight: React.FC = () => {
   const { t } = useTranslation();
@@ -62,7 +63,7 @@ const HeaderRight: React.FC = () => {
       <Dropdown menu={{ items, onClick }}>
         <span className={styles['container']}>
           <Avatar
-            src={avatar ? avatar : '/src/assets/avatar.png'}
+            src={avatar ? avatar : defaultAvatar}
             size={26}
             alt="avatar"
             className={styles['avatar']}

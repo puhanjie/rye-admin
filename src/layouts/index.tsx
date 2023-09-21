@@ -2,7 +2,7 @@ import { Layout, Menu, theme } from 'antd';
 import styles from './index.module.less';
 import { Outlet, matchRoutes, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../store';
+import { useAppSelector } from '@/store';
 import HeaderRight from './components/HeaderRight';
 import { getToken } from '@/utils/auth';
 import { getInfo } from '@/services/user';

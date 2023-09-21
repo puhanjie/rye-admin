@@ -1,6 +1,7 @@
 import { Dropdown } from 'antd';
 import styles from './index.module.less';
 import { useTranslation } from 'react-i18next';
+import language from '@/assets/language.svg';
 
 const LanguageSwich: React.FC = () => {
   const { i18n } = useTranslation();
@@ -23,7 +24,7 @@ const LanguageSwich: React.FC = () => {
   return (
     <Dropdown menu={{ items, selectedKeys: [i18n.language], onClick }}>
       <span className={styles['container']}>
-        <img src="/src/assets/language.svg" className={styles['language']} />
+        <img src={language} className={styles['language']} />
       </span>
     </Dropdown>
   );
