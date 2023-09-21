@@ -132,7 +132,7 @@ const File: React.FC = () => {
       <TablePro
         queryItems={queryItems}
         queryForm={{
-          name: 'dictionaryQuery',
+          name: 'fileQuery',
           layout: 'inline',
           onFinish: handleQuery,
           labelCol: { span: 6 },

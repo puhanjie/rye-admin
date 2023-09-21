@@ -30,7 +30,6 @@ const Department: React.FC = () => {
       }
       setDeptData(deptRes.data);
       setOptionsData(optionsRes.data);
-      // setExpands(getExpandKeys(deptRes.data));
       setLoading(false);
     })();
   }, []);
