@@ -34,6 +34,14 @@ declare namespace API {
     posts?: number[];
   };
 
+  type BasicInfoParams = {
+    id?: number | string;
+    name?: string;
+    sex?: string;
+    phone?: string;
+    email?: string;
+  };
+
   type RoleParams = {
     id?: number | string;
     code?: string;
@@ -137,11 +145,9 @@ declare namespace API {
 
   type UserBasicInfo = {
     id?: number;
-    department?: API.Department;
     username?: string;
     name?: string;
     sex?: API.Dictionary;
-    userStatus?: API.Dictionary;
     phone?: string;
     avatar?: string;
     email?: string;

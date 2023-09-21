@@ -307,6 +307,9 @@ Mock.mock(RegExp(url('/api/v1/dictionary/list')), 'get', () => {
   return success<API.Page<API.DictionaryInfo[]>>(pageList);
 });
 
-Mock.mock(RegExp(url('/api/v1/dictionary/items')), 'get', () => {
-  return success<API.DictionaryInfo[]>(dictionaryData);
+Mock.mock(RegExp(url('/api/v1/dictionary/items')), 'get', (params) => {
+  const url = new URL(params.url);
+  const dictType = url.searchParams.get('dictType');
+  const data = dictionaryData.filter((item) => item.dictType === dictType);
+  return success<API.DictionaryInfo[]>(data);
 });

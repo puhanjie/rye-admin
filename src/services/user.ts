@@ -44,6 +44,15 @@ export async function getInfo() {
   return res;
 }
 
+export async function editInfo(data: API.BasicInfoParams) {
+  const res = await request<boolean>({
+    url: '/api/v1/user/info',
+    method: 'put',
+    data
+  });
+  return res;
+}
+
 export async function getUserList(params?: API.UserQuery) {
   const res = await request<API.Page<API.UserInfo[]>>({
     url: '/api/v1/user/list',

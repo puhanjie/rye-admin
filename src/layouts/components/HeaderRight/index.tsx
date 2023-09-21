@@ -56,7 +56,7 @@ const HeaderRight: React.FC = () => {
   };
 
   // 从store取用户信息(回调函数中state.后面的对象名为userSlice模块中的模块名name)
-  const { username, avatar } = useAppSelector((state) => state.user);
+  const { name, avatar } = useAppSelector((state) => state.user);
 
   return (
     <Space align="center" size={0}>
@@ -64,11 +64,11 @@ const HeaderRight: React.FC = () => {
         <span className={styles['container']}>
           <Avatar
             src={avatar ? avatar : defaultAvatar}
-            size={26}
+            size={28}
             alt="avatar"
             className={styles['avatar']}
           />
-          <span className={styles['user']}>{username}</span>
+          <span className={styles['user']}>{name}</span>
         </span>
       </Dropdown>
       <LanguageSwich />

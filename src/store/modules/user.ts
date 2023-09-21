@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: API.UserBasicInfo = {
   id: undefined,
-  department: undefined,
   avatar: '',
   username: '',
   name: '',
+  sex: undefined,
   phone: '',
   email: '',
   roles: [],
@@ -24,6 +24,7 @@ const userSlice = createSlice({
       state.avatar = payload.avatar;
       state.username = payload.username;
       state.name = payload.name;
+      state.sex = payload.sex;
       state.phone = payload.phone;
       state.email = payload.email;
       state.roles = payload.roles;
@@ -36,6 +37,8 @@ const userSlice = createSlice({
       state.id = undefined;
       state.avatar = '';
       state.username = '';
+      state.name = '';
+      state.sex = undefined;
       state.phone = '';
       state.email = '';
       state.roles = [];

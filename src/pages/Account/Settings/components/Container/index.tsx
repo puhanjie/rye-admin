@@ -11,7 +11,7 @@ const Container: React.FC<Props> = ({ title, className, children }) => {
   return (
     <div className={className}>
       <div className={styles['title']}>{title}</div>
-      <Divider style={{ margin: '10px 0' }} />
+      <Divider style={{ margin: '10px 0 20px 0' }} />
       {children}
     </div>
   );

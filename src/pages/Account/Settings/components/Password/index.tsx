@@ -16,6 +16,7 @@ type PasswordForm = {
 const Password: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useAppSelector((state) => state.user);
+  const [form] = Form.useForm();
 
   const handleFinish = async (values: PasswordForm) => {
     const { userId, currentPassword, newPassword, confirmPassword } = values;
@@ -26,12 +27,14 @@ const Password: React.FC = () => {
     const res = await updatePassword({
       type: 2,
       userId,
-      currentPassword: currentPassword,
-      newPassword: newPassword && MD5(newPassword).toString()
+      currentPassword: MD5(currentPassword).toString(),
+      newPassword: MD5(newPassword).toString()
     });
     if (res?.data && res?.data <= 0) {
       message.error(t('pages.settings.updatePassword.tip.fail'));
     }
+    form.resetFields();
+    message.success(t('pages.settings.updatePassword.tip.success'));
   };
 
   return (
@@ -39,8 +42,9 @@ const Password: React.FC = () => {
       <div className={styles['main']}>
         <Form
           name="password"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          form={form}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
           onFinish={handleFinish}
         >
           <Form.Item label="userId" name="userId" initialValue={id} hidden>
@@ -61,7 +65,7 @@ const Password: React.FC = () => {
           >
             <Input.Password />
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 8 }}>
+          <Form.Item wrapperCol={{ offset: 6 }}>
             <Button type="primary" htmlType="submit">
               {t('common.button.submit')}
             </Button>

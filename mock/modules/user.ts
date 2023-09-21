@@ -189,26 +189,12 @@ Mock.mock(url('/api/v1/user/info'), 'get', () => {
     const username = token.split('-')[0];
     const user = userData.filter((item) => item.username === username)[0];
     if (user) {
-      const {
-        id,
-        department,
-        username,
-        name,
-        sex,
-        userStatus,
-        phone,
-        avatar,
-        email,
-        roles,
-        permissions
-      } = user;
+      const { id, username, name, sex, phone, avatar, email, roles, permissions } = user;
       return success<API.UserBasicInfo>({
         id,
-        department,
         username,
         name,
         sex,
-        userStatus,
         phone,
         avatar,
         email,
@@ -218,6 +204,10 @@ Mock.mock(url('/api/v1/user/info'), 'get', () => {
     }
   }
   return fail('查询失败');
+});
+
+Mock.mock(url('/api/v1/user/info'), 'put', () => {
+  return success<boolean>(true);
 });
 
 Mock.mock(RegExp(url('/api/v1/user/list')), 'get', () => {
