@@ -39,39 +39,38 @@ const Password: React.FC = () => {
 
   return (
     <Container title={t('pages.settings.updatePassword.tab')} className={styles['container']}>
-      <div className={styles['main']}>
-        <Form
-          name="password"
-          form={form}
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
-          onFinish={handleFinish}
+      <Form
+        name="password"
+        form={form}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        onFinish={handleFinish}
+        className={styles['password-form']}
+      >
+        <Form.Item label="userId" name="userId" initialValue={id} hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={t('pages.settings.updatePassword.currentPassword')}
+          name="currentPassword"
         >
-          <Form.Item label="userId" name="userId" initialValue={id} hidden>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label={t('pages.settings.updatePassword.currentPassword')}
-            name="currentPassword"
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item label={t('pages.settings.updatePassword.newPassword')} name="newPassword">
-            <Input.Password />
-          </Form.Item>
-          <Form.Item
-            label={t('pages.settings.updatePassword.confirmPassword')}
-            name="confirmPassword"
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6 }}>
-            <Button type="primary" htmlType="submit">
-              {t('common.button.submit')}
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+          <Input.Password />
+        </Form.Item>
+        <Form.Item label={t('pages.settings.updatePassword.newPassword')} name="newPassword">
+          <Input.Password />
+        </Form.Item>
+        <Form.Item
+          label={t('pages.settings.updatePassword.confirmPassword')}
+          name="confirmPassword"
+        >
+          <Input.Password />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 6 }}>
+          <Button type="primary" htmlType="submit">
+            {t('common.button.submit')}
+          </Button>
+        </Form.Item>
+      </Form>
     </Container>
   );
 };

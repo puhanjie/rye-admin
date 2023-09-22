@@ -1,16 +1,5 @@
 import { editInfo, getInfo } from '@/services/user';
-import {
-  Avatar,
-  Button,
-  Form,
-  Input,
-  Upload,
-  message,
-  type UploadFile,
-  Select,
-  Row,
-  Col
-} from 'antd';
+import { Avatar, Button, Form, Input, Upload, message, type UploadFile, Select, Row } from 'antd';
 import styles from './index.module.less';
 import { UploadOutlined } from '@ant-design/icons';
 import Container from '../Container';
@@ -86,50 +75,49 @@ const Info: React.FC = () => {
   ) : (
     <Container title={t('pages.settings.basicInfo.tab')} className={styles['container']}>
       <Row>
-        <Col span={12}>
-          <Form
-            name="info"
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
-            initialValues={getInitData(user)}
-            onFinish={handleFinish}
-          >
-            <Form.Item label="id" name="id" hidden>
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.settings.name')} name="name">
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.settings.sex')} name="sex">
-              <Select
-                filterOption={(input, option) =>
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                options={getDictSelectOptions(sexData)}
-                placeholder={t('pages.settings.select.placeholder')}
-              />
-            </Form.Item>
-            <Form.Item label={t('pages.settings.phone')} name="phone">
-              <Input />
-            </Form.Item>
-            <Form.Item label={t('pages.settings.email')} name="email">
-              <Input />
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 4 }}>
-              <Button type="primary" htmlType="submit">
-                {t('common.button.submit')}
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-        <Col span={12} className={styles['change-avatar']}>
+        <Form
+          name="info"
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+          initialValues={getInitData(user)}
+          onFinish={handleFinish}
+          className={styles['info-form']}
+        >
+          <Form.Item label="id" name="id" hidden>
+            <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.settings.name')} name="name">
+            <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.settings.sex')} name="sex">
+            <Select
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              options={getDictSelectOptions(sexData)}
+              placeholder={t('pages.settings.select.placeholder')}
+            />
+          </Form.Item>
+          <Form.Item label={t('pages.settings.phone')} name="phone">
+            <Input />
+          </Form.Item>
+          <Form.Item label={t('pages.settings.email')} name="email">
+            <Input />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 6 }}>
+            <Button type="primary" htmlType="submit">
+              {t('common.button.submit')}
+            </Button>
+          </Form.Item>
+        </Form>
+        <div className={styles['change-avatar']}>
           <Avatar
             className={styles['avatar']}
             src={user.avatar ? user.avatar : defaultAvatar}
             size={128}
+            alt="avatar"
           />
           <Upload
-            className={styles['upload']}
             name="files"
             headers={{ Authorization: `Bearer ${getToken()}` }}
             method="PUT"
@@ -140,7 +128,7 @@ const Info: React.FC = () => {
           >
             <Button icon={<UploadOutlined />}>{t('pages.settings.changeAvator')}</Button>
           </Upload>
-        </Col>
+        </div>
       </Row>
     </Container>
   );
