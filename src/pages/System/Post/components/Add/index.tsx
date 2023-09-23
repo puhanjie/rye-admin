@@ -14,25 +14,29 @@ type Props = {
 const Add: React.FC<Props> = ({ optionsData, setPostData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleOk = async () => {
+    setLoading(true);
     const post: API.PostParams = form.getFieldsValue();
-    setIsOpen(false);
-    form.resetFields();
     post.postStatus = post.postStatus && post.postStatus[0];
     const addResult = await addPost(post);
     if (!addResult.data) {
       message.error(t('pages.post.add.tip.fail'));
+      form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.post.add.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 新增岗位成功后重新获取岗位列表数据
     const queryResult = await getPostList();
     if (!queryResult.data) {
       return;
     }
     setPostData(queryResult.data);
-    message.success(t('pages.post.add.tip.success'));
   };
 
   const handleCancel = () => {
@@ -50,6 +54,7 @@ const Add: React.FC<Props> = ({ optionsData, setPostData }) => {
       <Modal
         title={t('pages.post.addModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

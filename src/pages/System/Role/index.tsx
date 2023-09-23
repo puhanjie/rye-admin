@@ -33,6 +33,10 @@ const Role: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setSelectKeys([]);
+  }, [roleData]);
+
   const tableColumns: ColumnsType<API.RoleInfo> = [
     {
       title: t('pages.role.code'),

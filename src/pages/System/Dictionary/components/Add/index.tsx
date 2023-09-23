@@ -14,24 +14,28 @@ type Props = {
 const Add: React.FC<Props> = ({ setDictionaryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleOk = async () => {
+    setLoading(true);
     const dictionary: API.DictionaryParams = form.getFieldsValue();
-    setIsOpen(false);
-    form.resetFields();
     const addResult = await addDictionary(dictionary);
     if (!addResult.data) {
       message.error(t('pages.dictionary.add.tip.fail'));
+      form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.dictionary.add.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 新增字典成功后重新获取字典列表数据
     const queryResult = await getDictionaryList();
     if (!queryResult.data) {
       return;
     }
     setDictionaryData(queryResult.data);
-    message.success(t('pages.dictionary.add.tip.success'));
   };
 
   const handleCancel = () => {
@@ -49,6 +53,7 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
       <Modal
         title={t('pages.dictionary.addModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

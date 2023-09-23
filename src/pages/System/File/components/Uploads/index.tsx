@@ -14,8 +14,10 @@ const Uploads: React.FC<Props> = ({ setFileData }) => {
   const { t } = useTranslation();
   const [files, setFiles] = useState<UploadFile[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleOk = async () => {
+    setLoading(true);
     const formData = new FormData();
     files.forEach((file) => {
       formData.append('files', file as RcFile);
@@ -25,6 +27,8 @@ const Uploads: React.FC<Props> = ({ setFileData }) => {
       message.error(t('pages.file.upload.tip.fail'));
       return;
     }
+    setLoading(false);
+    message.success(t('pages.file.upload.tip.success'));
     setFiles([]);
     setIsOpen(false);
     // 上传文件成功后重新获取文件列表数据
@@ -33,7 +37,6 @@ const Uploads: React.FC<Props> = ({ setFileData }) => {
       return;
     }
     setFileData(queryResult.data);
-    message.success(t('pages.file.upload.tip.success'));
   };
 
   const handleCancel = () => {
@@ -51,6 +54,7 @@ const Uploads: React.FC<Props> = ({ setFileData }) => {
       <Modal
         title={t('pages.file.uploadModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

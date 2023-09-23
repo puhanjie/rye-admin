@@ -34,6 +34,10 @@ const User: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setSelectKeys([]);
+  }, [userData]);
+
   const tableColumns: ColumnsType<API.UserInfo> = [
     {
       title: t('pages.user.department'),

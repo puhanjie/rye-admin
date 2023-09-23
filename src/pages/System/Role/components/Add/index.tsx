@@ -15,27 +15,31 @@ type Props = {
 const Add: React.FC<Props> = ({ optionsData, setRoleData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = async () => {
+    setLoading(true);
     const role: API.RoleParams = form.getFieldsValue();
-    setIsOpen(false);
-    form.resetFields();
     role.roleStatus = role.roleStatus && role.roleStatus[0];
     role.permissions = role.permissions?.map((item) => Number(item));
     const addResult = await addRole(role);
     if (!addResult.data) {
       message.error(t('pages.role.add.tip.fail'));
+      form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.role.add.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 新增角色成功后重新获取角色列表数据
     const queryResult = await getRoleList();
     if (!queryResult.data) {
       return;
     }
     setRoleData(queryResult.data);
-    message.success(t('pages.role.add.tip.success'));
   };
 
   const handleCancel = () => {
@@ -53,6 +57,7 @@ const Add: React.FC<Props> = ({ optionsData, setRoleData }) => {
       <Modal
         title={t('pages.role.addModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

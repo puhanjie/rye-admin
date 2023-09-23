@@ -29,6 +29,10 @@ const File: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setSelectKeys([]);
+  }, [fileData]);
+
   const tableColumns: ColumnsType<API.FileInfo> = [
     {
       title: t('pages.file.path'),

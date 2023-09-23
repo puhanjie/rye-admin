@@ -20,6 +20,7 @@ type Props = {
 const Edit: React.FC<Props> = ({ data, optionsData, setDeptData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const getInitData = () => {
@@ -48,8 +49,8 @@ const Edit: React.FC<Props> = ({ data, optionsData, setDeptData }) => {
   };
 
   const handleOk = async () => {
+    setLoading(true);
     const department: API.DepartmentParams = form.getFieldsValue();
-    setIsOpen(false);
     department.parentId = Number(department.parentId);
     department.deptStatus = department.deptStatus && department.deptStatus[0];
     const editResult = await editDepartment(department);
@@ -58,13 +59,16 @@ const Edit: React.FC<Props> = ({ data, optionsData, setDeptData }) => {
       form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.department.edit.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 修改部门成功后重新获取部门列表数据
     const queryResult = await getDepartmentList();
     if (!queryResult.data) {
       return;
     }
     setDeptData(queryResult.data);
-    message.success(t('pages.department.edit.tip.success'));
   };
 
   const handleCancel = () => {
@@ -82,6 +86,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setDeptData }) => {
       <Modal
         title={t('pages.department.editModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

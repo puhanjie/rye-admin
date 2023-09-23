@@ -20,6 +20,7 @@ type Props = {
 const Edit: React.FC<Props> = ({ data, optionsData, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const getInitData = () => {
@@ -48,8 +49,8 @@ const Edit: React.FC<Props> = ({ data, optionsData, setUserData }) => {
   };
 
   const handleOk = async () => {
+    setLoading(true);
     const user: API.UserParams = form.getFieldsValue();
-    setIsOpen(false);
     user.department = Number(user.department);
     user.sex = user.sex && user.sex[0];
     user.userStatus = user.userStatus && user.userStatus[0];
@@ -59,13 +60,16 @@ const Edit: React.FC<Props> = ({ data, optionsData, setUserData }) => {
       form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.user.edit.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 修改用户成功后重新获取用户列表数据
     const queryResult = await getUserList();
     if (!queryResult.data) {
       return;
     }
     setUserData(queryResult.data);
-    message.success(t('pages.user.edit.tip.success'));
   };
 
   const handleCancel = () => {
@@ -83,6 +87,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setUserData }) => {
       <Modal
         title={t('pages.user.editModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

@@ -17,26 +17,30 @@ type Props = {
 const Add: React.FC<Props> = ({ optionsData, setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
   const handleOk = async () => {
+    setLoading(true);
     const permission: API.PermissionParams = form.getFieldsValue();
-    setIsOpen(false);
-    form.resetFields();
     permission.permissionStatus = permission.permissionStatus && permission.permissionStatus[0];
     const addResult = await addPermission(permission);
     if (!addResult.data) {
       message.error(t('pages.permission.add.tip.fail'));
+      form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.permission.add.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 新增权限成功后重新获取权限列表数据
     const queryResult = await getPermissionList();
     if (!queryResult.data) {
       return;
     }
     setPermissionData(queryResult.data);
-    message.success(t('pages.permission.add.tip.success'));
   };
 
   const handleCancel = () => {
@@ -54,6 +58,7 @@ const Add: React.FC<Props> = ({ optionsData, setPermissionData }) => {
       <Modal
         title={t('pages.permission.addModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

@@ -36,6 +36,7 @@ const Department: React.FC = () => {
 
   useEffect(() => {
     setExpands(getExpandKeys(deptData));
+    setSelectKeys([]);
   }, [deptData]);
 
   const tableColumns: ColumnsType<API.DepartmentDetailTree> = [

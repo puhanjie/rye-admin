@@ -33,6 +33,10 @@ const Post: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setSelectKeys([]);
+  }, [postData]);
+
   const tableColumns: ColumnsType<API.PostInfo> = [
     {
       title: t('pages.post.code'),

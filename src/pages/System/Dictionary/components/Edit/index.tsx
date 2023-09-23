@@ -15,6 +15,7 @@ type Props = {
 const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleEdit = () => {
@@ -27,21 +28,24 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
   };
 
   const handleOk = async () => {
+    setLoading(true);
     const dictionary: API.DictionaryParams = form.getFieldsValue();
-    setIsOpen(false);
     const editResult = await editDictionary(dictionary);
     if (!editResult.data) {
       message.error(t('pages.dictionary.edit.tip.fail'));
       form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.dictionary.edit.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 编辑字典成功后重新获取字典列表数据
     const queryResult = await getDictionaryList();
     if (!queryResult.data) {
       return;
     }
     setDictionaryData(queryResult.data);
-    message.success(t('pages.dictionary.edit.tip.success'));
   };
 
   const handleCancel = () => {
@@ -59,6 +63,7 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
       <Modal
         title={t('pages.dictionary.editModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

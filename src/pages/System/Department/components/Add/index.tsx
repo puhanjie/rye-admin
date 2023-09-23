@@ -19,26 +19,30 @@ type Props = {
 const Add: React.FC<Props> = ({ optionsData, setDeptData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleOk = async () => {
+    setLoading(true);
     const department: API.DepartmentParams = form.getFieldsValue();
-    setIsOpen(false);
-    form.resetFields();
     department.parentId = Number(department.parentId);
     department.deptStatus = department.deptStatus && department.deptStatus[0];
     const addResult = await addDepartment(department);
     if (!addResult.data) {
       message.error(t('pages.department.add.tip.fail'));
+      form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.department.add.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 新增部门成功后重新获取部门列表数据
     const queryResult = await getDepartmentList();
     if (!queryResult.data) {
       return;
     }
     setDeptData(queryResult.data);
-    message.success(t('pages.department.add.tip.success'));
   };
 
   const handleCancel = () => {
@@ -56,6 +60,7 @@ const Add: React.FC<Props> = ({ optionsData, setDeptData }) => {
       <Modal
         title={t('pages.department.addModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

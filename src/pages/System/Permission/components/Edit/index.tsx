@@ -18,6 +18,7 @@ type Props = {
 const Edit: React.FC<Props> = ({ data, optionsData, setPermissionData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
@@ -42,8 +43,8 @@ const Edit: React.FC<Props> = ({ data, optionsData, setPermissionData }) => {
   };
 
   const handleOk = async () => {
+    setLoading(true);
     const permission: API.PermissionParams = form.getFieldsValue();
-    setIsOpen(false);
     permission.permissionStatus = permission.permissionStatus && permission.permissionStatus[0];
     const editResult = await editPermission(permission);
     if (!editResult.data) {
@@ -51,13 +52,16 @@ const Edit: React.FC<Props> = ({ data, optionsData, setPermissionData }) => {
       form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.permission.edit.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 编辑权限成功后重新获取权限列表数据
     const queryResult = await getPermissionList();
     if (!queryResult.data) {
       return;
     }
     setPermissionData(queryResult.data);
-    message.success(t('pages.permission.edit.tip.success'));
   };
 
   const handleCancel = () => {
@@ -75,6 +79,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setPermissionData }) => {
       <Modal
         title={t('pages.permission.editModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

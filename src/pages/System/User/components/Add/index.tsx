@@ -20,12 +20,12 @@ type Props = {
 const Add: React.FC<Props> = ({ optionsData, setUserData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleOk = async () => {
+    setLoading(true);
     const user: API.UserParams = form.getFieldsValue();
-    setIsOpen(false);
-    form.resetFields();
     user.department = Number(user.department);
     user.sex = user.sex && user.sex[0];
     user.userStatus = user.userStatus && user.userStatus[0];
@@ -33,15 +33,19 @@ const Add: React.FC<Props> = ({ optionsData, setUserData }) => {
     const addResult = await addUser(user);
     if (!addResult.data) {
       message.error(t('pages.user.add.tip.fail'));
+      form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.user.add.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 新增用户成功后重新获取用户列表数据
     const queryResult = await getUserList();
     if (!queryResult.data) {
       return;
     }
     setUserData(queryResult.data);
-    message.success(t('pages.user.add.tip.success'));
   };
 
   const handleCancel = () => {
@@ -59,6 +63,7 @@ const Add: React.FC<Props> = ({ optionsData, setUserData }) => {
       <Modal
         title={t('pages.user.addModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

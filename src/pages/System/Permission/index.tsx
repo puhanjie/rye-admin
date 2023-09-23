@@ -36,6 +36,10 @@ const Permission: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setSelectKeys([]);
+  }, [permissionData]);
+
   const tableColumns: ColumnsType<API.PermissionInfo> = [
     {
       title: t('pages.permission.code'),

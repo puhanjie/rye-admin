@@ -16,6 +16,7 @@ type Props = {
 const Edit: React.FC<Props> = ({ data, optionsData, setRoleData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const menuData = routeConfig.filter((item) => item.path === '/')[0].children;
 
@@ -40,8 +41,8 @@ const Edit: React.FC<Props> = ({ data, optionsData, setRoleData }) => {
   };
 
   const handleOk = async () => {
+    setLoading(true);
     const role: API.RoleParams = form.getFieldsValue();
-    setIsOpen(false);
     role.roleStatus = role.roleStatus && role.roleStatus[0];
     role.permissions = role.permissions?.map((item) => Number(item));
     const editResult = await editRole(role);
@@ -50,13 +51,16 @@ const Edit: React.FC<Props> = ({ data, optionsData, setRoleData }) => {
       form.resetFields();
       return;
     }
+    setLoading(false);
+    message.success(t('pages.role.edit.tip.success'));
+    setIsOpen(false);
+    form.resetFields();
     // 编辑角色成功后重新获取角色列表数据
     const queryResult = await getRoleList();
     if (!queryResult.data) {
       return;
     }
     setRoleData(queryResult.data);
-    message.success(t('pages.role.edit.tip.success'));
   };
 
   const handleCancel = () => {
@@ -74,6 +78,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setRoleData }) => {
       <Modal
         title={t('pages.role.editModal.title')}
         open={isOpen}
+        confirmLoading={loading}
         onOk={handleOk}
         onCancel={handleCancel}
         bodyStyle={{

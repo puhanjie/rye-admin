@@ -29,6 +29,10 @@ const Dictionary: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setSelectKeys([]);
+  }, [dictionaryData]);
+
   /**
    * 获取记录的column列的行占位数
    * @param record 表格单条记录数据

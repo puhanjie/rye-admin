@@ -28,6 +28,10 @@ const Log: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setSelectKeys([]);
+  }, [logData]);
+
   const tableColumns: ColumnsType<API.LogInfo> = [
     {
       title: t('pages.log.url'),
