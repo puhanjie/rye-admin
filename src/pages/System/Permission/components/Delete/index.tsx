@@ -1,17 +1,15 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { getPermissionList, removePermission } from '@/services/permission';
+import { removePermission } from '@/services/permission';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   data: API.PermissionInfo[];
-  setPermissionData: React.Dispatch<
-    React.SetStateAction<API.Page<API.PermissionInfo[]> | undefined>
-  >;
+  queryData: (params?: API.PermissionQuery) => void;
 };
 
-const Delete: React.FC<Props> = ({ data, setPermissionData }) => {
+const Delete: React.FC<Props> = ({ data, queryData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
@@ -25,13 +23,9 @@ const Delete: React.FC<Props> = ({ data, setPermissionData }) => {
       message.error(t('pages.permission.delete.tip.fail'));
       return;
     }
-    // 删除成功后重新获取权限列表数据
-    const queryResult = await getPermissionList();
-    if (!queryResult.data) {
-      return;
-    }
-    setPermissionData(queryResult.data);
     message.success(t('pages.permission.delete.tip.success'));
+    // 删除成功后重新获取权限列表数据
+    queryData();
   };
 
   return (

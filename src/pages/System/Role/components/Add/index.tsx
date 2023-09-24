@@ -1,5 +1,5 @@
 import routeConfig from '@/router';
-import { addRole, getRoleList } from '@/services/role';
+import { addRole } from '@/services/role';
 import { getDictSelectOptions, getPermissionTreeData } from '@/utils/general';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
@@ -9,10 +9,10 @@ import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   optionsData?: API.RoleOptions;
-  setRoleData: React.Dispatch<React.SetStateAction<API.Page<API.RoleInfo[]> | undefined>>;
+  queryData: (params?: API.RoleQuery) => void;
 };
 
-const Add: React.FC<Props> = ({ optionsData, setRoleData }) => {
+const Add: React.FC<Props> = ({ optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,11 +35,7 @@ const Add: React.FC<Props> = ({ optionsData, setRoleData }) => {
     setIsOpen(false);
     form.resetFields();
     // 新增角色成功后重新获取角色列表数据
-    const queryResult = await getRoleList();
-    if (!queryResult.data) {
-      return;
-    }
-    setRoleData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

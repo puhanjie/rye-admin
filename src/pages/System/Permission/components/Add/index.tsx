@@ -2,19 +2,17 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { addPermission, getPermissionList } from '@/services/permission';
+import { addPermission } from '@/services/permission';
 import { getDictSelectOptions, getMenuTree } from '@/utils/general';
 import routeConfig from '@/router';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   optionsData?: API.PermissionOptions;
-  setPermissionData: React.Dispatch<
-    React.SetStateAction<API.Page<API.PermissionInfo[]> | undefined>
-  >;
+  queryData: (params?: API.PermissionQuery) => void;
 };
 
-const Add: React.FC<Props> = ({ optionsData, setPermissionData }) => {
+const Add: React.FC<Props> = ({ optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -36,11 +34,7 @@ const Add: React.FC<Props> = ({ optionsData, setPermissionData }) => {
     setIsOpen(false);
     form.resetFields();
     // 新增权限成功后重新获取权限列表数据
-    const queryResult = await getPermissionList();
-    if (!queryResult.data) {
-      return;
-    }
-    setPermissionData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

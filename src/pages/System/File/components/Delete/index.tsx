@@ -1,14 +1,14 @@
 import AuthWrapper from '@/components/AuthWrapper';
-import { getFileList, removeFile } from '@/services/file';
+import { removeFile } from '@/services/file';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
   data: API.FileInfo;
-  setFileData: React.Dispatch<React.SetStateAction<API.Page<API.FileInfo[]> | undefined>>;
+  queryData: (params?: API.FileQuery) => void;
 };
 
-const Delete: React.FC<Props> = ({ data, setFileData }) => {
+const Delete: React.FC<Props> = ({ data, queryData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
@@ -17,13 +17,9 @@ const Delete: React.FC<Props> = ({ data, setFileData }) => {
       message.error(t('pages.file.delete.tip.fail'));
       return;
     }
-    // 删除成功后重新获取文件列表数据
-    const queryResult = await getFileList();
-    if (!queryResult.data) {
-      return;
-    }
-    setFileData(queryResult.data);
     message.success(t('pages.file.delete.tip.success'));
+    // 删除成功后重新获取文件列表数据
+    queryData();
   };
 
   return (

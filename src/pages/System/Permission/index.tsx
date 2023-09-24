@@ -142,14 +142,10 @@ const Permission: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Add optionsData={optionsData} setPermissionData={setPermissionData} />,
-    <Edit
-      data={getSelectData(selectKeys)}
-      optionsData={optionsData}
-      setPermissionData={setPermissionData}
-    />,
+    <Add optionsData={optionsData} queryData={queryData} />,
+    <Edit data={getSelectData(selectKeys)} optionsData={optionsData} queryData={queryData} />,
     <View data={getSelectData(selectKeys)} />,
-    <Delete data={getSelectData(selectKeys)} setPermissionData={setPermissionData} />
+    <Delete data={getSelectData(selectKeys)} queryData={queryData} />
   ];
 
   return (

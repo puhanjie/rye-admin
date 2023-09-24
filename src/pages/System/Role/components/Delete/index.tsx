@@ -1,15 +1,15 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { getRoleList, removeRole } from '@/services/role';
+import { removeRole } from '@/services/role';
 import AuthWrapper from '@/components/AuthWrapper';
 
 type Props = {
   data: API.RoleInfo[];
-  setRoleData: React.Dispatch<React.SetStateAction<API.Page<API.RoleInfo[]> | undefined>>;
+  queryData: (params?: API.RoleQuery) => void;
 };
 
-const Delete: React.FC<Props> = ({ data, setRoleData }) => {
+const Delete: React.FC<Props> = ({ data, queryData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
@@ -23,13 +23,9 @@ const Delete: React.FC<Props> = ({ data, setRoleData }) => {
       message.error(t('pages.role.delete.tip.fail'));
       return;
     }
-    // 删除成功后重新获取角色列表数据
-    const queryResult = await getRoleList();
-    if (!queryResult.data) {
-      return;
-    }
-    setRoleData(queryResult.data);
     message.success(t('pages.role.delete.tip.success'));
+    // 删除成功后重新获取角色列表数据
+    queryData();
   };
 
   return (

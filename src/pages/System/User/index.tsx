@@ -178,11 +178,11 @@ const User: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Add optionsData={optionsData} setUserData={setUserData} />,
-    <Edit data={getSelectData(selectKeys)} optionsData={optionsData} setUserData={setUserData} />,
+    <Add optionsData={optionsData} queryData={queryData} />,
+    <Edit data={getSelectData(selectKeys)} optionsData={optionsData} queryData={queryData} />,
     <View data={getSelectData(selectKeys)} />,
     <ResetPassword data={getSelectData(selectKeys)} clearSelectData={clearSelectData} />,
-    <Delete data={getSelectData(selectKeys)} setUserData={setUserData} />
+    <Delete data={getSelectData(selectKeys)} queryData={queryData} />
   ];
 
   return (

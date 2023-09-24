@@ -4,15 +4,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import { EditOutlined } from '@ant-design/icons';
-import { editPost, getPostList } from '@/services/post';
+import { editPost } from '@/services/post';
 
 type Props = {
   data: API.PostInfo[];
   optionsData?: API.PostOptions;
-  setPostData: React.Dispatch<React.SetStateAction<API.Page<API.PostInfo[]> | undefined>>;
+  queryData: (params?: API.PostQuery) => void;
 };
 
-const Edit: React.FC<Props> = ({ data, optionsData, setPostData }) => {
+const Edit: React.FC<Props> = ({ data, optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,11 +54,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setPostData }) => {
     setIsOpen(false);
     form.resetFields();
     // 修改用户成功后重新获取用户列表数据
-    const queryResult = await getPostList();
-    if (!queryResult.data) {
-      return;
-    }
-    setPostData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

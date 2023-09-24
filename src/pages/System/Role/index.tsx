@@ -119,10 +119,10 @@ const Role: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Add optionsData={optionsData} setRoleData={setRoleData} />,
-    <Edit data={getSelectData(selectKeys)} optionsData={optionsData} setRoleData={setRoleData} />,
+    <Add optionsData={optionsData} queryData={queryData} />,
+    <Edit data={getSelectData(selectKeys)} optionsData={optionsData} queryData={queryData} />,
     <View data={getSelectData(selectKeys)} optionsData={optionsData} />,
-    <Delete data={getSelectData(selectKeys)} setRoleData={setRoleData} />
+    <Delete data={getSelectData(selectKeys)} queryData={queryData} />
   ];
 
   return (

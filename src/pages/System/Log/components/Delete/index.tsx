@@ -2,14 +2,14 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { getLogList, removeLog } from '@/services/log';
+import { removeLog } from '@/services/log';
 
 type Props = {
   data: API.LogInfo[];
-  setLogData: React.Dispatch<React.SetStateAction<API.Page<API.LogInfo[]> | undefined>>;
+  queryData: (params?: API.LogQuery) => void;
 };
 
-const Delete: React.FC<Props> = ({ data, setLogData }) => {
+const Delete: React.FC<Props> = ({ data, queryData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
@@ -23,13 +23,9 @@ const Delete: React.FC<Props> = ({ data, setLogData }) => {
       message.error(t('pages.log.delete.tip.fail'));
       return;
     }
-    // 删除成功后重新获取日志列表数据
-    const queryResult = await getLogList();
-    if (!queryResult.data) {
-      return;
-    }
-    setLogData(queryResult.data);
     message.success(t('pages.log.delete.tip.success'));
+    // 删除成功后重新获取日志列表数据
+    queryData();
   };
 
   return (

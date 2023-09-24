@@ -1,5 +1,5 @@
 import routeConfig from '@/router';
-import { editRole, getRoleList } from '@/services/role';
+import { editRole } from '@/services/role';
 import { getDictSelectOptions, getPermissionTreeData } from '@/utils/general';
 import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
@@ -10,10 +10,10 @@ import { EditOutlined } from '@ant-design/icons';
 type Props = {
   data: API.RoleInfo[];
   optionsData?: API.RoleOptions;
-  setRoleData: React.Dispatch<React.SetStateAction<API.Page<API.RoleInfo[]> | undefined>>;
+  queryData: (params?: API.RoleQuery) => void;
 };
 
-const Edit: React.FC<Props> = ({ data, optionsData, setRoleData }) => {
+const Edit: React.FC<Props> = ({ data, optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -56,11 +56,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setRoleData }) => {
     setIsOpen(false);
     form.resetFields();
     // 编辑角色成功后重新获取角色列表数据
-    const queryResult = await getRoleList();
-    if (!queryResult.data) {
-      return;
-    }
-    setRoleData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

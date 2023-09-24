@@ -7,17 +7,17 @@ import {
 import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { editUser, getUserList } from '@/services/user';
+import { editUser } from '@/services/user';
 import AuthWrapper from '@/components/AuthWrapper';
 import { EditOutlined } from '@ant-design/icons';
 
 type Props = {
   data: API.UserInfo[];
   optionsData?: API.UserOptions;
-  setUserData: React.Dispatch<React.SetStateAction<API.Page<API.UserInfo[]> | undefined>>;
+  queryData: (params?: API.UserQuery) => void;
 };
 
-const Edit: React.FC<Props> = ({ data, optionsData, setUserData }) => {
+const Edit: React.FC<Props> = ({ data, optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -65,11 +65,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setUserData }) => {
     setIsOpen(false);
     form.resetFields();
     // 修改用户成功后重新获取用户列表数据
-    const queryResult = await getUserList();
-    if (!queryResult.data) {
-      return;
-    }
-    setUserData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

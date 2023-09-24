@@ -9,15 +9,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
 import { EditOutlined } from '@ant-design/icons';
-import { editDepartment, getDepartmentList } from '@/services/department';
+import { editDepartment } from '@/services/department';
 
 type Props = {
   data?: API.DepartmentDetailTree[];
   optionsData?: API.DepartmentOptions;
-  setDeptData: React.Dispatch<React.SetStateAction<API.DepartmentDetailTree[] | undefined>>;
+  queryData: (params?: API.DepartmentQuery) => void;
 };
 
-const Edit: React.FC<Props> = ({ data, optionsData, setDeptData }) => {
+const Edit: React.FC<Props> = ({ data, optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -64,11 +64,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setDeptData }) => {
     setIsOpen(false);
     form.resetFields();
     // 修改部门成功后重新获取部门列表数据
-    const queryResult = await getDepartmentList();
-    if (!queryResult.data) {
-      return;
-    }
-    setDeptData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

@@ -97,8 +97,8 @@ const Log: React.FC = () => {
 
   const actions: React.ReactNode[] = [
     <View data={getSelectData(selectKeys)} />,
-    <Delete data={getSelectData(selectKeys)} setLogData={setLogData} />,
-    <Empty setLogData={setLogData} />
+    <Delete data={getSelectData(selectKeys)} queryData={queryData} />,
+    <Empty queryData={queryData} />
   ];
 
   return (

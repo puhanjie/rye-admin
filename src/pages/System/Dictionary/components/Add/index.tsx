@@ -3,15 +3,13 @@ import { Button, Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { addDictionary, getDictionaryList } from '@/services/dictionary';
+import { addDictionary } from '@/services/dictionary';
 
 type Props = {
-  setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.Page<API.DictionaryInfo[]> | undefined>
-  >;
+  queryData: (params?: API.DictionaryQuery) => void;
 };
 
-const Add: React.FC<Props> = ({ setDictionaryData }) => {
+const Add: React.FC<Props> = ({ queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,11 +29,7 @@ const Add: React.FC<Props> = ({ setDictionaryData }) => {
     setIsOpen(false);
     form.resetFields();
     // 新增字典成功后重新获取字典列表数据
-    const queryResult = await getDictionaryList();
-    if (!queryResult.data) {
-      return;
-    }
-    setDictionaryData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

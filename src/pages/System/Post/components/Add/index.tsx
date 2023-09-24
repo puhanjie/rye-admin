@@ -4,14 +4,14 @@ import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { addPost, getPostList } from '@/services/post';
+import { addPost } from '@/services/post';
 
 type Props = {
   optionsData?: API.PostOptions;
-  setPostData: React.Dispatch<React.SetStateAction<API.Page<API.PostInfo[]> | undefined>>;
+  queryData: (params?: API.PostQuery) => void;
 };
 
-const Add: React.FC<Props> = ({ optionsData, setPostData }) => {
+const Add: React.FC<Props> = ({ optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -32,11 +32,7 @@ const Add: React.FC<Props> = ({ optionsData, setPostData }) => {
     setIsOpen(false);
     form.resetFields();
     // 新增岗位成功后重新获取岗位列表数据
-    const queryResult = await getPostList();
-    if (!queryResult.data) {
-      return;
-    }
-    setPostData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

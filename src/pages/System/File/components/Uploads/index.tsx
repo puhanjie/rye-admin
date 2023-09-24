@@ -1,5 +1,5 @@
 import AuthWrapper from '@/components/AuthWrapper';
-import { getFileList, uploadFile } from '@/services/file';
+import { uploadFile } from '@/services/file';
 import { CloudUploadOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Modal, Upload, message } from 'antd';
 import type { RcFile, UploadFile } from 'antd/es/upload/interface';
@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  setFileData: React.Dispatch<React.SetStateAction<API.Page<API.FileInfo[]> | undefined>>;
+  queryData: (params?: API.FileQuery) => void;
 };
 
-const Uploads: React.FC<Props> = ({ setFileData }) => {
+const Uploads: React.FC<Props> = ({ queryData }) => {
   const { t } = useTranslation();
   const [files, setFiles] = useState<UploadFile[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -32,11 +32,7 @@ const Uploads: React.FC<Props> = ({ setFileData }) => {
     setFiles([]);
     setIsOpen(false);
     // 上传文件成功后重新获取文件列表数据
-    const queryResult = await getFileList();
-    if (!queryResult.data) {
-      return;
-    }
-    setFileData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

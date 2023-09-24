@@ -148,10 +148,10 @@ const Dictionary: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Add setDictionaryData={setDictionaryData} />,
-    <Edit data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />,
+    <Add queryData={queryData} />,
+    <Edit data={getSelectData(selectKeys)} queryData={queryData} />,
     <View data={getSelectData(selectKeys)} />,
-    <Delete data={getSelectData(selectKeys)} setDictionaryData={setDictionaryData} />
+    <Delete data={getSelectData(selectKeys)} queryData={queryData} />
   ];
 
   return (

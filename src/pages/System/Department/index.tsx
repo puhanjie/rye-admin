@@ -164,14 +164,14 @@ const Department: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Add optionsData={optionsData} setDeptData={setDeptData} />,
+    <Add optionsData={optionsData} queryData={queryData} />,
     <Edit
       data={getSelectData(selectKeys, deptData)}
       optionsData={optionsData}
-      setDeptData={setDeptData}
+      queryData={queryData}
     />,
     <View data={getSelectData(selectKeys, deptData)} />,
-    <Delete data={getSelectData(selectKeys, deptData)} setDeptData={setDeptData} />
+    <Delete data={getSelectData(selectKeys, deptData)} queryData={queryData} />
   ];
 
   return (

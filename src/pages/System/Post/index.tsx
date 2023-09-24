@@ -135,10 +135,10 @@ const Post: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Add optionsData={optionsData} setPostData={setPostData} />,
-    <Edit data={getSelectData(selectKeys)} optionsData={optionsData} setPostData={setPostData} />,
+    <Add optionsData={optionsData} queryData={queryData} />,
+    <Edit data={getSelectData(selectKeys)} optionsData={optionsData} queryData={queryData} />,
     <View data={getSelectData(selectKeys)} />,
-    <Delete data={getSelectData(selectKeys)} setPostData={setPostData} />
+    <Delete data={getSelectData(selectKeys)} queryData={queryData} />
   ];
 
   return (

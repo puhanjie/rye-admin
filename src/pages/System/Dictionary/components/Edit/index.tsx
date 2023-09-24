@@ -2,17 +2,15 @@ import { Button, Form, Input, Modal, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { editDictionary, getDictionaryList } from '@/services/dictionary';
+import { editDictionary } from '@/services/dictionary';
 import { EditOutlined } from '@ant-design/icons';
 
 type Props = {
   data: API.DictionaryInfo[];
-  setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.Page<API.DictionaryInfo[]> | undefined>
-  >;
+  queryData: (params?: API.DictionaryQuery) => void;
 };
 
-const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
+const Edit: React.FC<Props> = ({ data, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,11 +39,7 @@ const Edit: React.FC<Props> = ({ data, setDictionaryData }) => {
     setIsOpen(false);
     form.resetFields();
     // 编辑字典成功后重新获取字典列表数据
-    const queryResult = await getDictionaryList();
-    if (!queryResult.data) {
-      return;
-    }
-    setDictionaryData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

@@ -33,6 +33,14 @@ const File: React.FC = () => {
     setSelectKeys([]);
   }, [fileData]);
 
+  const queryData = async (params?: API.FileQuery) => {
+    const res = await getFileList(params);
+    if (!res.data) {
+      return;
+    }
+    setFileData(res.data);
+  };
+
   const tableColumns: ColumnsType<API.FileInfo> = [
     {
       title: t('pages.file.path'),
@@ -85,7 +93,7 @@ const File: React.FC = () => {
         return (
           <Space>
             <Download data={record} />
-            <Delete data={record} setFileData={setFileData} />
+            <Delete data={record} queryData={queryData} />
           </Space>
         );
       }
@@ -105,14 +113,6 @@ const File: React.FC = () => {
     }
   ];
 
-  const queryData = async (params?: API.FileQuery) => {
-    const res = await getFileList(params);
-    if (!res.data) {
-      return;
-    }
-    setFileData(res.data);
-  };
-
   const handleQuery = (values: API.FileQuery) => {
     // 获取查询数据
     queryData(values);
@@ -127,7 +127,7 @@ const File: React.FC = () => {
   };
 
   const actions: React.ReactNode[] = [
-    <Uploads setFileData={setFileData} />,
+    <Uploads queryData={queryData} />,
     <View data={getSelectData(selectKeys)} />
   ];
 

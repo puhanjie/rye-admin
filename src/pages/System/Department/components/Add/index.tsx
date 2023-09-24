@@ -9,14 +9,14 @@ import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { addDepartment, getDepartmentList } from '@/services/department';
+import { addDepartment } from '@/services/department';
 
 type Props = {
   optionsData?: API.DepartmentOptions;
-  setDeptData: React.Dispatch<React.SetStateAction<API.DepartmentDetailTree[] | undefined>>;
+  queryData: (params?: API.DepartmentQuery) => void;
 };
 
-const Add: React.FC<Props> = ({ optionsData, setDeptData }) => {
+const Add: React.FC<Props> = ({ optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -38,11 +38,7 @@ const Add: React.FC<Props> = ({ optionsData, setDeptData }) => {
     setIsOpen(false);
     form.resetFields();
     // 新增部门成功后重新获取部门列表数据
-    const queryResult = await getDepartmentList();
-    if (!queryResult.data) {
-      return;
-    }
-    setDeptData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

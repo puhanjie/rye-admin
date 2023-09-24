@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal, Select, TreeSelect, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { editPermission, getPermissionList } from '@/services/permission';
+import { editPermission } from '@/services/permission';
 import routeConfig from '@/router';
 import { getDictSelectOptions, getMenuTree } from '@/utils/general';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -10,12 +10,10 @@ import { EditOutlined } from '@ant-design/icons';
 type Props = {
   data: API.PermissionInfo[];
   optionsData?: API.PermissionOptions;
-  setPermissionData: React.Dispatch<
-    React.SetStateAction<API.Page<API.PermissionInfo[]> | undefined>
-  >;
+  queryData: (params?: API.PermissionQuery) => void;
 };
 
-const Edit: React.FC<Props> = ({ data, optionsData, setPermissionData }) => {
+const Edit: React.FC<Props> = ({ data, optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,11 +55,7 @@ const Edit: React.FC<Props> = ({ data, optionsData, setPermissionData }) => {
     setIsOpen(false);
     form.resetFields();
     // 编辑权限成功后重新获取权限列表数据
-    const queryResult = await getPermissionList();
-    if (!queryResult.data) {
-      return;
-    }
-    setPermissionData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {

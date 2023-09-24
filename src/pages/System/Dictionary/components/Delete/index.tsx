@@ -2,16 +2,14 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '@/components/AuthWrapper';
-import { getDictionaryList, removeDictionary } from '@/services/dictionary';
+import { removeDictionary } from '@/services/dictionary';
 
 type Props = {
   data: API.DictionaryInfo[];
-  setDictionaryData: React.Dispatch<
-    React.SetStateAction<API.Page<API.DictionaryInfo[]> | undefined>
-  >;
+  queryData: (params?: API.DictionaryQuery) => void;
 };
 
-const Delete: React.FC<Props> = ({ data, setDictionaryData }) => {
+const Delete: React.FC<Props> = ({ data, queryData }) => {
   const { t } = useTranslation();
 
   const handleConfirm = async () => {
@@ -25,13 +23,9 @@ const Delete: React.FC<Props> = ({ data, setDictionaryData }) => {
       message.error(t('pages.dictionary.delete.tip.fail'));
       return;
     }
-    // 删除成功后重新获取字典列表数据
-    const queryResult = await getDictionaryList();
-    if (!queryResult.data) {
-      return;
-    }
-    setDictionaryData(queryResult.data);
     message.success(t('pages.dictionary.delete.tip.success'));
+    // 删除成功后重新获取字典列表数据
+    queryData();
   };
 
   return (

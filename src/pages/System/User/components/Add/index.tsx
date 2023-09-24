@@ -1,4 +1,4 @@
-import { addUser, getUserList } from '@/services/user';
+import { addUser } from '@/services/user';
 import {
   getRoleSelectOptions,
   getDictSelectOptions,
@@ -14,10 +14,10 @@ import MD5 from 'crypto-js/md5';
 
 type Props = {
   optionsData?: API.UserOptions;
-  setUserData: React.Dispatch<React.SetStateAction<API.Page<API.UserInfo[]> | undefined>>;
+  queryData: (params?: API.UserQuery) => void;
 };
 
-const Add: React.FC<Props> = ({ optionsData, setUserData }) => {
+const Add: React.FC<Props> = ({ optionsData, queryData }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,11 +41,7 @@ const Add: React.FC<Props> = ({ optionsData, setUserData }) => {
     setIsOpen(false);
     form.resetFields();
     // 新增用户成功后重新获取用户列表数据
-    const queryResult = await getUserList();
-    if (!queryResult.data) {
-      return;
-    }
-    setUserData(queryResult.data);
+    queryData();
   };
 
   const handleCancel = () => {
