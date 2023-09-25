@@ -43,12 +43,12 @@ const Dictionary: React.FC = () => {
     const data = dictionaryData?.records.filter(
       (item) => item[column as keyof typeof item] === record[column as keyof typeof item]
     );
-    const ids = data?.map((item) => item.id);
-    if (!ids || ids.length === 0) {
-      return 1;
+    if (!data || data.length === 0) {
+      return;
     }
-    const minId = Math.min(...ids);
-    return record.id === minId ? ids.length : 0;
+    const indexs = data.map((_item, index) => index);
+    const minIndex = Math.min(...indexs);
+    return record.id === data[minIndex].id ? data.length : 0;
   };
 
   const tableColumns: ColumnsType<API.DictionaryInfo> = [
