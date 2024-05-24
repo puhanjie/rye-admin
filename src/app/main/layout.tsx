@@ -3,6 +3,7 @@
 import FooterBar from "@/components/footer-bar";
 import HeaderNav from "@/components/header-bar";
 import Logo from "@/components/logo";
+import { useViewport } from "@/components/viewport-provider";
 import menu from "@/config/menu";
 import { Layout, Menu, Tabs, type TabsProps, theme } from "antd";
 import React from "react";
@@ -14,6 +15,8 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { width } = useViewport();
+  console.log(width);
   // 获取antd的背景色token值
   const {
     token: { colorBgContainer },

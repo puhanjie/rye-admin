@@ -3,8 +3,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const viewportContext = createContext({
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 0,
+  height: 0,
 });
 
 export default function ViewportProvider({
@@ -12,8 +12,8 @@ export default function ViewportProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [width, setWidth] = useState(window.innerWidth);
-  const [height, setHeight] = useState(window.innerHeight);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   const handleWindowResize = () => {
     setWidth(window.innerWidth);
@@ -21,6 +21,7 @@ export default function ViewportProvider({
   };
 
   useEffect(() => {
+    handleWindowResize();
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
@@ -32,7 +33,7 @@ export default function ViewportProvider({
   );
 }
 
-export function useViewPort() {
+export function useViewport() {
   const { width, height } = useContext(viewportContext);
   return { width, height };
 }
