@@ -1,14 +1,22 @@
 "use client";
 
 import FooterBar from "@/components/footer-bar";
-import HeaderNav from "@/components/header-bar";
+import HeaderBar from "@/components/header-bar";
 import Logo from "@/components/logo";
 import { useViewport } from "@/components/viewport-provider";
+import breakpoint from "@/config/breakpoint";
 import menu from "@/config/menu";
-import { Layout, Menu, Tabs, type TabsProps, theme } from "antd";
-import React from "react";
+import { Layout, Menu, Tabs, theme, Drawer } from "antd";
+import { createStyles } from "antd-style";
+import React, { useEffect, useState } from "react";
 
 const { Sider, Header, Content, Footer } = Layout;
+
+const useStyle = createStyles(() => ({
+  "drawer-body": {
+    padding: "0 !important",
+  },
+}));
 
 export default function MainLayout({
   children,
@@ -16,33 +24,66 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   const { width } = useViewport();
-  console.log(width);
+  const [collapsed, setCollapsed] = useState(width <= breakpoint.lg);
+  const { styles } = useStyle();
   // 获取antd的背景色token值
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const onClose = () => {
+    setCollapsed(!collapsed);
+  };
+
+  useEffect(() => {
+    setCollapsed(width <= breakpoint.lg ? true : false);
+  }, [width]);
+
   return (
     <Layout className="w-full h-full">
-      <Sider
+      <Drawer
         width={210}
-        theme="dark"
-        breakpoint="md"
-        trigger={null}
-        collapsible
-        // collapsed={false}
-        collapsedWidth={48}
-        className="h-full"
+        placement="left"
+        closeIcon={false}
+        open={!collapsed && width <= breakpoint.sm}
+        onClose={onClose}
+        classNames={{
+          body: styles["drawer-body"],
+        }}
       >
-        <Logo />
         <Menu
           theme="dark"
           mode="inline"
           items={menu}
           defaultOpenKeys={["system"]}
           selectedKeys={["user"]}
+          style={{
+            height: "100%",
+          }}
           // onClick={(event) => navigate(event.key)}
           // className={`${styles['menu']} scrollbar-dark`}
+        />
+      </Drawer>
+      <Sider
+        width={210}
+        theme="dark"
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        collapsedWidth={48}
+        className="h-full hidden sm:block"
+      >
+        <Logo collapsed={collapsed} />
+        <Menu
+          theme="dark"
+          mode="inline"
+          items={menu}
+          defaultOpenKeys={["system"]}
+          selectedKeys={["user"]}
+          style={{
+            height: "100%",
+          }}
+          // onClick={(event) => navigate(event.key)}
         />
       </Sider>
       <Layout className="h-full">
@@ -50,16 +91,22 @@ export default function MainLayout({
           style={{ backgroundColor: colorBgContainer }}
           className="!h-12 !px-4"
         >
-          <HeaderNav />
+          <HeaderBar collapsed={collapsed} setCollapsed={setCollapsed} />
         </Header>
         <Tabs
+          activeKey="card1"
           type="editable-card"
           hideAdd
           size="small"
           tabBarGutter={0}
+          tabPosition="top"
           items={[
             { key: "card1", label: "Card1" },
-            { key: "label2", label: "Card2" },
+            { key: "card2", label: "Card2" },
+            { key: "card3", label: "Card3" },
+            { key: "card4", label: "Card4" },
+            { key: "card5", label: "Card5" },
+            { key: "card6", label: "Card6" },
           ]}
         />
         <Content>{children}</Content>

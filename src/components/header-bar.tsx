@@ -8,12 +8,21 @@ import { Avatar, Breadcrumb, Dropdown, Space } from "antd";
 import React from "react";
 import LanguageSwich from "./language-swich";
 
-export default function HeaderBar() {
+export default function HeaderBar({
+  collapsed,
+  setCollapsed,
+}: {
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const Trigger = () => {
-    return React.createElement(0 ? MenuUnfoldOutlined : MenuFoldOutlined, {
-      className: "text-lg cursor-pointer mr-4",
-      onClick: () => 1,
-    });
+    return React.createElement(
+      collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+      {
+        className: "text-lg cursor-pointer mr-4",
+        onClick: () => setCollapsed(!collapsed),
+      }
+    );
   };
 
   const items = [
