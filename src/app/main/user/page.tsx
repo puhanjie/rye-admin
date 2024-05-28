@@ -1,3 +1,11 @@
+"use client";
+
+import TablePro from "@/components/table-pro";
+
 export default function Page() {
-  return <div>user</div>;
+  return (
+    <div className="h-full">
+      <TablePro />
+    </div>
+  );
 }

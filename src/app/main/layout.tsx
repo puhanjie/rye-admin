@@ -6,7 +6,7 @@ import Logo from "@/components/logo";
 import { useViewport } from "@/components/viewport-provider";
 import breakpoint from "@/config/breakpoint";
 import menu from "@/config/menu";
-import { Layout, Menu, Tabs, theme, Drawer } from "antd";
+import { Layout, Menu, Tabs, theme, Drawer, type TabsProps, Tag } from "antd";
 import { createStyles } from "antd-style";
 import React, { useEffect, useState } from "react";
 
@@ -36,7 +36,16 @@ export default function MainLayout({
   };
 
   useEffect(() => {
-    setCollapsed(width <= breakpoint.lg ? true : false);
+    if (width <= breakpoint.lg) {
+      if (!collapsed) {
+        setCollapsed(true);
+      }
+    } else {
+      if (collapsed) {
+        setCollapsed(false);
+      }
+    }
+    // setCollapsed(width <= breakpoint.lg ? true : false);
   }, [width]);
 
   return (
@@ -81,7 +90,7 @@ export default function MainLayout({
           defaultOpenKeys={["system"]}
           selectedKeys={["user"]}
           style={{
-            height: "100%",
+            flex: 1,
           }}
           // onClick={(event) => navigate(event.key)}
         />
@@ -94,7 +103,7 @@ export default function MainLayout({
           <HeaderBar collapsed={collapsed} setCollapsed={setCollapsed} />
         </Header>
         <Tabs
-          activeKey="card1"
+          activeKey="card2"
           type="editable-card"
           hideAdd
           size="small"
@@ -108,8 +117,10 @@ export default function MainLayout({
             { key: "card5", label: "Card5" },
             { key: "card6", label: "Card6" },
           ]}
+          tabBarStyle={{ height: 27, background: "white", margin: 0 }}
+          className="bg-white h-7 border-y border-solid border-slate-200 m-0"
         />
-        <Content>{children}</Content>
+        <Content className="px-3 pt-3">{children}</Content>
         <Footer className="!p-0">
           <FooterBar />
         </Footer>

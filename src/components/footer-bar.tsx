@@ -2,7 +2,7 @@ import { CopyrightOutlined } from "@ant-design/icons";
 
 export default function FooterBar() {
   return (
-    <div className="w-full h-8 flex flex-col justify-end items-center text-slate-400 text-sm">
+    <div className="w-full flex flex-col justify-end items-center text-slate-400 text-sm">
       <div>
         <span>
           <CopyrightOutlined />

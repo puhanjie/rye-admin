@@ -96,13 +96,9 @@ export default function LoginForm({
               },
             ]}
           >
-            <Compact style={{ width: "300px" }}>
-              <Input
-                placeholder="captcha"
-                prefix={<LockOutlined />}
-                style={{ width: "200px" }}
-              />
-              <Button style={{ width: "100px" }}>获取验证码</Button>
+            <Compact>
+              <Input placeholder="captcha" prefix={<LockOutlined />} />
+              <Button>获取验证码</Button>
             </Compact>
           </Item>
         </>
@@ -118,7 +114,7 @@ export default function LoginForm({
           <Form.Item name="remember" valuePropName="checked" noStyle>
             <Checkbox>记住密码</Checkbox>
           </Form.Item>
-          <a href="">忘记密码</a>
+          <a href="">忘记密码？</a>
         </div>
       </Item>
       <Item>

@@ -1,5 +1,3 @@
-"use client";
-
 import { Dropdown } from "antd";
 import Image from "next/image";
 
