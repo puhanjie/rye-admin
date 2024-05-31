@@ -6,7 +6,7 @@ import Logo from "@/components/logo";
 import { useViewport } from "@/components/viewport-provider";
 import breakpoint from "@/config/breakpoint";
 import menu from "@/config/menu";
-import { Layout, Menu, Tabs, theme, Drawer, type TabsProps, Tag } from "antd";
+import { Layout, Menu, Tabs, theme, Drawer } from "antd";
 import { createStyles } from "antd-style";
 import React, { useEffect, useState } from "react";
 
@@ -45,7 +45,6 @@ export default function MainLayout({
         setCollapsed(false);
       }
     }
-    // setCollapsed(width <= breakpoint.lg ? true : false);
   }, [width]);
 
   return (
@@ -59,6 +58,7 @@ export default function MainLayout({
         classNames={{
           body: styles["drawer-body"],
         }}
+        rootClassName="sm:hidden"
       >
         <Menu
           theme="dark"
