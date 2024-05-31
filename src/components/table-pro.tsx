@@ -93,7 +93,7 @@ export default function TablePro({
                     setExpand(!expand);
                   }}
                 >
-                  展开
+                  {expand ? "收缩" : "展开"}
                   <DownOutlined
                     rotate={expand ? 180 : 0}
                     style={{ marginLeft: 5 }}
