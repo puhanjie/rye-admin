@@ -3,12 +3,10 @@
 import FooterBar from "@/components/footer-bar";
 import HeaderBar from "@/components/header-bar";
 import Logo from "@/components/logo";
-import { useViewport } from "@/components/viewport-provider";
-import breakpoint from "@/config/breakpoint";
 import menu from "@/config/menu";
 import { Layout, Menu, Tabs, theme, Drawer } from "antd";
 import { createStyles } from "antd-style";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const { Sider, Header, Content, Footer } = Layout;
 
@@ -23,8 +21,8 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { width } = useViewport();
-  const [collapsed, setCollapsed] = useState(width <= breakpoint.lg);
+  const [collapsed, setCollapsed] = useState(false);
+  const [open, setOpen] = useState(false);
   const { styles } = useStyle();
   // 获取antd的背景色token值
   const {
@@ -32,20 +30,8 @@ export default function MainLayout({
   } = theme.useToken();
 
   const onClose = () => {
-    setCollapsed(!collapsed);
+    setOpen(false);
   };
-
-  useEffect(() => {
-    if (width <= breakpoint.lg) {
-      if (!collapsed) {
-        setCollapsed(true);
-      }
-    } else {
-      if (collapsed) {
-        setCollapsed(false);
-      }
-    }
-  }, [width]);
 
   return (
     <Layout className="w-full h-full">
@@ -53,7 +39,7 @@ export default function MainLayout({
         width={210}
         placement="left"
         closeIcon={false}
-        open={!collapsed && width <= breakpoint.sm}
+        open={open}
         onClose={onClose}
         classNames={{
           body: styles["drawer-body"],
@@ -77,9 +63,11 @@ export default function MainLayout({
         width={210}
         theme="dark"
         trigger={null}
+        breakpoint="lg"
         collapsible
         collapsed={collapsed}
         collapsedWidth={48}
+        onBreakpoint={(broken) => setCollapsed(broken)}
         className="h-full hidden sm:block"
       >
         <Logo collapsed={collapsed} />
@@ -100,7 +88,12 @@ export default function MainLayout({
           style={{ backgroundColor: colorBgContainer }}
           className="!h-12 !px-4"
         >
-          <HeaderBar collapsed={collapsed} setCollapsed={setCollapsed} />
+          <HeaderBar
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+            open={open}
+            setOpen={setOpen}
+          />
         </Header>
         <Tabs
           activeKey="card2"

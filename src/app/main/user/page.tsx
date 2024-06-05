@@ -1,13 +1,9 @@
 "use client";
 
 import TablePro from "@/components/table-pro";
-import { useViewport } from "@/components/viewport-provider";
-import breakpoint from "@/config/breakpoint";
 import { Button, Input, type FormItemProps } from "antd";
 
 export default function Page() {
-  const { width } = useViewport();
-
   const items: FormItemProps[] = [
     {
       label: "用户名",
@@ -31,14 +27,14 @@ export default function Page() {
     },
   ];
 
-  const actions: React.ReactNode[] = [<Button>新增</Button>];
+  const actions: React.ReactNode[] = [<Button type="primary">新增</Button>];
 
   return (
     <div className="h-full">
       <TablePro
         formProps={{
           name: "query",
-          layout: width <= breakpoint.sm ? "horizontal" : "inline",
+          layout: "horizontal",
           labelCol: { span: 6 },
           wrapperCol: { span: 18 },
         }}

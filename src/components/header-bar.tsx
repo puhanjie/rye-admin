@@ -11,18 +11,28 @@ import LanguageSwich from "./language-swich";
 export default function HeaderBar({
   collapsed,
   setCollapsed,
+  open,
+  setOpen,
 }: {
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const Trigger = () => {
     return React.createElement(
       collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
       {
-        className: "text-lg cursor-pointer mr-4",
+        className: "text-lg cursor-pointer mr-4 !hidden sm:!inline",
         onClick: () => setCollapsed(!collapsed),
       }
     );
+  };
+  const MbTrigger = () => {
+    return React.createElement(!open ? MenuUnfoldOutlined : MenuFoldOutlined, {
+      className: "text-lg cursor-pointer mr-4 sm:!hidden",
+      onClick: () => setOpen(!open),
+    });
   };
 
   const items = [
@@ -58,6 +68,7 @@ export default function HeaderBar({
     <div className="w-full h-full flex flex-row justify-between items-center">
       <div className="flex flex-row justify-between items-center">
         <Trigger />
+        <MbTrigger />
         <Breadcrumb
           className="hidden sm:inline-block"
           items={[{ title: "系统管理" }, { title: "用户管理" }]}

@@ -1,6 +1,5 @@
 import {
   DownOutlined,
-  PlusOutlined,
   ReloadOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
@@ -58,9 +57,7 @@ export default function TablePro({
             "!hidden xll:!block": i >= 3 && !expand,
           })}
         >
-          <Item key={i} {...items[i]}>
-            {items[i].children}
-          </Item>
+          <Item key={i} {...items[i]} className="!m-0" />
         </Col>
       );
     }
@@ -68,10 +65,10 @@ export default function TablePro({
   };
 
   return (
-    <div className={`h-full flex flex-col justify-start ${className}`}>
+    <div className={`h-full ${className}`}>
       <Card size="small" bordered={false} className="!mb-3">
         <Form {...formProps}>
-          <Row align="middle" className="w-full">
+          <Row align="top" className="w-full">
             <Col xs={24} sm={12} md={16} lg={16}>
               <Row>{renderItems(formItemProps)}</Row>
             </Col>

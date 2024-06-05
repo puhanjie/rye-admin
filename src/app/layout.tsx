@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
-import ViewportProvider from "@/components/viewport-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AntdRegistry>
-          <ConfigProvider>
-            <ViewportProvider>{children}</ViewportProvider>
-          </ConfigProvider>
+          <ConfigProvider>{children}</ConfigProvider>
         </AntdRegistry>
       </body>
     </html>
