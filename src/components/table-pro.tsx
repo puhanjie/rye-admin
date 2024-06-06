@@ -65,7 +65,7 @@ export default function TablePro({
   };
 
   return (
-    <div className={`h-full ${className}`}>
+    <div className={`h-full flex flex-col justify-center ${className}`}>
       <Card size="small" bordered={false} className="!mb-3">
         <Form {...formProps}>
           <Row align="top" className="w-full">

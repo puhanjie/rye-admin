@@ -3,9 +3,10 @@
 import FooterBar from "@/components/footer-bar";
 import HeaderBar from "@/components/header-bar";
 import Logo from "@/components/logo";
-import menu from "@/config/menu";
+import menu, { getMenu } from "@/config/menu";
 import { Layout, Menu, Tabs, theme, Drawer } from "antd";
 import { createStyles } from "antd-style";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const { Sider, Header, Content, Footer } = Layout;
@@ -24,6 +25,7 @@ export default function MainLayout({
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
   const { styles } = useStyle();
+  const router = useRouter();
   // 获取antd的背景色token值
   const {
     token: { colorBgContainer },
@@ -49,14 +51,13 @@ export default function MainLayout({
         <Menu
           theme="dark"
           mode="inline"
-          items={menu}
+          items={getMenu(menu)}
           defaultOpenKeys={["system"]}
           selectedKeys={["user"]}
           style={{
             height: "100%",
           }}
-          // onClick={(event) => navigate(event.key)}
-          // className={`${styles['menu']} scrollbar-dark`}
+          onClick={(event) => router.push(event.key)}
         />
       </Drawer>
       <Sider
@@ -74,13 +75,13 @@ export default function MainLayout({
         <Menu
           theme="dark"
           mode="inline"
-          items={menu}
+          items={getMenu(menu)}
           defaultOpenKeys={["system"]}
           selectedKeys={["user"]}
           style={{
             flex: 1,
           }}
-          // onClick={(event) => navigate(event.key)}
+          onClick={(event) => router.push(event.key)}
         />
       </Sider>
       <Layout className="h-full">
