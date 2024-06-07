@@ -9,11 +9,16 @@ export type Menu = {
   children?: Menu[];
 };
 
-type MenuItem = {
+export type MenuItem = {
   key: string;
   label?: string;
   icon?: React.ReactNode;
   children?: MenuItem[];
+};
+
+export type Tab = {
+  key: string;
+  label: string;
 };
 
 const menu: Menu[] = [
@@ -87,6 +92,30 @@ export const getMenu = (menu: Menu[]) => {
     menuItems.push(tmp);
   });
   return menuItems;
+};
+
+export const getTabByPath = (menu: Menu[] | undefined, path: string) => {
+  let tab: Tab = {
+    key: "",
+    label: "",
+  };
+
+  if (!menu) {
+    return tab;
+  }
+
+  for (var i = 0; i < menu.length; i++) {
+    if (menu[i].path === path) {
+      tab = { key: menu[i].path, label: menu[i].name };
+      break;
+    }
+    if (menu[i].children) {
+      tab = getTabByPath(menu[i].children, path);
+      break;
+    }
+  }
+
+  return tab;
 };
 
 export default menu;

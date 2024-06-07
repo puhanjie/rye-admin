@@ -3,10 +3,11 @@
 import FooterBar from "@/components/footer-bar";
 import HeaderBar from "@/components/header-bar";
 import Logo from "@/components/logo";
+import TabNav from "@/components/tab-nav";
 import menu, { getMenu } from "@/config/menu";
-import { Layout, Menu, Tabs, theme, Drawer } from "antd";
+import { Layout, Menu, theme, Drawer } from "antd";
 import { createStyles } from "antd-style";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const { Sider, Header, Content, Footer } = Layout;
@@ -26,6 +27,7 @@ export default function MainLayout({
   const [open, setOpen] = useState(false);
   const { styles } = useStyle();
   const router = useRouter();
+  const pathname = usePathname();
   // 获取antd的背景色token值
   const {
     token: { colorBgContainer },
@@ -77,7 +79,7 @@ export default function MainLayout({
           mode="inline"
           items={getMenu(menu)}
           defaultOpenKeys={["system"]}
-          selectedKeys={["user"]}
+          selectedKeys={[pathname]}
           style={{
             flex: 1,
           }}
@@ -96,24 +98,7 @@ export default function MainLayout({
             setOpen={setOpen}
           />
         </Header>
-        <Tabs
-          activeKey="card2"
-          type="editable-card"
-          hideAdd
-          size="small"
-          tabBarGutter={0}
-          tabPosition="top"
-          items={[
-            { key: "card1", label: "Card1" },
-            { key: "card2", label: "Card2" },
-            { key: "card3", label: "Card3" },
-            { key: "card4", label: "Card4" },
-            { key: "card5", label: "Card5" },
-            { key: "card6", label: "Card6" },
-          ]}
-          tabBarStyle={{ height: 27, background: "white", margin: 0 }}
-          className="bg-white h-7 border-y border-solid border-slate-200 m-0"
-        />
+        <TabNav />
         <Content className="px-3 pt-3">{children}</Content>
         <Footer className="!p-0">
           <FooterBar />
