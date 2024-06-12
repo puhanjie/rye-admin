@@ -7,6 +7,7 @@ import {
 import { Avatar, Breadcrumb, Dropdown, Space } from "antd";
 import React from "react";
 import LanguageSwich from "./language-swich";
+import { usePathname } from "next/navigation";
 
 export default function HeaderBar({
   collapsed,
@@ -19,6 +20,8 @@ export default function HeaderBar({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const pathname = usePathname();
+
   const Trigger = () => {
     return React.createElement(
       collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
@@ -64,6 +67,7 @@ export default function HeaderBar({
       console.log("loginout on click");
     }
   };
+
   return (
     <div className="w-full h-full flex flex-row justify-between items-center">
       <div className="flex flex-row justify-between items-center">
@@ -71,7 +75,7 @@ export default function HeaderBar({
         <MbTrigger />
         <Breadcrumb
           className="hidden sm:inline-block"
-          items={[{ title: "系统管理" }, { title: "用户管理" }]}
+          items={pathname.split("/").map((item) => ({ title: item }))}
         />
       </div>
       <Space align="center" size={0}>

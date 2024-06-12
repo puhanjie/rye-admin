@@ -20,7 +20,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AntdRegistry>
-          <ConfigProvider>{children}</ConfigProvider>
+          <ConfigProvider
+            theme={{
+              components: {
+                Tabs: {
+                },
+              },
+            }}
+          >
+            {children}
+          </ConfigProvider>
         </AntdRegistry>
       </body>
     </html>

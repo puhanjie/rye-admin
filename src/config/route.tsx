@@ -1,12 +1,12 @@
 import { AppstoreOutlined, UserOutlined } from "@ant-design/icons";
 
-export type Menu = {
+export type Route = {
   path: string;
   name: string;
   meta?: {
     icon?: React.ReactNode;
   };
-  children?: Menu[];
+  children?: Route[];
 };
 
 export type MenuItem = {
@@ -21,66 +21,66 @@ export type Tab = {
   label: string;
 };
 
-const menu: Menu[] = [
+const route: Route[] = [
   {
-    path: "system",
+    path: "/system",
     name: "系统管理",
     meta: {
       icon: <AppstoreOutlined />,
     },
     children: [
       {
-        path: "/user",
+        path: "/system/user",
         name: "用户管理",
       },
       {
-        path: "/post",
+        path: "/system/post",
         name: "岗位管理",
       },
       {
-        path: "/department",
+        path: "/system/department",
         name: "部门管理",
       },
       {
-        path: "/role",
+        path: "/system/role",
         name: "角色管理",
       },
       {
-        path: "/permission",
+        path: "/system/permission",
         name: "权限管理",
       },
       {
-        path: "/dictionary",
+        path: "/system/dictionary",
         name: "字典管理",
       },
       {
-        path: "/file",
+        path: "/system/file",
         name: "文件管理",
       },
       {
-        path: "/log",
+        path: "/system/log",
         name: "日志管理",
       },
     ],
   },
   {
-    path: "account",
+    path: "/account",
     name: "个人中心",
     meta: {
       icon: <UserOutlined />,
     },
     children: [
       {
-        path: "/settings",
+        path: "/account/settings",
         name: "个人设置",
       },
     ],
   },
 ];
 
-export const getMenu = (menu: Menu[]) => {
+export const getMenu = (route: Route[]) => {
   const menuItems: MenuItem[] = [];
-  menu.map((item) => {
+  route.map((item) => {
     const tmp: MenuItem = {
       key: item.path,
       label: item.name,
@@ -94,23 +94,23 @@ export const getMenu = (menu: Menu[]) => {
   return menuItems;
 };
 
-export const getTabByPath = (menu: Menu[] | undefined, path: string) => {
+export const getTabByPath = (route: Route[] | undefined, path: string) => {
   let tab: Tab = {
     key: "",
     label: "",
   };
 
-  if (!menu) {
+  if (!route) {
     return tab;
   }
 
-  for (var i = 0; i < menu.length; i++) {
-    if (menu[i].path === path) {
-      tab = { key: menu[i].path, label: menu[i].name };
+  for (var i = 0; i < route.length; i++) {
+    if (route[i].path === path) {
+      tab = { key: route[i].path, label: route[i].name };
       break;
     }
-    if (menu[i].children) {
-      tab = getTabByPath(menu[i].children, path);
+    if (route[i].children) {
+      tab = getTabByPath(route[i].children, path);
       break;
     }
   }
@@ -118,4 +118,4 @@ export const getTabByPath = (menu: Menu[] | undefined, path: string) => {
   return tab;
 };
 
-export default menu;
+export default route;

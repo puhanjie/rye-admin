@@ -4,7 +4,7 @@ import FooterBar from "@/components/footer-bar";
 import HeaderBar from "@/components/header-bar";
 import Logo from "@/components/logo";
 import TabNav from "@/components/tab-nav";
-import menu, { getMenu } from "@/config/menu";
+import route, { getMenu } from "@/config/route";
 import { Layout, Menu, theme, Drawer } from "antd";
 import { createStyles } from "antd-style";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ const { Sider, Header, Content, Footer } = Layout;
 const useStyle = createStyles(() => ({
   "drawer-body": {
     padding: "0 !important",
+    background: "#001529",
   },
 }));
 
@@ -50,14 +51,15 @@ export default function MainLayout({
         }}
         rootClassName="sm:hidden"
       >
+        <Logo collapsed={false} />
         <Menu
           theme="dark"
           mode="inline"
-          items={getMenu(menu)}
-          defaultOpenKeys={["system"]}
-          selectedKeys={["user"]}
+          items={getMenu(route)}
+          defaultOpenKeys={["/system"]}
+          selectedKeys={[pathname]}
           style={{
-            height: "100%",
+            flex: 1,
           }}
           onClick={(event) => router.push(event.key)}
         />
@@ -77,8 +79,8 @@ export default function MainLayout({
         <Menu
           theme="dark"
           mode="inline"
-          items={getMenu(menu)}
-          defaultOpenKeys={["system"]}
+          items={getMenu(route)}
+          defaultOpenKeys={["/system"]}
           selectedKeys={[pathname]}
           style={{
             flex: 1,

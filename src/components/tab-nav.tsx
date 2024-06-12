@@ -1,11 +1,14 @@
-import menu, { Tab, getTabByPath } from "@/config/menu";
+import route, { Tab, getTabByPath } from "@/config/route";
 import { Tabs } from "antd";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
 export default function TabNav() {
   const pathname = usePathname();
   const [tabs, setTabs] = useState<Tab[]>([]);
+  const router = useRouter();
 
   const addTab = (tab: Tab) => {
     const tabArr = tabs.filter((item) => item.key === tab.key);
@@ -14,8 +17,19 @@ export default function TabNav() {
     }
   };
 
+  const onEdit = (targetKey: TargetKey, action: "add" | "remove") => {
+    if (action === "remove") {
+      const targetIndex = tabs.findIndex((item) => item.key === targetKey);
+      const newPanes = tabs.filter((item) => item.key !== targetKey);
+      const newTarget =
+        tabs[targetIndex === 0 ? targetIndex + 1 : targetIndex - 1];
+      setTabs(newPanes);
+      router.push(newTarget.key);
+    }
+  };
+
   useEffect(() => {
-    const tab = getTabByPath(menu, pathname);
+    const tab = getTabByPath(route, pathname);
     if (tab.key !== "") {
       addTab(tab);
     }
@@ -30,7 +44,9 @@ export default function TabNav() {
       tabBarGutter={0}
       tabPosition="top"
       items={tabs}
-      tabBarStyle={{ height: 27, background: "white", margin: 0 }}
+      onTabClick={(key) => router.push(key)}
+      onEdit={onEdit}
+      tabBarStyle={{ height: 28, background: "white", margin: 0 }}
       className="bg-white h-7 border-y border-solid border-slate-200 m-0"
     />
   );
