@@ -20,7 +20,7 @@ export default function Account() {
   ];
 
   return (
-    <div className="h-full bg-white p-[15px] rounded-[6px] flex">
+    <div className="min-h-full bg-white p-[15px] rounded-[6px] flex">
       <Tabs items={tabs} tabPosition="left" className="flex-auto" />
     </div>
   );
