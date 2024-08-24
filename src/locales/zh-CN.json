@@ -1,0 +1,760 @@
+{
+  "app": {
+    "abbreviation": "Rye",
+    "name": "Rye Admin",
+    "description": "Rye Admin 是后台系统最具影响力的 Web 设计规范",
+    "footer": "Rye集团体验技术部出品",
+    "tableFooter": "{{start}} - {{end}} 条 / 共 {{total}} 条",
+
+    "layout": {
+      "dropdown": {
+        "settings": "个人设置",
+        "signOut": "退出"
+      },
+      "menu": {
+        "login": "登陆",
+        "system": "系统管理",
+        "user": "用户管理",
+        "post": "岗位管理",
+        "department": "部门管理",
+        "role": "角色管理",
+        "permission": "权限管理",
+        "dictionary": "字典管理",
+        "file": "文件管理",
+        "log": "日志管理",
+        "account": "个人中心",
+        "settings": "个人设置"
+      }
+    },
+
+    "loginPage": {
+      "accountLogin": {
+        "title": "账号密码登录",
+        "username": {
+          "placeholder": "用户名: admin or guest",
+          "required": "请输入用户名"
+        },
+        "password": {
+          "placeholder": "密码: admin or guest",
+          "required": "请输入密码"
+        }
+      },
+      "phoneLogin": {
+        "title": "手机号登录",
+        "phone": {
+          "placeholder": "请输入手机号",
+          "required": "手机号不能为空"
+        },
+        "captcha": {
+          "placeholder": "请输入验证码",
+          "required": "验证码不能为空"
+        },
+        "captchaButton": "获取验证码"
+      },
+      "rememberMe": "记住密码",
+      "forgotPassword": "忘记密码 ?",
+      "loginButton": "登录"
+    },
+
+    "userPage": {
+      "query": {
+        "username": {
+          "title": "用户名",
+          "placeholder": "请输入用户名"
+        },
+        "name": {
+          "title": "姓名",
+          "placeholder": "请输入姓名"
+        },
+        "phone": {
+          "title": "手机",
+          "placeholder": "请输入手机号"
+        },
+        "email": {
+          "title": "邮箱",
+          "placeholder": "请输入邮箱"
+        },
+        "action": {
+          "query": "查询",
+          "reset": "重置",
+          "expand": "展开",
+          "collapsed": "收缩"
+        }
+      },
+      "action": {
+        "add": "新增",
+        "edit": "编辑",
+        "view": "查看",
+        "reset": "重置密码",
+        "delete": "删除",
+        "modal": {
+          "add": {
+            "title": "新增用户",
+            "placeholder": "请选择",
+            "item": {
+              "department": "部门",
+              "username": "用户名",
+              "name": "姓名",
+              "sex": "性别",
+              "userStatus": "用户状态",
+              "post": "岗位",
+              "role": "角色",
+              "password": "密码",
+              "phone": "手机",
+              "email": "邮箱"
+            },
+            "tip": {
+              "success": "新增用户成功",
+              "fali": "新增用户失败"
+            }
+          },
+          "edit": {
+            "title": "编辑用户",
+            "placeholder": "请选择",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "department": "部门",
+              "username": "用户名",
+              "name": "姓名",
+              "sex": "性别",
+              "userStatus": "用户状态",
+              "post": "岗位",
+              "role": "角色",
+              "phone": "手机",
+              "email": "邮箱"
+            },
+            "tip": {
+              "success": "修改用户成功",
+              "fali": "修改用户失败"
+            }
+          },
+          "view": {
+            "title": "查看用户",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "department": "部门",
+              "username": "用户名",
+              "name": "姓名",
+              "sex": "性别",
+              "userStatus": "用户状态",
+              "post": "岗位",
+              "role": "角色",
+              "phone": "手机",
+              "email": "邮箱"
+            }
+          },
+          "reset": {
+            "title": "重置密码",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "newPassword": "新密码"
+            },
+            "tip": {
+              "success": "密码重置成功",
+              "fali": "密码重置失败"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除选中记录?",
+              "success": "删除用户成功",
+              "fali": "删除用户失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "department": "部门",
+        "username": "用户名",
+        "name": "姓名",
+        "sex": "性别",
+        "userStatus": "用户状态",
+        "post": "岗位",
+        "role": "角色",
+        "phone": "手机",
+        "email": "邮箱",
+        "createUser": "创建者",
+        "updateUser": "更新者",
+        "createTime": "创建时间",
+        "updateTime": "更新时间"
+      }
+    },
+
+    "postPage": {
+      "query": {
+        "code": {
+          "title": "岗位编码",
+          "placeholder": "请输入岗位编码"
+        },
+        "name": {
+          "title": "岗位名称",
+          "placeholder": "请输入岗位名称"
+        }
+      },
+      "action": {
+        "add": "新增",
+        "edit": "编辑",
+        "view": "查看",
+        "delete": "删除",
+        "modal": {
+          "add": {
+            "title": "新增岗位",
+            "placeholder": "请选择",
+            "item": {
+              "code": "岗位编码",
+              "name": "岗位名称",
+              "postStatus": "岗位状态",
+              "role": "角色",
+              "remark": "备注"
+            },
+            "tip": {
+              "success": "新增岗位成功",
+              "fali": "新增岗位失败"
+            }
+          },
+          "edit": {
+            "title": "编辑岗位",
+            "placeholder": "请选择",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "code": "岗位编码",
+              "name": "岗位名称",
+              "postStatus": "岗位状态",
+              "role": "角色",
+              "remark": "备注"
+            },
+            "tip": {
+              "success": "修改岗位成功",
+              "fali": "修改岗位失败"
+            }
+          },
+          "view": {
+            "title": "查看岗位",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "code": "岗位编码",
+              "name": "岗位名称",
+              "postStatus": "岗位状态",
+              "role": "角色",
+              "remark": "备注"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除选中记录?",
+              "success": "删除岗位成功",
+              "fali": "删除岗位失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "code": "岗位编码",
+        "name": "岗位名称",
+        "postStatus": "岗位状态",
+        "role": "角色",
+        "remark": "备注",
+        "createUser": "创建者",
+        "updateUser": "更新者",
+        "createTime": "创建时间",
+        "updateTime": "更新时间"
+      }
+    },
+
+    "departmentPage": {
+      "query": {
+        "code": {
+          "title": "部门编码",
+          "placeholder": "请输入部门编码"
+        },
+        "name": {
+          "title": "部门名称",
+          "placeholder": "请输入部门名称"
+        }
+      },
+      "action": {
+        "add": "新增",
+        "edit": "编辑",
+        "view": "查看",
+        "delete": "删除",
+        "modal": {
+          "add": {
+            "title": "新增部门",
+            "placeholder": "请选择",
+            "item": {
+              "parentDept": "上级部门",
+              "code": "部门编码",
+              "name": "部门名称",
+              "leader": "负责人",
+              "deptStatus": "部门状态",
+              "role": "角色"
+            },
+            "tip": {
+              "success": "新增部门成功",
+              "fali": "新增部门失败"
+            }
+          },
+          "edit": {
+            "title": "编辑部门",
+            "placeholder": "请选择",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "parentDept": "上级部门",
+              "code": "部门编码",
+              "name": "部门名称",
+              "leader": "负责人",
+              "deptStatus": "部门状态",
+              "role": "角色"
+            },
+            "tip": {
+              "success": "修改部门成功",
+              "fali": "修改部门失败"
+            }
+          },
+          "view": {
+            "title": "查看部门",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "parentDept": "上级部门",
+              "code": "部门编码",
+              "name": "部门名称",
+              "leader": "负责人",
+              "deptStatus": "部门状态",
+              "role": "角色"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除选中记录?",
+              "success": "删除部门成功",
+              "fali": "删除部门失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "parentDept": "上级部门",
+        "code": "部门编码",
+        "name": "部门名称",
+        "leader": "负责人",
+        "deptStatus": "部门状态",
+        "role": "角色",
+        "createUser": "创建者",
+        "updateUser": "更新者",
+        "createTime": "创建时间",
+        "updateTime": "更新时间"
+      }
+    },
+
+    "rolePage": {
+      "query": {
+        "code": {
+          "title": "角色编码",
+          "placeholder": "请输入角色编码"
+        },
+        "name": {
+          "title": "角色名称",
+          "placeholder": "请输入角色名称"
+        }
+      },
+      "action": {
+        "add": "新增",
+        "edit": "编辑",
+        "view": "查看",
+        "delete": "删除",
+        "modal": {
+          "add": {
+            "title": "新增角色",
+            "placeholder": "请选择",
+            "item": {
+              "code": "角色编码",
+              "name": "角色名称",
+              "roleStatus": "角色状态",
+              "permission": "角色权限"
+            },
+            "tip": {
+              "success": "新增角色成功",
+              "fali": "新增角色失败"
+            }
+          },
+          "edit": {
+            "title": "编辑角色",
+            "placeholder": "请选择",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "code": "角色编码",
+              "name": "角色名称",
+              "roleStatus": "角色状态",
+              "permission": "角色权限"
+            },
+            "tip": {
+              "success": "修改角色成功",
+              "fali": "修改角色失败"
+            }
+          },
+          "view": {
+            "title": "查看角色",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "code": "角色编码",
+              "name": "角色名称",
+              "roleStatus": "角色状态",
+              "permission": "角色权限"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除选中记录?",
+              "success": "删除角色成功",
+              "fali": "删除角色失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "code": "角色编码",
+        "name": "角色名称",
+        "roleStatus": "角色状态",
+        "permission": "角色权限",
+        "createUser": "创建者",
+        "updateUser": "更新者",
+        "createTime": "创建时间",
+        "updateTime": "更新时间"
+      }
+    },
+
+    "permissionPage": {
+      "query": {
+        "code": {
+          "title": "权限编码",
+          "placeholder": "请输入权限编码"
+        },
+        "name": {
+          "title": "权限名称",
+          "placeholder": "请输入权限名称"
+        },
+        "menu": {
+          "title": "菜单",
+          "placeholder": "请选择菜单"
+        }
+      },
+      "action": {
+        "add": "新增",
+        "edit": "编辑",
+        "view": "查看",
+        "delete": "删除",
+        "modal": {
+          "add": {
+            "title": "新增权限",
+            "placeholder": "请选择",
+            "item": {
+              "code": "权限编码",
+              "name": "权限名称",
+              "permissionStatus": "权限状态",
+              "menu": "菜单"
+            },
+            "tip": {
+              "success": "新增权限成功",
+              "fali": "新增权限失败"
+            }
+          },
+          "edit": {
+            "title": "编辑权限",
+            "placeholder": "请选择",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "code": "权限编码",
+              "name": "权限名称",
+              "permissionStatus": "权限状态",
+              "menu": "菜单"
+            },
+            "tip": {
+              "success": "修改权限成功",
+              "fali": "修改权限失败"
+            }
+          },
+          "view": {
+            "title": "查看权限",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "code": "权限编码",
+              "name": "权限名称",
+              "permissionStatus": "权限状态",
+              "menu": "菜单"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除选中记录?",
+              "success": "删除权限成功",
+              "fali": "删除权限失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "code": "权限编码",
+        "name": "权限名称",
+        "permissionStatus": "权限状态",
+        "menu": "菜单",
+        "createUser": "创建者",
+        "updateUser": "更新者",
+        "createTime": "创建时间",
+        "updateTime": "更新时间"
+      }
+    },
+
+    "dictionaryPage": {
+      "query": {
+        "dictType": {
+          "title": "字典类型",
+          "placeholder": "请输入字典类型"
+        },
+        "dictLabel": {
+          "title": "字典标签",
+          "placeholder": "请输入字典标签"
+        }
+      },
+      "action": {
+        "add": "新增",
+        "edit": "编辑",
+        "view": "查看",
+        "delete": "删除",
+        "modal": {
+          "add": {
+            "title": "新增字典",
+            "placeholder": "请选择",
+            "item": {
+              "dictType": "字典类型",
+              "dictName": "字典名称",
+              "dictValue": "字典键值",
+              "dictLabel": "字典标签",
+              "description": "描述"
+            },
+            "tip": {
+              "success": "新增字典成功",
+              "fali": "新增字典失败"
+            }
+          },
+          "edit": {
+            "title": "编辑字典",
+            "placeholder": "请选择",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "dictType": "字典类型",
+              "dictName": "字典名称",
+              "dictValue": "字典键值",
+              "dictLabel": "字典标签",
+              "description": "描述"
+            },
+            "tip": {
+              "success": "修改字典成功",
+              "fali": "修改字典失败"
+            }
+          },
+          "view": {
+            "title": "查看权限",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "dictType": "字典类型",
+              "dictName": "字典名称",
+              "dictValue": "字典键值",
+              "dictLabel": "字典标签",
+              "description": "描述"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除选中记录?",
+              "success": "删除字典成功",
+              "fali": "删除字典失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "dictType": "字典类型",
+        "dictName": "字典名称",
+        "dictValue": "字典键值",
+        "dictLabel": "字典标签",
+        "description": "描述",
+        "createUser": "创建者",
+        "updateUser": "更新者",
+        "createTime": "创建时间",
+        "updateTime": "更新时间"
+      }
+    },
+
+    "filePage": {
+      "query": {
+        "name": {
+          "title": "文件名",
+          "placeholder": "请输入文件名"
+        },
+        "uploadUser": {
+          "title": "上传者",
+          "placeholder": "请输入上传者"
+        }
+      },
+      "action": {
+        "upload": "上传",
+        "view": "查看",
+        "download": "下载",
+        "delete": "删除",
+        "modal": {
+          "upload": {
+            "title": "文件上传",
+            "text": "单击或拖动文件到此区域进行上传",
+            "hint": "支持单次或批量上传, 总大小不得超过50MB",
+            "tip": {
+              "success": "上传文件成功",
+              "fali": "上传文件失败"
+            }
+          },
+          "view": {
+            "title": "查看文件",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "path": "文件路径",
+              "name": "文件名",
+              "fileSize": "文件大小(Byte)",
+              "uuid": "UUID"
+            }
+          },
+          "download": {
+            "tip": {
+              "success": "下载文件成功"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除当前记录?",
+              "success": "删除文件成功",
+              "fali": "删除文件失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "path": "文件路径",
+        "name": "文件名",
+        "fileSize": "文件大小(Byte)",
+        "uuid": "UUID",
+        "uploadUser": "上传者",
+        "uploadTime": "上传时间",
+        "action": "操作"
+      }
+    },
+
+    "logPage": {
+      "query": {
+        "message": {
+          "title": "响应消息",
+          "placeholder": "请输入相应消息"
+        },
+        "operateUser": {
+          "title": "操作人",
+          "placeholder": "请输入操作人"
+        }
+      },
+      "action": {
+        "view": "查看",
+        "delete": "删除",
+        "empty": "清空",
+        "modal": {
+          "view": {
+            "title": "查看日志",
+            "selectOne": "请选择一条记录",
+            "item": {
+              "url": "URL",
+              "code": "响应码",
+              "message": "响应消息",
+              "operateUser": "操作人",
+              "operateTime": "操作时间"
+            }
+          },
+          "delete": {
+            "title": "删除提醒",
+            "select": "请选中需要删除的记录",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否删除当前记录?",
+              "success": "删除文件成功",
+              "fali": "删除文件失败"
+            }
+          },
+          "empty": {
+            "title": "清空提醒",
+            "ok": "是",
+            "cancel": "否",
+            "tip": {
+              "description": "是否清空所有记录?",
+              "success": "清空日志成功",
+              "fali": "清空日志失败"
+            }
+          }
+        }
+      },
+      "table": {
+        "url": "URL",
+        "code": "响应码",
+        "message": "响应消息",
+        "operateUser": "操作人",
+        "operateTime": "操作时间"
+      }
+    },
+
+    "settingsPage": {
+      "info": {
+        "title": "基本信息",
+        "name": "姓名",
+        "sex": "性别",
+        "phone": "手机",
+        "email": "邮箱",
+        "changeAvator": "更换头像",
+        "submit": "提交",
+        "success": "更新成功",
+        "fail": "更新失败"
+      },
+      "password": {
+        "title": "修改密码",
+        "currentPassword": "当前密码",
+        "newPassword": "新密码",
+        "confirmPassword": "确认密码",
+        "submit": "提交",
+        "inconformity": "两次输入密码不一致",
+        "success": "密码修改成功",
+        "fail": "密码修改失败"
+      }
+    }
+  }
+}
