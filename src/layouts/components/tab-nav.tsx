@@ -49,6 +49,9 @@ export default function TabNav() {
   const onEdit = (targetKey: TargetKey, action: "add" | "remove") => {
     if (action === "add") {
       const tab = getTabByPath(authRoute, pathname);
+      if (tab.key === "") {
+        return;
+      }
       const hasTab = tabs.filter((item) => item.key === tab.key).length > 0;
       const newTabs = hasTab ? tabs : [...tabs, tab];
       const langTabs = newTabs.map((item) => ({

@@ -15,18 +15,23 @@ export default function HeaderBar() {
   const { t } = useTranslation();
   const { headerHeight } = useAppSelector((state) => state.app);
   const dispatch = useDispatch();
-  const { name, avatar } = useAppSelector((state) => state.user);
+  const { name, avatar, permissions } = useAppSelector((state) => state.user);
 
   // 获取antd的背景色token值
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const settingsPermission = permissions?.filter(
+    (item) => item.code === "settings:view"
+  );
+
   const items = [
     {
       key: "settings",
       icon: <SettingOutlined />,
       label: t("app.layout.dropdown.settings"),
+      disabled: !(settingsPermission && settingsPermission.length > 0),
     },
     {
       // 分割线
@@ -85,7 +90,12 @@ export default function HeaderBar() {
         <Space align="center" size={0}>
           <Dropdown menu={{ items, onClick }}>
             <span className="h-12 leading-[48px] px-2 flex flex-row justify-between items-center cursor-pointer hover:bg-slate-200">
-              <Avatar src={avatar} size={28} alt="avatar" className="mx-1" />
+              <Avatar
+                src={avatar}
+                size={{ sm: 14, md: 14, lg: 28, xl: 28, xxl: 28 }}
+                alt="avatar"
+                className="mx-1"
+              />
               <span>{name}</span>
             </span>
           </Dropdown>
