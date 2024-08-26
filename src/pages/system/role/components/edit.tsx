@@ -23,6 +23,8 @@ export default function Edit({
   const [messageApi, contextHolder] = message.useMessage();
   const { authRoute } = useRouter();
 
+  const menuRoute = authRoute.filter((item) => item.path === "/")[0].children;
+
   const getInitData = () => {
     const { id, code, name, roleStatus, permissions } = data[0];
     return {
@@ -138,7 +140,7 @@ export default function Edit({
             <TreeSelect
               allowClear
               treeData={getPermissionTreeData(
-                authRoute,
+                menuRoute,
                 optionsData?.permissions
               )}
               maxTagCount={3}

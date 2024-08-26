@@ -1,7 +1,8 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { roleStatusTagColor } from "@/config/statusTag";
-import { useRouter } from "@/hooks/useRouter";
+import route, { type Route } from "@/router";
 import { getPermissionTreeData } from "@/utils/options";
+import { getAuthRoute } from "@/utils/route";
 import { EyeOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -25,7 +26,17 @@ export default function View({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const { authRoute } = useRouter();
+
+  const getMenuRoute = (route: Route[], permissions?: API.Permission[]) => {
+    if (!permissions) {
+      return;
+    }
+    const authRoute = getAuthRoute(
+      route,
+      permissions.map((item) => item.code)
+    );
+    return authRoute.filter((item) => item.path === "/")[0].children;
+  };
 
   const items: DescriptionsProps["items"] =
     data.length === 1
@@ -66,7 +77,7 @@ export default function View({
                   item.id.toString()
                 )}
                 treeData={getPermissionTreeData(
-                  authRoute,
+                  getMenuRoute(route, data[0].permissions),
                   optionsData?.permissions
                 )}
                 rootClassName="overflow-auto"

@@ -24,7 +24,7 @@ const route: Route[] = [
   },
   {
     path: "/",
-    name: "layouts",
+    name: "layout",
     component: lazy(() => import("@/layout")),
     children: [
       {

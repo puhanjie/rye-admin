@@ -1,6 +1,5 @@
 import TablePro from "@/components/table-pro";
 import { permissionStatusTagColor } from "@/config/statusTag";
-import { useRouter } from "@/hooks/useRouter";
 import { getPermissionList, getPermissionOptions } from "@/services/permission";
 import { getMenuTree } from "@/utils/options";
 import { Input, Table, Tag, TreeSelect, type FormItemProps } from "antd";
@@ -11,6 +10,7 @@ import Add from "./components/add";
 import Edit from "./components/edit";
 import View from "./components/view";
 import Delete from "./components/delete";
+import route from "@/router";
 
 export default function Permission() {
   const { t } = useTranslation();
@@ -19,7 +19,6 @@ export default function Permission() {
   const [optionsData, setOptionsData] = useState<API.PermissionOptions>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
-  const { authRoute } = useRouter();
 
   const queryItems: FormItemProps[] = [
     {
@@ -41,7 +40,9 @@ export default function Permission() {
       name: "menu",
       children: (
         <TreeSelect
-          treeData={getMenuTree(authRoute)}
+          treeData={getMenuTree(
+            route.filter((item) => item.path === "/")[0].children
+          )}
           allowClear
           showCheckedStrategy="SHOW_CHILD"
           placeholder={t("app.permissionPage.query.menu.placeholder")}
