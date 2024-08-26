@@ -67,7 +67,7 @@ export default function TablePro({
   };
 
   return (
-    <div className={`${className}`}>
+    <div className={`h-full flex flex-col justify-start ${className}`}>
       <Card size="small" bordered={false} className="!mb-3">
         <Form {...formProps}>
           <Row align="top" className="w-full">
@@ -109,7 +109,7 @@ export default function TablePro({
           </Row>
         </Form>
       </Card>
-      <Card size="small" bordered={false}>
+      <Card size="small" bordered={false} className="flex-1">
         {actions && (
           <Space wrap className="mb-3">
             {...actions.map((item, index) => <div key={index}>{item}</div>)}
