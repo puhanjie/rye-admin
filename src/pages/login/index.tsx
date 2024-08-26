@@ -34,7 +34,7 @@ export default function Login() {
   );
 
   return (
-    <div className="w-full h-full flex flex-col justify-between items-center bg-slate-100 bg-[url('/src/assets/login-background.svg')] bg-no-repeat bg-center bg-100%">
+    <div className="w-full h-full flex flex-col justify-between items-center bg-slate-100 bg-[url('/src/assets/login-background.svg')] bg-no-repeat bg-center bg-contain">
       <div className="w-full h-12 px-4 flex flex-row justify-end items-center">
         <LanguageSwich className="w-10 h-full" />
       </div>

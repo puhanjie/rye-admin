@@ -10,9 +10,6 @@ export default {
         xl: "1200px",
         xxl: "1600px",
       },
-      backgroundSize: {
-        "100%": "100%",
-      },
     },
   },
   plugins: [],
