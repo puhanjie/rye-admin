@@ -1,4 +1,4 @@
-import { MenuItem } from "@/layouts/components/sider-bar";
+import { MenuItem } from "@/layout/components/sider-bar";
 import { Route } from "@/router";
 import { resolve } from "./path";
 import { t } from "i18next";

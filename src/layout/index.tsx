@@ -3,7 +3,7 @@ import { getInfo } from "@/services/user";
 import { useAppSelector } from "@/store";
 import { setUserInfo } from "@/store/modules/user";
 import { getToken } from "@/utils/auth";
-import { Layout } from "antd";
+import { Layout as AntLayout } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useLocation } from "react-router-dom";
@@ -11,7 +11,7 @@ import SiderBar from "./components/sider-bar";
 import HeaderBar from "./components/header-bar";
 import Footer from "@/components/footer";
 
-export default function Layouts() {
+export default function Layout() {
   const { pathname } = useLocation();
   const { permissions } = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -33,15 +33,15 @@ export default function Layouts() {
   return loading ? (
     <Loading />
   ) : (
-    <Layout className="w-full h-full !flex !flex-row !justify-between">
+    <AntLayout className="w-full h-full !flex !flex-row !justify-between">
       <SiderBar />
-      <Layout className="h-full">
+      <AntLayout className="h-full">
         <HeaderBar />
-        <Layout.Content className="w-full h-full px-3 pt-3 overflow-auto">
+        <AntLayout.Content className="w-full h-full px-3 pt-3 overflow-auto">
           <Outlet />
-        </Layout.Content>
+        </AntLayout.Content>
         <Footer />
-      </Layout>
-    </Layout>
+      </AntLayout>
+    </AntLayout>
   );
 }

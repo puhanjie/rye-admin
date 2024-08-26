@@ -53,7 +53,7 @@ export default function TablePro({
           lg={12}
           xl={8}
           key={i}
-          className={clsx("my-1", {
+          className={clsx("my-1 px-1", {
             "!hidden md:!block": i === 1 && !expand,
             "!hidden xl:!block": i === 2 && !expand,
             "!hidden xll:!block": i >= 3 && !expand,
