@@ -6,7 +6,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <Layout.Footer className="w-full !p-0 flex flex-col justify-end items-center">
+    <Layout.Footer className="w-full !p-0 flex flex-col justify-end items-center bg-transparent">
       <div className="text-slate-400 text-sm">
         <span>
           <CopyrightOutlined />
