@@ -1,7 +1,7 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { editDictionary } from "@/services/dictionary";
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal } from "antd";
+import { App, Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -16,11 +16,11 @@ export default function Edit({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleEdit = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.dictionaryPage.action.modal.edit.selectOne"));
+      message.warning(t("app.dictionaryPage.action.modal.edit.selectOne"));
       return;
     }
     form.setFieldsValue(data[0]);
@@ -32,9 +32,9 @@ export default function Edit({
     setLoading(true);
     const editResult = await editDictionary(dictionary);
     if (!editResult.data) {
-      messageApi.error(t("app.dictionaryPage.action.modal.edit.tip.fail"));
+      message.error(t("app.dictionaryPage.action.modal.edit.tip.fail"));
     } else {
-      messageApi.success(t("app.dictionaryPage.action.modal.edit.tip.success"));
+      message.success(t("app.dictionaryPage.action.modal.edit.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -49,7 +49,6 @@ export default function Edit({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="dictionary:edit">
         <Button icon={<EditOutlined />} onClick={handleEdit}>
           {t("app.dictionaryPage.action.edit")}

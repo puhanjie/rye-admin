@@ -1,5 +1,5 @@
 import { updatePassword } from "@/services/user";
-import { Button, Form, Input, message, Modal } from "antd";
+import { App, Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import AuthWrapper from "@/components/auth-wrapper";
 import { ReloadOutlined } from "@ant-design/icons";
@@ -22,11 +22,11 @@ export default function ResetPassword({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleReset = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.userPage.action.modal.reset.selectOne"));
+      message.warning(t("app.userPage.action.modal.reset.selectOne"));
       return;
     }
     form.setFieldsValue({
@@ -43,9 +43,9 @@ export default function ResetPassword({
       newPassword: formData.newPassword && MD5(formData.newPassword).toString(),
     });
     if (res.data && res.data <= 0) {
-      messageApi.error(t("app.userPage.action.modal.reset.tip.fail"));
+      message.error(t("app.userPage.action.modal.reset.tip.fail"));
     } else {
-      messageApi.success(t("app.userPage.action.modal.reset.tip.success"));
+      message.success(t("app.userPage.action.modal.reset.tip.success"));
     }
     setLoading(false);
     setOpen(false);
@@ -60,7 +60,6 @@ export default function ResetPassword({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="user:resetPassword">
         <Button icon={<ReloadOutlined />} onClick={handleReset}>
           {t("app.userPage.action.reset")}

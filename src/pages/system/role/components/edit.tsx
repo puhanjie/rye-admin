@@ -3,7 +3,7 @@ import { useRouter } from "@/hooks/useRouter";
 import { editRole } from "@/services/role";
 import { getDictSelectOptions, getPermissionTreeData } from "@/utils/options";
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select, TreeSelect } from "antd";
+import { App, Button, Form, Input, Modal, Select, TreeSelect } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -20,10 +20,8 @@ export default function Edit({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const { authRoute } = useRouter();
-
-  const menuRoute = authRoute.filter((item) => item.path === "/")[0].children;
 
   const getInitData = () => {
     const { id, code, name, roleStatus, permissions } = data[0];
@@ -38,7 +36,7 @@ export default function Edit({
 
   const handleEdit = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.rolePage.action.modal.edit.selectOne"));
+      message.warning(t("app.rolePage.action.modal.edit.selectOne"));
       return;
     }
     form.setFieldsValue(getInitData());
@@ -52,9 +50,9 @@ export default function Edit({
     setLoading(true);
     const editResult = await editRole(role);
     if (!editResult.data) {
-      messageApi.error(t("app.rolePage.action.modal.edit.tip.fail"));
+      message.error(t("app.rolePage.action.modal.edit.tip.fail"));
     } else {
-      messageApi.success(t("app.rolePage.action.modal.edit.tip.success"));
+      message.success(t("app.rolePage.action.modal.edit.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -69,7 +67,6 @@ export default function Edit({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="role:edit">
         <Button icon={<EditOutlined />} onClick={handleEdit}>
           {t("app.rolePage.action.edit")}
@@ -140,7 +137,7 @@ export default function Edit({
             <TreeSelect
               allowClear
               treeData={getPermissionTreeData(
-                menuRoute,
+                authRoute.filter((item) => item.path === "/")[0].children,
                 optionsData?.permissions
               )}
               maxTagCount={3}

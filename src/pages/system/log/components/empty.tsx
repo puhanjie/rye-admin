@@ -1,7 +1,7 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { emptyLog } from "@/services/log";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm } from "antd";
+import { App, Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
 export default function Empty({
@@ -10,22 +10,21 @@ export default function Empty({
   queryData: (params?: API.LogQuery) => void;
 }) {
   const { t } = useTranslation();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleConfirm = async () => {
     const emptyResult = await emptyLog();
     if (!emptyResult.data) {
-      messageApi.error(t("app.logPage.action.modal.empty.tip.fail"));
+      message.error(t("app.logPage.action.modal.empty.tip.fail"));
       return;
     } else {
-      messageApi.success(t("app.logPage.action.modal.empty.tip.success"));
+      message.success(t("app.logPage.action.modal.empty.tip.success"));
       queryData();
     }
   };
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="log:empty">
         <Popconfirm
           title={t("app.logPage.action.modal.empty.title")}

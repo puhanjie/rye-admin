@@ -1,19 +1,13 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { EyeOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Descriptions,
-  type DescriptionsProps,
-  message,
-  Modal,
-} from "antd";
+import { App, Button, Descriptions, type DescriptionsProps, Modal } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function View({ data }: { data: API.DictionaryInfo[] }) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const items: DescriptionsProps["items"] =
     data.length === 1
@@ -48,7 +42,7 @@ export default function View({ data }: { data: API.DictionaryInfo[] }) {
 
   const handleView = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.dictionaryPage.action.modal.view.selectOne"));
+      message.warning(t("app.dictionaryPage.action.modal.view.selectOne"));
       return;
     }
     setIsOpen(true);
@@ -56,7 +50,6 @@ export default function View({ data }: { data: API.DictionaryInfo[] }) {
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="dictionary:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
           {t("app.dictionaryPage.action.view")}

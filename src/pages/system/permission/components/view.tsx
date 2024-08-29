@@ -2,9 +2,9 @@ import AuthWrapper from "@/components/auth-wrapper";
 import { permissionStatusTagColor } from "@/config/statusTag";
 import { EyeOutlined } from "@ant-design/icons";
 import {
+  App,
   Button,
   Descriptions,
-  message,
   Modal,
   Tag,
   type DescriptionsProps,
@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 export default function View({ data }: { data: API.PermissionInfo[] }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const items: DescriptionsProps["items"] =
     data.length === 1
@@ -57,7 +57,7 @@ export default function View({ data }: { data: API.PermissionInfo[] }) {
 
   const handleView = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.permissionPage.action.modal.view.selectOne"));
+      message.warning(t("app.permissionPage.action.modal.view.selectOne"));
       return;
     }
     setOpen(true);
@@ -65,7 +65,6 @@ export default function View({ data }: { data: API.PermissionInfo[] }) {
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="permission:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
           {t("app.permissionPage.action.view")}

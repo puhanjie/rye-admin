@@ -3,7 +3,7 @@ import { useRouter } from "@/hooks/useRouter";
 import { addPermission } from "@/services/permission";
 import { getDictSelectOptions, getMenuTree } from "@/utils/options";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select, TreeSelect } from "antd";
+import { App, Button, Form, Input, Modal, Select, TreeSelect } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +18,7 @@ export default function Add({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const { authRoute } = useRouter();
 
   const handleOk = async () => {
@@ -28,9 +28,9 @@ export default function Add({
     setLoading(true);
     const addResult = await addPermission(permission);
     if (!addResult.data) {
-      messageApi.error(t("app.permissionPage.action.modal.add.tip.fail"));
+      message.error(t("app.permissionPage.action.modal.add.tip.fail"));
     } else {
-      messageApi.success(t("app.permissionPage.action.modal.add.tip.success"));
+      message.success(t("app.permissionPage.action.modal.add.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -45,7 +45,6 @@ export default function Add({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="permission:add">
         <Button
           type="primary"
@@ -114,7 +113,9 @@ export default function Add({
             rules={[{ required: true }]}
           >
             <TreeSelect
-              treeData={getMenuTree(authRoute)}
+              treeData={getMenuTree(
+                authRoute.filter((item) => item.path === "/")[0].children
+              )}
               allowClear
               showCheckedStrategy="SHOW_CHILD"
               placeholder={t("app.permissionPage.action.modal.add.placeholder")}

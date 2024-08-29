@@ -1,7 +1,7 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { removeDictionary } from "@/services/dictionary";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm } from "antd";
+import { App, Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
 export default function Delete({
@@ -12,29 +12,26 @@ export default function Delete({
   queryData: (params?: API.DictionaryQuery) => void;
 }) {
   const { t } = useTranslation();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleConfirm = async () => {
     if (data.length <= 0) {
-      messageApi.warning(t("app.dictionaryPage.action.modal.delete.select"));
+      message.warning(t("app.dictionaryPage.action.modal.delete.select"));
       return;
     }
     const ids = data.map((item) => item.id);
     const deleteResult = await removeDictionary(ids);
     if (!deleteResult.data) {
-      messageApi.error(t("app.dictionaryPage.action.modal.delete.tip.fail"));
+      message.error(t("app.dictionaryPage.action.modal.delete.tip.fail"));
       return;
     } else {
-      messageApi.success(
-        t("app.dictionaryPage.action.modal.delete.tip.success")
-      );
+      message.success(t("app.dictionaryPage.action.modal.delete.tip.success"));
       queryData();
     }
   };
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="dictionary:delete">
         <Popconfirm
           title={t("app.dictionaryPage.action.modal.delete.title")}

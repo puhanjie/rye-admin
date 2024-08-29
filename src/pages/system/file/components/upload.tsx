@@ -1,7 +1,7 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { uploadFile } from "@/services/file";
 import { CloudUploadOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, message, Modal, Upload as AntdUpload } from "antd";
+import { Button, Modal, Upload as AntdUpload, App } from "antd";
 import { RcFile, UploadFile } from "antd/es/upload/interface";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,7 @@ export default function Upload({
   const [files, setFiles] = useState<UploadFile[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleOk = async () => {
     const formData = new FormData();
@@ -27,9 +27,9 @@ export default function Upload({
     setLoading(true);
     const uploadResult = await uploadFile(formData);
     if (!uploadResult.data) {
-      messageApi.error(t("app.filePage.action.modal.upload.tip.fail"));
+      message.error(t("app.filePage.action.modal.upload.tip.fail"));
     } else {
-      messageApi.success(t("app.filePage.action.modal.upload.tip.success"));
+      message.success(t("app.filePage.action.modal.upload.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -44,7 +44,6 @@ export default function Upload({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="file:upload">
         <Button
           type="primary"

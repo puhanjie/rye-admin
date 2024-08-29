@@ -1,8 +1,8 @@
 import { departmentStatusTagColor } from "@/config/statusTag";
 import {
+  App,
   Button,
   Descriptions,
-  message,
   Modal,
   Tag,
   type DescriptionsProps,
@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 export default function View({ data }: { data?: API.DepartmentDetailTree[] }) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const items: DescriptionsProps["items"] =
     data && data.length === 1
@@ -67,7 +67,7 @@ export default function View({ data }: { data?: API.DepartmentDetailTree[] }) {
 
   const handleView = () => {
     if (!data || data.length !== 1) {
-      messageApi.warning(t("app.departmentPage.action.modal.view.selectOne"));
+      message.warning(t("app.departmentPage.action.modal.view.selectOne"));
       return;
     }
     setIsOpen(true);
@@ -75,7 +75,6 @@ export default function View({ data }: { data?: API.DepartmentDetailTree[] }) {
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="department:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
           {t("app.departmentPage.action.view")}

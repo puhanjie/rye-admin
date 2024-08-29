@@ -5,9 +5,9 @@ import { getPermissionTreeData } from "@/utils/options";
 import { getAuthRoute } from "@/utils/route";
 import { EyeOutlined } from "@ant-design/icons";
 import {
+  App,
   Button,
   Descriptions,
-  message,
   Modal,
   Tag,
   Tree,
@@ -25,7 +25,7 @@ export default function View({
 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const getMenuRoute = (route: Route[], permissions?: API.Permission[]) => {
     if (!permissions) {
@@ -96,7 +96,7 @@ export default function View({
 
   const handleView = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.rolePage.action.modal.view.selectOne"));
+      message.warning(t("app.rolePage.action.modal.view.selectOne"));
       return;
     }
     setOpen(true);
@@ -104,7 +104,6 @@ export default function View({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="role:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
           {t("app.rolePage.action.view")}

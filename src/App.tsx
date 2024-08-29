@@ -1,4 +1,5 @@
 import { ConfigProvider } from "antd";
+import { App as AntApp } from "antd";
 import React from "react";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -26,7 +27,9 @@ export default function App({ env }: { env: string }) {
           },
         }}
       >
-        <RouterProvider router={createBrowserRouter(guardRoute)} />
+        <AntApp className="w-full h-full">
+          <RouterProvider router={createBrowserRouter(guardRoute)} />
+        </AntApp>
       </ConfigProvider>
     </Provider>
   );

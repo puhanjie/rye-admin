@@ -3,7 +3,7 @@ import { useRouter } from "@/hooks/useRouter";
 import { editPermission } from "@/services/permission";
 import { getDictSelectOptions, getMenuTree } from "@/utils/options";
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select, TreeSelect } from "antd";
+import { App, Button, Form, Input, Modal, Select, TreeSelect } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -20,7 +20,7 @@ export default function Edit({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const { authRoute } = useRouter();
 
   const getInitData = () => {
@@ -36,7 +36,7 @@ export default function Edit({
 
   const handleEdit = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.permissionPage.action.modal.edit.selectOne"));
+      message.warning(t("app.permissionPage.action.modal.edit.selectOne"));
       return;
     }
     form.setFieldsValue(getInitData());
@@ -50,9 +50,9 @@ export default function Edit({
     setLoading(true);
     const editResult = await editPermission(permission);
     if (!editResult.data) {
-      messageApi.error(t("app.permissionPage.action.modal.edit.tip.fail"));
+      message.error(t("app.permissionPage.action.modal.edit.tip.fail"));
     } else {
-      messageApi.success(t("app.permissionPage.action.modal.edit.tip.success"));
+      message.success(t("app.permissionPage.action.modal.edit.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -67,7 +67,6 @@ export default function Edit({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="permission:edit">
         <Button icon={<EditOutlined />} onClick={handleEdit}>
           {t("app.permissionPage.action.edit")}
@@ -142,7 +141,9 @@ export default function Edit({
             rules={[{ required: true }]}
           >
             <TreeSelect
-              treeData={getMenuTree(authRoute)}
+              treeData={getMenuTree(
+                authRoute.filter((item) => item.path === "/")[0].children
+              )}
               allowClear
               treeDefaultExpandedKeys={
                 data && data.length === 1 ? [data[0].menu] : []

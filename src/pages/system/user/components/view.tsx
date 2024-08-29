@@ -1,8 +1,8 @@
 import { userStatusTagColor } from "@/config/statusTag";
 import {
+  App,
   Button,
   Descriptions,
-  message,
   Modal,
   Tag,
   type DescriptionsProps,
@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 export default function View({ data }: { data: API.UserInfo[] }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const items: DescriptionsProps["items"] =
     data.length === 1
@@ -84,7 +84,7 @@ export default function View({ data }: { data: API.UserInfo[] }) {
 
   const handleView = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.userPage.action.modal.view.selectOne"));
+      message.warning(t("app.userPage.action.modal.view.selectOne"));
       return;
     }
     setOpen(true);
@@ -92,7 +92,6 @@ export default function View({ data }: { data: API.UserInfo[] }) {
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="user:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
           {t("app.userPage.action.view")}

@@ -1,8 +1,8 @@
 import { postStatusTagColor } from "@/config/statusTag";
 import {
+  App,
   Button,
   Descriptions,
-  message,
   Modal,
   Tag,
   type DescriptionsProps,
@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 export default function View({ data }: { data: API.PostInfo[] }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const items: DescriptionsProps["items"] =
     data.length === 1
@@ -62,7 +62,7 @@ export default function View({ data }: { data: API.PostInfo[] }) {
 
   const handleView = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.postPage.action.modal.edit.selectOne"));
+      message.warning(t("app.postPage.action.modal.edit.selectOne"));
       return;
     }
     setOpen(true);
@@ -70,7 +70,6 @@ export default function View({ data }: { data: API.PostInfo[] }) {
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="post:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
           {t("app.postPage.action.view")}

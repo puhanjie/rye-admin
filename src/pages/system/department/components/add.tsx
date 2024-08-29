@@ -1,5 +1,5 @@
 import { addDepartment } from "@/services/department";
-import { Button, Form, Input, message, Modal, Select, TreeSelect } from "antd";
+import { App, Button, Form, Input, Modal, Select, TreeSelect } from "antd";
 import { useState } from "react";
 import AuthWrapper from "@/components/auth-wrapper";
 import { PlusOutlined } from "@ant-design/icons";
@@ -22,7 +22,7 @@ export default function Add({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleOk = async () => {
     const department: API.DepartmentParams = await form.validateFields();
@@ -31,11 +31,11 @@ export default function Add({
     setLoading(true);
     const addResult = await addDepartment(department);
     if (!addResult.data) {
-      messageApi.error(t("app.departmentPage.action.modal.add.tip.fail"));
+      message.error(t("app.departmentPage.action.modal.add.tip.fail"));
       form.resetFields();
       return;
     } else {
-      messageApi.success(t("app.departmentPage.action.modal.add.tip.success"));
+      message.success(t("app.departmentPage.action.modal.add.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -50,7 +50,6 @@ export default function Add({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="department:add">
         <Button
           type="primary"

@@ -1,5 +1,5 @@
 import { addPost } from "@/services/post";
-import { Button, Form, Input, message, Modal, Select } from "antd";
+import { App, Button, Form, Input, Modal, Select } from "antd";
 import { useState } from "react";
 import AuthWrapper from "@/components/auth-wrapper";
 import { PlusOutlined } from "@ant-design/icons";
@@ -17,7 +17,7 @@ export default function Add({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleOk = async () => {
     const post: API.PostParams = await form.validateFields();
@@ -25,9 +25,9 @@ export default function Add({
     setLoading(true);
     const addResult = await addPost(post);
     if (!addResult.data) {
-      messageApi.error(t("app.postPage.action.modal.add.tip.fail"));
+      message.error(t("app.postPage.action.modal.add.tip.fail"));
     } else {
-      messageApi.success(t("app.postPage.action.modal.add.tip.success"));
+      message.success(t("app.postPage.action.modal.add.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -42,7 +42,6 @@ export default function Add({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="post:add">
         <Button
           type="primary"

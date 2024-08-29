@@ -1,5 +1,5 @@
 import { editDepartment } from "@/services/department";
-import { Button, Form, Input, message, Modal, Select, TreeSelect } from "antd";
+import { App, Button, Form, Input, Modal, Select, TreeSelect } from "antd";
 import { useState } from "react";
 import AuthWrapper from "@/components/auth-wrapper";
 import { EditOutlined } from "@ant-design/icons";
@@ -24,7 +24,7 @@ export default function Edit({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const getInitData = () => {
     if (!data) {
@@ -44,7 +44,7 @@ export default function Edit({
 
   const handleEdit = () => {
     if (!data || data.length !== 1) {
-      messageApi.warning(t("app.departmentPage.action.modal.edit.selectOne"));
+      message.warning(t("app.departmentPage.action.modal.edit.selectOne"));
       return;
     }
     form.setFieldsValue(getInitData());
@@ -58,9 +58,9 @@ export default function Edit({
     setLoading(true);
     const editResult = await editDepartment(department);
     if (!editResult.data) {
-      messageApi.error(t("app.departmentPage.action.modal.edit.tip.fail"));
+      message.error(t("app.departmentPage.action.modal.edit.tip.fail"));
     } else {
-      messageApi.success(t("app.departmentPage.action.modal.edit.tip.success"));
+      message.success(t("app.departmentPage.action.modal.edit.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -75,7 +75,6 @@ export default function Edit({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="department:edit">
         <Button icon={<EditOutlined />} onClick={handleEdit}>
           {t("app.departmentPage.action.edit")}

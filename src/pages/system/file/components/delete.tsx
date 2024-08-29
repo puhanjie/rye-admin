@@ -1,6 +1,6 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { removeFile } from "@/services/file";
-import { Button, message, Popconfirm } from "antd";
+import { App, Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
 export default function Delete({
@@ -11,22 +11,21 @@ export default function Delete({
   queryData: (params?: API.FileQuery) => void;
 }) {
   const { t } = useTranslation();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleConfirm = async () => {
     const deleteResult = await removeFile(data.path);
     if (!deleteResult.data) {
-      messageApi.error(t("app.filePage.action.modal.delete.tip.fail"));
+      message.error(t("app.filePage.action.modal.delete.tip.fail"));
       return;
     } else {
-      messageApi.success(t("app.filePage.action.modal.delete.tip.success"));
+      message.success(t("app.filePage.action.modal.delete.tip.success"));
       queryData();
     }
   };
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="file:delete">
         <Popconfirm
           title={t("app.filePage.action.modal.delete.title")}

@@ -1,6 +1,6 @@
 import { updatePassword } from "@/services/user";
 import { useAppSelector } from "@/store";
-import { Button, Col, Form, Input, message, Row } from "antd";
+import { App, Button, Col, Form, Input, Row } from "antd";
 import MD5 from "crypto-js/md5";
 import Container from "./container";
 import { useTranslation } from "react-i18next";
@@ -16,12 +16,12 @@ export default function Password() {
   const { t } = useTranslation();
   const { id } = useAppSelector((state) => state.user);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleFinish = async (values: PasswordForm) => {
     const { userId, currentPassword, newPassword, confirmPassword } = values;
     if (newPassword !== confirmPassword) {
-      messageApi.error(t("app.settingsPage.password.inconformity"));
+      message.error(t("app.settingsPage.password.inconformity"));
       return;
     }
     const res = await updatePassword({
@@ -31,15 +31,14 @@ export default function Password() {
       newPassword: MD5(newPassword).toString(),
     });
     if (res?.data && res?.data <= 0) {
-      messageApi.error(t("app.settingsPage.password.fail"));
+      message.error(t("app.settingsPage.password.fail"));
     }
     form.resetFields();
-    messageApi.success(t("app.settingsPage.password.success"));
+    message.success(t("app.settingsPage.password.success"));
   };
 
   return (
     <Container title={t("app.settingsPage.password.title")}>
-      {contextHolder}
       <Row>
         <Col xs={24} sm={20} md={14} lg={12} xl={10}>
           <Form

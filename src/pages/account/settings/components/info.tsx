@@ -4,12 +4,12 @@ import { editInfo, getInfo } from "@/services/user";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { setAvatar, setUserInfo } from "@/store/modules/user";
 import {
+  App,
   Avatar,
   Button,
   Col,
   Form,
   Input,
-  message,
   Row,
   Select,
   Upload,
@@ -28,7 +28,7 @@ export default function Info() {
   const [loading, setLoading] = useState(true);
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const getInitData = (user: API.UserBasicInfo) => {
     const {
@@ -58,14 +58,14 @@ export default function Info() {
   const handleFinish = async (values: API.BasicInfoParams) => {
     const editResult = await editInfo(values);
     if (!editResult.data) {
-      messageApi.error(t("app.settingsPage.info.fail"));
+      message.error(t("app.settingsPage.info.fail"));
     }
     const queryResult = await getInfo();
     if (!queryResult.data) {
       return;
     }
     dispatch(setUserInfo(queryResult.data));
-    messageApi.success(t("app.settingsPage.info.success"));
+    message.success(t("app.settingsPage.info.success"));
   };
 
   const handleChange = ({ file }: { file: UploadFile<API.Result<string>> }) => {
@@ -94,7 +94,6 @@ export default function Info() {
     <Loading />
   ) : (
     <Container title={t("app.settingsPage.info.title")}>
-      {contextHolder}
       <Row>
         <Col xs={24} sm={24} md={12} lg={10} xl={10}>
           <div className="flex flex-col justify-start items-center mb-4">

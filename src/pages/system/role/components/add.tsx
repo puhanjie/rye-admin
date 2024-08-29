@@ -3,7 +3,7 @@ import { useRouter } from "@/hooks/useRouter";
 import { addRole } from "@/services/role";
 import { getDictSelectOptions, getPermissionTreeData } from "@/utils/options";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select, TreeSelect } from "antd";
+import { App, Button, Form, Input, Modal, Select, TreeSelect } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +18,7 @@ export default function Add({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const { authRoute } = useRouter();
 
   const handleOk = async () => {
@@ -28,9 +28,9 @@ export default function Add({
     setLoading(true);
     const addResult = await addRole(role);
     if (!addResult.data) {
-      messageApi.error(t("app.rolePage.action.modal.add.tip.fail"));
+      message.error(t("app.rolePage.action.modal.add.tip.fail"));
     } else {
-      messageApi.success(t("app.rolePage.action.modal.add.tip.success"));
+      message.success(t("app.rolePage.action.modal.add.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -45,7 +45,6 @@ export default function Add({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="role:add">
         <Button
           type="primary"
@@ -113,7 +112,7 @@ export default function Add({
             <TreeSelect
               allowClear
               treeData={getPermissionTreeData(
-                authRoute,
+                authRoute.filter((item) => item.path === "/")[0].children,
                 optionsData?.permissions
               )}
               maxTagCount={3}

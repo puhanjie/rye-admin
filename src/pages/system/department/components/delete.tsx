@@ -1,5 +1,5 @@
 import { removeDepartment } from "@/services/department";
-import { Button, message, Popconfirm } from "antd";
+import { App, Button, Popconfirm } from "antd";
 import AuthWrapper from "@/components/auth-wrapper";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -12,28 +12,25 @@ export default function Delete({
   queryData: (params?: API.DepartmentQuery) => void;
 }) {
   const { t } = useTranslation();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleConfirm = async () => {
     if (data.length <= 0) {
-      messageApi.warning(t("app.departmentPage.action.modal.delete.select"));
+      message.warning(t("app.departmentPage.action.modal.delete.select"));
       return;
     }
     const ids = data.map((item) => item.id);
     const deleteResult = await removeDepartment(ids);
     if (!deleteResult.data) {
-      messageApi.error(t("app.departmentPage.action.modal.delete.tip.fail"));
+      message.error(t("app.departmentPage.action.modal.delete.tip.fail"));
     } else {
-      messageApi.success(
-        t("app.departmentPage.action.modal.delete.tip.success")
-      );
+      message.success(t("app.departmentPage.action.modal.delete.tip.success"));
       queryData();
     }
   };
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="department:delete">
         <Popconfirm
           title={t("app.departmentPage.action.modal.delete.title")}

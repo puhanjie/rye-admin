@@ -1,5 +1,5 @@
 import { addUser } from "@/services/user";
-import { Button, Form, Input, message, Modal, Select, TreeSelect } from "antd";
+import { App, Button, Form, Input, Modal, Select, TreeSelect } from "antd";
 import { useState } from "react";
 import MD5 from "crypto-js/md5";
 import AuthWrapper from "@/components/auth-wrapper";
@@ -23,7 +23,7 @@ export default function Add({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleOk = async () => {
     const user: API.UserParams = await form.validateFields();
@@ -34,9 +34,9 @@ export default function Add({
     setLoading(true);
     const addResult = await addUser(user);
     if (!addResult.data) {
-      messageApi.error(t("app.userPage.action.modal.add.tip.fail"));
+      message.error(t("app.userPage.action.modal.add.tip.fail"));
     } else {
-      messageApi.success(t("app.userPage.action.modal.add.tip.success"));
+      message.success(t("app.userPage.action.modal.add.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -51,7 +51,6 @@ export default function Add({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="user:add">
         <Button
           type="primary"

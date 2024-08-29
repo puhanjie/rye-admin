@@ -1,19 +1,13 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { EyeOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Descriptions,
-  message,
-  Modal,
-  type DescriptionsProps,
-} from "antd";
+import { App, Button, Descriptions, Modal, type DescriptionsProps } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function View({ data }: { data: API.FileInfo[] }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const items: DescriptionsProps["items"] =
     data.length === 1
@@ -43,7 +37,7 @@ export default function View({ data }: { data: API.FileInfo[] }) {
 
   const handleView = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.filePage.action.modal.view.selectOne"));
+      message.warning(t("app.filePage.action.modal.view.selectOne"));
       return;
     }
     setOpen(true);
@@ -51,7 +45,6 @@ export default function View({ data }: { data: API.FileInfo[] }) {
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="file:view">
         <Button icon={<EyeOutlined />} onClick={handleView}>
           {t("app.filePage.action.view")}

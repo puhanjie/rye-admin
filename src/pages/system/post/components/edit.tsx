@@ -1,5 +1,5 @@
 import { editPost } from "@/services/post";
-import { Button, Form, Input, message, Modal, Select } from "antd";
+import { App, Button, Form, Input, Modal, Select } from "antd";
 import { useState } from "react";
 import AuthWrapper from "@/components/auth-wrapper";
 import { EditOutlined } from "@ant-design/icons";
@@ -19,7 +19,7 @@ export default function Edit({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const getInitData = () => {
     const { id, code, name, postStatus, remark, roles } = data[0];
@@ -35,7 +35,7 @@ export default function Edit({
 
   const handleEdit = () => {
     if (data.length !== 1) {
-      messageApi.warning(t("app.postPage.action.modal.edit.selectOne"));
+      message.warning(t("app.postPage.action.modal.edit.selectOne"));
       return;
     }
     form.setFieldsValue(getInitData());
@@ -48,9 +48,9 @@ export default function Edit({
     setLoading(true);
     const editResult = await editPost(post);
     if (!editResult.data) {
-      messageApi.error(t("app.postPage.action.modal.edit.tip.fail"));
+      message.error(t("app.postPage.action.modal.edit.tip.fail"));
     } else {
-      messageApi.success(t("app.postPage.action.modal.edit.tip.success"));
+      message.success(t("app.postPage.action.modal.edit.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -65,7 +65,6 @@ export default function Edit({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="post:edit">
         <Button icon={<EditOutlined />} onClick={handleEdit}>
           {t("app.postPage.action.edit")}

@@ -1,7 +1,7 @@
 import AuthWrapper from "@/components/auth-wrapper";
 import { addDictionary } from "@/services/dictionary";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal } from "antd";
+import { App, Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -14,16 +14,16 @@ export default function Add({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleOk = async () => {
     const dictionary: API.DictionaryParams = await form.validateFields();
     setLoading(true);
     const addResult = await addDictionary(dictionary);
     if (!addResult.data) {
-      messageApi.error(t("app.dictionaryPage.action.modal.add.tip.fail"));
+      message.error(t("app.dictionaryPage.action.modal.add.tip.fail"));
     } else {
-      messageApi.success(t("app.dictionaryPage.action.modal.add.tip.success"));
+      message.success(t("app.dictionaryPage.action.modal.add.tip.success"));
       queryData();
     }
     setLoading(false);
@@ -38,7 +38,6 @@ export default function Add({
 
   return (
     <div>
-      {contextHolder}
       <AuthWrapper permission="dictionary:add">
         <Button
           type="primary"
