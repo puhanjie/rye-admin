@@ -86,6 +86,7 @@ export default function TabNav() {
             cardBg: "#ffffff",
             colorBgContainer: "#1677ff",
             itemSelectedColor: "#ffffff",
+            colorBorderSecondary: "rgb(226 232 240)",
             cardPaddingSM: "10px",
           },
         },
