@@ -49,7 +49,6 @@ axiosInstance.interceptors.response.use(
     if (res.code === 10000 && !(res instanceof Blob)) {
       // token失效
       clearToken();
-      message.error(`${res.code} | ${res.message}`);
       window.location.href = "/login";
     }
     // 文件下载失败后响应处理
@@ -60,7 +59,9 @@ axiosInstance.interceptors.response.use(
         const data = JSON.parse(blob.result as string);
         message.error(`${data.code} | ${data.message}`);
       };
+      return Promise.reject(error);
     }
+    message.error(`${res.code} | ${res.message}`);
     return Promise.reject(error);
   }
 );
