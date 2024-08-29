@@ -1,6 +1,6 @@
 import { useRouter } from "@/hooks/useRouter";
 import { type Route } from "@/router";
-import { Tabs } from "antd";
+import { ConfigProvider, Tabs } from "antd";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -79,18 +79,30 @@ export default function TabNav() {
   }, [pathname, i18n.language]);
 
   return (
-    <Tabs
-      activeKey={pathname}
-      type="editable-card"
-      hideAdd
-      size="small"
-      tabBarGutter={0}
-      tabPosition="top"
-      items={tabs}
-      onTabClick={(key) => navigate(key)}
-      onEdit={onEdit}
-      tabBarStyle={{ height: 28, background: "white", margin: 0 }}
-      className="bg-white h-7 border-y border-solid border-slate-200 m-0"
-    />
+    <ConfigProvider
+      theme={{
+        components: {
+          Tabs: {
+            cardBg: "#ffffff",
+            colorBgContainer: "#1677ff",
+            itemSelectedColor: "#ffffff",
+            cardPaddingSM: "10px",
+          },
+        },
+      }}
+    >
+      <Tabs
+        activeKey={pathname}
+        type="editable-card"
+        hideAdd
+        size="small"
+        tabPosition="top"
+        items={tabs}
+        onTabClick={(key) => navigate(key)}
+        onEdit={onEdit}
+        tabBarStyle={{ height: 28, background: "white", margin: 0 }}
+        className="bg-white pt-[2px] pl-[3px] border-y border-solid border-slate-200 m-0"
+      />
+    </ConfigProvider>
   );
 }

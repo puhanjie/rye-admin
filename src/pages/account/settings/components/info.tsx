@@ -149,7 +149,7 @@ export default function Info() {
             <Form.Item label={t("app.settingsPage.info.email")} name="email">
               <Input />
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 4 }}>
+            <Form.Item wrapperCol={{ sm: { offset: 4 }, md: { offset: 4 } }}>
               <Button type="primary" htmlType="submit">
                 {t("app.settingsPage.info.submit")}
               </Button>
