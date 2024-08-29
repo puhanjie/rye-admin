@@ -10,7 +10,6 @@ export default function Download({ data }: { data: API.FileInfo }) {
 
   const handleDownload = async () => {
     const res = await downloadFile(data.path);
-    console.log(res);
     download(res);
     messageApi.success(t("app.filePage.action.modal.download.tip.success"));
   };

@@ -29,7 +29,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     const res = response.data;
-
     // 相应状态码不等于0代表错误
     if (res.code && res.code !== 0) {
       message.error(`${res.code} | ${res.message}`);
@@ -47,12 +46,21 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // 响应异常时处理
     const res = error.response.data;
-    if (res.code === 10000) {
+    if (res.code === 10000 && !(res instanceof Blob)) {
       // token失效
       clearToken();
+      message.error(`${res.code} | ${res.message}`);
       window.location.href = "/login";
     }
-    message.error(`${res.code} | ${res.message}`);
+    // 文件下载失败后响应处理
+    if (res instanceof Blob) {
+      const blob = new FileReader();
+      blob.readAsText(res, "utf-8");
+      blob.onload = () => {
+        const data = JSON.parse(blob.result as string);
+        message.error(`${data.code} | ${data.message}`);
+      };
+    }
     return Promise.reject(error);
   }
 );
