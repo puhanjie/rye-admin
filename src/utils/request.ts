@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
   (response) => {
     const res = response.data;
     // 若响应为文件流,则保存文件描述信息到sessionStorage
-    if (res instanceof Blob) {
+    if (res instanceof Blob && response.config.url == "/api/v1/file") {
       sessionStorage.setItem(
         "downloadInfo",
         response.headers["content-disposition"]
@@ -44,11 +44,7 @@ axiosInstance.interceptors.response.use(
       clearToken();
       window.location.href = "/login";
     }
-    if (res instanceof Blob) {
-      // 若相应类型为Blob,则返回结果,对应是用请求的页面去处理异常
-      return res;
-    }
-    return Promise.reject(error);
+    return res ? res : Promise.reject(error);
   }
 );
 
