@@ -1,7 +1,7 @@
 import TablePro from "@/components/table-pro";
 import { departmentStatusTagColor } from "@/config/statusTag";
 import { getDepartmentList, getDepartmentOptions } from "@/services/department";
-import { Input, Table, Tag, type FormItemProps } from "antd";
+import { App, Input, Table, Tag, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,7 @@ export default function Department() {
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [expands, setExpands] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -37,7 +38,7 @@ export default function Department() {
 
   const queryData = async (params?: API.DepartmentQuery) => {
     const res = await getDepartmentList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setDeptData(res.data);
@@ -163,11 +164,14 @@ export default function Department() {
     (async () => {
       const deptRes = await getDepartmentList();
       const optionsRes = await getDepartmentOptions();
-      if (!deptRes.data || !optionsRes.data) {
-        return;
+      if (deptRes.code !== 0) {
+        message.error(`${deptRes.code} | ${deptRes.message}`);
       }
-      setDeptData(deptRes.data);
-      setOptionsData(optionsRes.data);
+      if (optionsRes.code !== 0) {
+        message.error(`${optionsRes.data} | ${optionsRes.message}`);
+      }
+      deptRes.data && setDeptData(deptRes.data);
+      optionsRes.data && setOptionsData(optionsRes.data);
       setLoading(false);
     })();
   }, []);

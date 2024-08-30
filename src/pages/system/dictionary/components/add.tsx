@@ -20,8 +20,12 @@ export default function Add({
     const dictionary: API.DictionaryParams = await form.validateFields();
     setLoading(true);
     const addResult = await addDictionary(dictionary);
-    if (!addResult.data) {
-      message.error(t("app.dictionaryPage.action.modal.add.tip.fail"));
+    if (addResult.code !== 0) {
+      message.error(
+        `${t("app.dictionaryPage.action.modal.add.tip.fail")} : ${
+          addResult.code
+        } | ${addResult.message}`
+      );
     } else {
       message.success(t("app.dictionaryPage.action.modal.add.tip.success"));
       queryData();

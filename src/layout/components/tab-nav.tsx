@@ -102,7 +102,7 @@ export default function TabNav() {
         onTabClick={(key) => navigate(key)}
         onEdit={onEdit}
         tabBarStyle={{ height: 28, background: "white", margin: 0 }}
-        className="bg-white pt-[2px] pl-[3px] border-t border-solid border-slate-200"
+        className="bg-white pt-[1px] pl-[3px] border-t border-solid border-slate-200"
       />
     </ConfigProvider>
   );

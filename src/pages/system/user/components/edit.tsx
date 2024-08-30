@@ -69,8 +69,12 @@ export default function Edit({
     user.userStatus = user.userStatus && user.userStatus[0];
     setLoading(true);
     const editResult = await editUser(user);
-    if (!editResult.data) {
-      message.error(t("app.userPage.action.modal.edit.tip.fail"));
+    if (editResult.code !== 0) {
+      message.error(
+        `${t("app.userPage.action.modal.edit.tip.fail")} : ${
+          editResult.code
+        } | ${editResult.message}`
+      );
     } else {
       message.success(t("app.userPage.action.modal.edit.tip.success"));
       queryData();

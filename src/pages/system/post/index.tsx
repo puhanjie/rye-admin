@@ -1,7 +1,7 @@
 import TablePro from "@/components/table-pro";
 import { postStatusTagColor } from "@/config/statusTag";
 import { getPostList, getPostOptions } from "@/services/post";
-import { Input, Table, Tag, type FormItemProps } from "antd";
+import { App, Input, Table, Tag, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ export default function Post() {
   const [optionsData, setOptionsData] = useState<API.PostOptions>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -36,7 +37,7 @@ export default function Post() {
 
   const queryData = async (params?: API.PostQuery) => {
     const res = await getPostList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setPostData(res.data);
@@ -136,11 +137,14 @@ export default function Post() {
     (async () => {
       const postRes = await getPostList();
       const optionsRes = await getPostOptions();
-      if (!postRes.data || !optionsRes.data) {
-        return;
+      if (postRes.code !== 0) {
+        message.error(`${postRes.code} | ${postRes.message}`);
       }
-      setPostData(postRes.data);
-      setOptionsData(optionsRes.data);
+      if (optionsRes.code !== 0) {
+        message.error(`${optionsRes.code} | ${optionsRes.message}`);
+      }
+      postRes.data && setPostData(postRes.data);
+      optionsRes.data && setOptionsData(optionsRes.data);
       setLoading(false);
     })();
   }, []);

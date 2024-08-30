@@ -30,8 +30,12 @@ export default function Add({
     department.deptStatus = department.deptStatus && department.deptStatus[0];
     setLoading(true);
     const addResult = await addDepartment(department);
-    if (!addResult.data) {
-      message.error(t("app.departmentPage.action.modal.add.tip.fail"));
+    if (addResult.code !== 0) {
+      message.error(
+        `${t("app.departmentPage.action.modal.add.tip.fail")} : ${
+          addResult.code
+        } | ${addResult.message}`
+      );
       form.resetFields();
       return;
     } else {

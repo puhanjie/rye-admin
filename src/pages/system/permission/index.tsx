@@ -2,7 +2,7 @@ import TablePro from "@/components/table-pro";
 import { permissionStatusTagColor } from "@/config/statusTag";
 import { getPermissionList, getPermissionOptions } from "@/services/permission";
 import { getMenuTree } from "@/utils/options";
-import { Input, Table, Tag, TreeSelect, type FormItemProps } from "antd";
+import { App, Input, Table, Tag, TreeSelect, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ export default function Permission() {
   const [optionsData, setOptionsData] = useState<API.PermissionOptions>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -53,7 +54,7 @@ export default function Permission() {
 
   const queryData = async (params?: API.PermissionQuery) => {
     const res = await getPermissionList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setPermissionData(res.data);
@@ -141,11 +142,14 @@ export default function Permission() {
     (async () => {
       const permissionRes = await getPermissionList();
       const optionsRes = await getPermissionOptions();
-      if (!permissionRes.data || !optionsRes.data) {
-        return;
+      if (permissionRes.code !== 0) {
+        message.error(`${permissionRes.code} | ${permissionRes.message}`);
       }
-      setPermissionData(permissionRes.data);
-      setOptionsData(optionsRes.data);
+      if (optionsRes.code !== 0) {
+        message.error(`${optionsRes.code} | ${optionsRes.message}`);
+      }
+      permissionRes.data && setPermissionData(permissionRes.data);
+      optionsRes.data && setOptionsData(optionsRes.data);
       setLoading(false);
     })();
   }, []);

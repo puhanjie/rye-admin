@@ -42,8 +42,12 @@ export default function ResetPassword({
       userId: formData.userId,
       newPassword: formData.newPassword && MD5(formData.newPassword).toString(),
     });
-    if (res.data && res.data <= 0) {
-      message.error(t("app.userPage.action.modal.reset.tip.fail"));
+    if (res.code !== 0) {
+      message.error(
+        `${t("app.userPage.action.modal.reset.tip.fail")} : ${res.code} | ${
+          res.message
+        }`
+      );
     } else {
       message.success(t("app.userPage.action.modal.reset.tip.success"));
     }

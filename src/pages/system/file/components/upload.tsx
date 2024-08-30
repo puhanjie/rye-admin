@@ -26,8 +26,12 @@ export default function Upload({
     });
     setLoading(true);
     const uploadResult = await uploadFile(formData);
-    if (!uploadResult.data) {
-      message.error(t("app.filePage.action.modal.upload.tip.fail"));
+    if (uploadResult.code !== 0) {
+      message.error(
+        `${t("app.filePage.action.modal.upload.tip.fail")} : ${
+          uploadResult.code
+        } | ${uploadResult.message}`
+      );
     } else {
       message.success(t("app.filePage.action.modal.upload.tip.success"));
       queryData();

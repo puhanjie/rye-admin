@@ -1,6 +1,6 @@
 import TablePro from "@/components/table-pro";
 import { getDictionaryList } from "@/services/dictionary";
-import { Input, Table, type FormItemProps } from "antd";
+import { App, Input, Table, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ export default function Dictionary() {
     useState<API.Page<API.DictionaryInfo[]>>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -39,7 +40,7 @@ export default function Dictionary() {
 
   const queryData = async (params?: API.DictionaryQuery) => {
     const res = await getDictionaryList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setDictionaryData(res.data);
@@ -149,10 +150,10 @@ export default function Dictionary() {
   useEffect(() => {
     (async () => {
       const dictionaryRes = await getDictionaryList();
-      if (!dictionaryRes.data) {
-        return;
+      if (dictionaryRes.code !== 0) {
+        message.error(`${dictionaryRes.code} | ${dictionaryRes.message}`);
       }
-      setDictionaryData(dictionaryRes.data);
+      dictionaryRes.data && setDictionaryData(dictionaryRes.data);
       setLoading(false);
     })();
   }, []);

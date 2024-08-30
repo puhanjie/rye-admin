@@ -1,6 +1,6 @@
 import TablePro from "@/components/table-pro";
 import { getLogList } from "@/services/log";
-import { Input, Table, type FormItemProps } from "antd";
+import { App, Input, Table, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ export default function Log() {
   const [logData, setLogData] = useState<API.Page<API.LogInfo[]>>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -33,7 +34,7 @@ export default function Log() {
 
   const queryData = async (params?: API.LogQuery) => {
     const res = await getLogList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setLogData(res.data);
@@ -92,10 +93,10 @@ export default function Log() {
   useEffect(() => {
     (async () => {
       const logRes = await getLogList();
-      if (!logRes.data) {
-        return;
+      if (logRes.code !== 0) {
+        message.error(`${logRes.code} | ${logRes.message}`);
       }
-      setLogData(logRes.data);
+      logRes.data && setLogData(logRes.data);
       setLoading(false);
     })();
   }, []);

@@ -10,6 +10,16 @@ export default function Download({ data }: { data: API.FileInfo }) {
 
   const handleDownload = async () => {
     const res = await downloadFile(data.path);
+    if (res.type === "application/json") {
+      // 相应为application/json类型说明下载失败
+      const blob = new FileReader();
+      blob.readAsText(res, "utf-8");
+      blob.onload = () => {
+        const data = JSON.parse(blob.result as string);
+        message.error(`${data.code} | ${data.message}`);
+      };
+      return;
+    }
     download(res);
     message.success(t("app.filePage.action.modal.download.tip.success"));
   };

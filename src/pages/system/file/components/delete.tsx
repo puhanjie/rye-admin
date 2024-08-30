@@ -15,8 +15,12 @@ export default function Delete({
 
   const handleConfirm = async () => {
     const deleteResult = await removeFile(data.path);
-    if (!deleteResult.data) {
-      message.error(t("app.filePage.action.modal.delete.tip.fail"));
+    if (deleteResult.code !== 0) {
+      message.error(
+        `${t("app.filePage.action.modal.delete.tip.fail")} : ${
+          deleteResult.code
+        } | ${deleteResult.message}`
+      );
       return;
     } else {
       message.success(t("app.filePage.action.modal.delete.tip.success"));

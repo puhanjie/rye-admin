@@ -1,7 +1,7 @@
 import { login } from "@/services/user";
 import { setToken } from "@/utils/auth";
 import { LockOutlined, MobileOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Space } from "antd";
+import { App, Button, Checkbox, Form, Input, Space } from "antd";
 import MD5 from "crypto-js/md5";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,7 @@ export default function LoginForm({
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { message } = App.useApp();
 
   // 登录表单提交
   const handleFinish = async (values: LoginParams) => {
@@ -41,12 +42,13 @@ export default function LoginForm({
             type: loginType,
           };
     const res = await login(loginParams);
-
-    if (res.code === 0 && res.data) {
-      // 登录成功,保存token
-      setToken(res.data);
-      navigate("/");
+    if (res.code !== 0) {
+      message.error(`${res.code} | ${res.message}`);
+      return;
     }
+    // 登录成功,保存token
+    setToken(res.data as string);
+    navigate("/");
   };
 
   return (

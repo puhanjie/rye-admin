@@ -21,8 +21,12 @@ export default function Delete({
     }
     const ids = data.map((item) => item.id);
     const deleteResult = await removeDictionary(ids);
-    if (!deleteResult.data) {
-      message.error(t("app.dictionaryPage.action.modal.delete.tip.fail"));
+    if (deleteResult.code !== 0) {
+      message.error(
+        `${t("app.dictionaryPage.action.modal.delete.tip.fail")} : ${
+          deleteResult.code
+        } | ${deleteResult.message}`
+      );
       return;
     } else {
       message.success(t("app.dictionaryPage.action.modal.delete.tip.success"));

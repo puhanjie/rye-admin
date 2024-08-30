@@ -24,8 +24,12 @@ export default function Add({
     post.postStatus = post.postStatus && post.postStatus[0];
     setLoading(true);
     const addResult = await addPost(post);
-    if (!addResult.data) {
-      message.error(t("app.postPage.action.modal.add.tip.fail"));
+    if (addResult.code !== 0) {
+      message.error(
+        `${t("app.postPage.action.modal.add.tip.fail")} : ${addResult.code} | ${
+          addResult.message
+        }`
+      );
     } else {
       message.success(t("app.postPage.action.modal.add.tip.success"));
       queryData();

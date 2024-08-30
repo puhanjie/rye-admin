@@ -27,8 +27,12 @@ export default function Add({
       permission.permissionStatus && permission.permissionStatus[0];
     setLoading(true);
     const addResult = await addPermission(permission);
-    if (!addResult.data) {
-      message.error(t("app.permissionPage.action.modal.add.tip.fail"));
+    if (addResult.code !== 0) {
+      message.error(
+        `${t("app.permissionPage.action.modal.add.tip.fail")} : ${
+          addResult.code
+        } | ${addResult.message}`
+      );
     } else {
       message.success(t("app.permissionPage.action.modal.add.tip.success"));
       queryData();

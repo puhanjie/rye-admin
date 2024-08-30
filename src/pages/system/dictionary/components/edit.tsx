@@ -31,8 +31,12 @@ export default function Edit({
     const dictionary: API.DictionaryParams = await form.validateFields();
     setLoading(true);
     const editResult = await editDictionary(dictionary);
-    if (!editResult.data) {
-      message.error(t("app.dictionaryPage.action.modal.edit.tip.fail"));
+    if (editResult.code !== 0) {
+      message.error(
+        `${t("app.dictionaryPage.action.modal.edit.tip.fail")} : ${
+          editResult.code
+        } | ${editResult.message}`
+      );
     } else {
       message.success(t("app.dictionaryPage.action.modal.edit.tip.success"));
       queryData();

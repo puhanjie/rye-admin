@@ -49,8 +49,12 @@ export default function Edit({
     role.permissions = role.permissions?.map((item) => Number(item));
     setLoading(true);
     const editResult = await editRole(role);
-    if (!editResult.data) {
-      message.error(t("app.rolePage.action.modal.edit.tip.fail"));
+    if (editResult.code !== 0) {
+      message.error(
+        `${t("app.rolePage.action.modal.edit.tip.fail")} : ${
+          editResult.code
+        } | ${editResult.message}`
+      );
     } else {
       message.success(t("app.rolePage.action.modal.edit.tip.success"));
       queryData();

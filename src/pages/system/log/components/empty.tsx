@@ -14,8 +14,12 @@ export default function Empty({
 
   const handleConfirm = async () => {
     const emptyResult = await emptyLog();
-    if (!emptyResult.data) {
-      message.error(t("app.logPage.action.modal.empty.tip.fail"));
+    if (emptyResult.code !== 0) {
+      message.error(
+        `${t("app.logPage.action.modal.empty.tip.fail")} : ${
+          emptyResult.code
+        } | ${emptyResult.message}`
+      );
       return;
     } else {
       message.success(t("app.logPage.action.modal.empty.tip.success"));

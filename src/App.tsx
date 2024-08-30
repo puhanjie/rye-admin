@@ -1,5 +1,4 @@
-import { ConfigProvider } from "antd";
-import { App as AntApp } from "antd";
+import { ConfigProvider, App as AntApp } from "antd";
 import React from "react";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

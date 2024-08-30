@@ -27,8 +27,12 @@ export default function Add({
     role.permissions = role.permissions?.map((item) => Number(item));
     setLoading(true);
     const addResult = await addRole(role);
-    if (!addResult.data) {
-      message.error(t("app.rolePage.action.modal.add.tip.fail"));
+    if (addResult.code !== 0) {
+      message.error(
+        `${t("app.rolePage.action.modal.add.tip.fail")} : ${addResult.code} | ${
+          addResult.message
+        }`
+      );
     } else {
       message.success(t("app.rolePage.action.modal.add.tip.success"));
       queryData();

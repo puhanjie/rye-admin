@@ -21,8 +21,12 @@ export default function Delete({
     }
     const ids = data.map((item) => item.id);
     const deleteResult = await removeDepartment(ids);
-    if (!deleteResult.data) {
-      message.error(t("app.departmentPage.action.modal.delete.tip.fail"));
+    if (deleteResult.code !== 0) {
+      message.error(
+        `${t("app.departmentPage.action.modal.delete.tip.fail")} : ${
+          deleteResult.code
+        } | ${deleteResult.message}`
+      );
     } else {
       message.success(t("app.departmentPage.action.modal.delete.tip.success"));
       queryData();

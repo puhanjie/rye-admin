@@ -57,8 +57,12 @@ export default function Edit({
     department.deptStatus = department.deptStatus && department.deptStatus[0];
     setLoading(true);
     const editResult = await editDepartment(department);
-    if (!editResult.data) {
-      message.error(t("app.departmentPage.action.modal.edit.tip.fail"));
+    if (editResult.code !== 0) {
+      message.error(
+        `${t("app.departmentPage.action.modal.edit.tip.fail")} : ${
+          editResult.code
+        } | ${editResult.message}`
+      );
     } else {
       message.success(t("app.departmentPage.action.modal.edit.tip.success"));
       queryData();

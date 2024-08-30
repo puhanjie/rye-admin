@@ -1,6 +1,6 @@
 import TablePro from "@/components/table-pro";
 import { getFileList } from "@/services/file";
-import { Input, Space, Table, Tooltip, type FormItemProps } from "antd";
+import { App, Input, Space, Table, Tooltip, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,7 @@ export default function File() {
   const [fileData, setFileData] = useState<API.Page<API.FileInfo[]>>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -34,7 +35,7 @@ export default function File() {
 
   const queryData = async (params?: API.FileQuery) => {
     const res = await getFileList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setFileData(res.data);
@@ -121,10 +122,10 @@ export default function File() {
   useEffect(() => {
     (async () => {
       const fileRes = await getFileList();
-      if (!fileRes.data) {
-        return;
+      if (fileRes.code !== 0) {
+        message.error(`${fileRes.code} | ${fileRes.message}`);
       }
-      setFileData(fileRes.data);
+      fileRes.data && setFileData(fileRes.data);
       setLoading(false);
     })();
   }, []);

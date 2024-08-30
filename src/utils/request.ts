@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { clearToken, getToken } from "./auth";
-import { message } from "antd";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -20,7 +19,6 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     // 请求错误时处理
-    message.error("Request Error");
     return Promise.reject(error);
   }
 );
@@ -29,11 +27,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     const res = response.data;
-    // 相应状态码不等于0代表错误
-    if (res.code && res.code !== 0) {
-      message.error(`${res.code} | ${res.message}`);
-      return Promise.reject(res);
-    }
     // 若响应为文件流,则保存文件描述信息到sessionStorage
     if (res instanceof Blob) {
       sessionStorage.setItem(
@@ -51,17 +44,10 @@ axiosInstance.interceptors.response.use(
       clearToken();
       window.location.href = "/login";
     }
-    // 文件下载失败后响应处理
     if (res instanceof Blob) {
-      const blob = new FileReader();
-      blob.readAsText(res, "utf-8");
-      blob.onload = () => {
-        const data = JSON.parse(blob.result as string);
-        message.error(`${data.code} | ${data.message}`);
-      };
-      return Promise.reject(error);
+      // 若相应类型为Blob,则返回结果,对应是用请求的页面去处理异常
+      return res;
     }
-    message.error(`${res.code} | ${res.message}`);
     return Promise.reject(error);
   }
 );

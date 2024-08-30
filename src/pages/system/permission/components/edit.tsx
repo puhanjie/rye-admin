@@ -49,8 +49,12 @@ export default function Edit({
       permission.permissionStatus && permission.permissionStatus[0];
     setLoading(true);
     const editResult = await editPermission(permission);
-    if (!editResult.data) {
-      message.error(t("app.permissionPage.action.modal.edit.tip.fail"));
+    if (editResult.code !== 0) {
+      message.error(
+        `${t("app.permissionPage.action.modal.edit.tip.fail")} : ${
+          editResult.code
+        } | ${editResult.message}`
+      );
     } else {
       message.success(t("app.permissionPage.action.modal.edit.tip.success"));
       queryData();

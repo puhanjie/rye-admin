@@ -33,8 +33,12 @@ export default function Add({
     user.password = user.password && MD5(user.password).toString();
     setLoading(true);
     const addResult = await addUser(user);
-    if (!addResult.data) {
-      message.error(t("app.userPage.action.modal.add.tip.fail"));
+    if (addResult.code !== 0) {
+      message.error(
+        `${t("app.userPage.action.modal.add.tip.fail")} : ${addResult.code} | ${
+          addResult.message
+        }`
+      );
     } else {
       message.success(t("app.userPage.action.modal.add.tip.success"));
       queryData();

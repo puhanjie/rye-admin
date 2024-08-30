@@ -1,7 +1,7 @@
 import TablePro from "@/components/table-pro";
 import { roleStatusTagColor } from "@/config/statusTag";
 import { getRoleList, getRoleOptions } from "@/services/role";
-import { Input, Table, Tag, type FormItemProps } from "antd";
+import { App, Input, Table, Tag, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ export default function Role() {
   const [optionsData, setOptionsData] = useState<API.RoleOptions>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -36,7 +37,7 @@ export default function Role() {
 
   const queryData = async (params?: API.RoleQuery) => {
     const res = await getRoleList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setRoleData(res.data);
@@ -118,11 +119,14 @@ export default function Role() {
     (async () => {
       const roleRes = await getRoleList();
       const optionsRes = await getRoleOptions();
-      if (!roleRes.data || !optionsRes.data) {
-        return;
+      if (roleRes.code !== 0) {
+        message.error(`${roleRes.code} | ${roleRes.message}`);
       }
-      setRoleData(roleRes.data);
-      setOptionsData(optionsRes.data);
+      if (optionsRes.code !== 0) {
+        message.error(`${optionsRes.code} | ${optionsRes.message}`);
+      }
+      roleRes.data && setRoleData(roleRes.data);
+      optionsRes.data && setOptionsData(optionsRes.data);
       setLoading(false);
     })();
   }, []);

@@ -1,7 +1,7 @@
 import TablePro from "@/components/table-pro";
 import { userStatusTagColor } from "@/config/statusTag";
 import { getUserList, getUserOptions } from "@/services/user";
-import { Input, Table, Tag, type FormItemProps } from "antd";
+import { App, Input, Table, Tag, type FormItemProps } from "antd";
 import type { ColumnsType, Key } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,7 @@ export default function User() {
   const [optionsData, setOptionsData] = useState<API.UserOptions>();
   const [selectKeys, setSelectKeys] = useState<Key[]>([]);
   const [loading, setLoading] = useState(true);
+  const { message } = App.useApp();
 
   const queryItems: FormItemProps[] = [
     {
@@ -51,7 +52,7 @@ export default function User() {
 
   const queryData = async (params?: API.UserQuery) => {
     const res = await getUserList(params);
-    if (!res.data) {
+    if (res.code !== 0 || !res.data) {
       return;
     }
     setUserData(res.data);
@@ -189,11 +190,14 @@ export default function User() {
     (async () => {
       const userRes = await getUserList();
       const optionsRes = await getUserOptions();
-      if (!userRes.data || !optionsRes.data) {
-        return;
+      if (userRes.code !== 0) {
+        message.error(`${userRes.code} | ${userRes.message}`);
       }
-      setUserData(userRes.data);
-      setOptionsData(optionsRes.data);
+      if (optionsRes.code !== 0) {
+        message.error(`${optionsRes.code} | ${optionsRes.message}`);
+      }
+      userRes.data && setUserData(userRes.data);
+      optionsRes.data && setOptionsData(optionsRes.data);
       setLoading(false);
     })();
   }, []);
