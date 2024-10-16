@@ -1,8 +1,10 @@
+"use client";
+
 import clsx from "clsx";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import logo from "@/assets/logo.svg";
-import { useAppSelector } from "@/store";
+import { useAppStore } from "@/store/app";
+import { useRouter } from "@/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 
 export default function Logo({
   className,
@@ -11,18 +13,19 @@ export default function Logo({
   className?: string;
   collapsed: boolean;
 }) {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const { headerHeight } = useAppSelector((state) => state.app);
+  const locale = useLocale();
+  const router = useRouter();
+  const t = useTranslations();
+  const headerHeight = useAppStore((state) => state.headerHeight);
 
   return (
     <div
       id="logo"
       style={{ height: headerHeight }}
       className={`cursor-pointer flex flex-row justify-center items-center ${className}`}
-      onClick={() => navigate("/")}
+      onClick={() => router.push("/", { locale })}
     >
-      <img src={logo} alt="logo" className="w-8 h-8" />
+      <Image src="/logo.svg" alt="logo" width={32} height={32} />
       <span
         className={clsx("ml-4 text-blue-500 font-semibold text-lg", {
           hidden: collapsed,

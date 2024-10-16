@@ -16,12 +16,12 @@ import {
   FormItemProps,
 } from "antd";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const { Item } = Form;
 
-export default function TablePro({
+export default function TablePro<T>({
   className,
   formProps,
   formItemProps,
@@ -32,12 +32,12 @@ export default function TablePro({
   className?: string;
   formProps?: FormProps;
   formItemProps?: FormItemProps[];
-  tableProps?: TableProps<any>;
+  tableProps?: TableProps<T>;
   actions?: React.ReactNode[];
   onReset?: () => void;
 }) {
   const [expand, setExpand] = useState(false);
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const renderItems = (items?: FormItemProps[]) => {
     if (!items || items.length <= 0) {
@@ -71,10 +71,10 @@ export default function TablePro({
       <Card size="small" bordered={false} className="!mb-3">
         <Form {...formProps}>
           <Row align="top" className="w-full">
-            <Col xs={24} sm={12} md={16} lg={16}>
+            <Col xs={24} sm={12} md={16}>
               <Row>{renderItems(formItemProps)}</Row>
             </Col>
-            <Col xs={24} sm={12} md={8} lg={8} className="text-end my-1">
+            <Col xs={24} sm={12} md={8} className="text-end my-1">
               <Space>
                 <Button
                   type="primary"

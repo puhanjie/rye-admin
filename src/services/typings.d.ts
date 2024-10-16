@@ -2,6 +2,7 @@ declare namespace API {
   type Result<T> = {
     code: number;
     message: string;
+    request: string;
     data?: T;
   };
 
@@ -10,11 +11,11 @@ declare namespace API {
     password?: string;
     phone?: string;
     captcha?: number;
-    type: 'account' | 'phone';
+    type: "account" | "phone";
   };
 
   type PasswordParams = {
-    type?: number = 1; // 默认重置密码(1:重置密码;2:修改密码)
+    type?: number; // 1:重置密码;2:修改密码
     userId?: number;
     currentPassword?: string;
     newPassword?: string;
@@ -81,14 +82,14 @@ declare namespace API {
     parentId?: number;
     code?: string;
     name?: string;
-    leader?: String;
+    leader?: string;
     deptStatus?: string;
     roles?: number[];
   };
 
   type UserQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
+    pageNum?: number;
+    pageSize?: number;
     username?: string;
     name?: string;
     phone?: string;
@@ -96,44 +97,44 @@ declare namespace API {
   };
 
   type RoleQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
+    pageNum?: number;
+    pageSize?: number;
     code?: string;
     name?: string;
   };
 
   type PermissionQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
+    pageNum?: number;
+    pageSize?: number;
     code?: string;
     name?: string;
     menu?: string;
   };
 
   type FileQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
+    pageNum?: number;
+    pageSize?: number;
     name?: string;
     uploadUser?: string;
   };
 
   type LogQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
+    pageNum?: number;
+    pageSize?: number;
     message?: string;
     operateUser?: string;
   };
 
   type DictionaryQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
+    pageNum?: number;
+    pageSize?: number;
     dictType?: string;
     dictLabel?: string;
   };
 
   type PostQuery = {
-    pageNum?: number = 1;
-    pageSize?: number = 10;
+    pageNum?: number;
+    pageSize?: number;
     code?: string;
     name?: string;
   };
@@ -189,7 +190,7 @@ declare namespace API {
 
   type Role = {
     id: number;
-    code: String;
+    code: string;
     name: string;
   };
 
@@ -277,13 +278,13 @@ declare namespace API {
 
   type Post = {
     id: number;
-    code: String;
+    code: string;
     name: string;
   };
 
   type PostInfo = {
     id: number;
-    code: String;
+    code: string;
     name: string;
     postStatus: API.Dictionary;
     remark?: string | null;

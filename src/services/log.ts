@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import { clientRequest } from "@/utils/request";
 
 export async function removeLog(ids: number[]) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/log",
     method: "delete",
     data: ids,
@@ -10,7 +10,7 @@ export async function removeLog(ids: number[]) {
 }
 
 export async function emptyLog() {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/log/empty",
     method: "delete",
   });
@@ -18,7 +18,7 @@ export async function emptyLog() {
 }
 
 export async function getLogList(params?: API.LogQuery) {
-  const res = await request<API.Page<API.LogInfo[]>>({
+  const res = await clientRequest<API.Page<API.LogInfo[]>>({
     url: "/api/v1/log/list",
     method: "get",
     params,

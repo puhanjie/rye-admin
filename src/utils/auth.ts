@@ -1,19 +1,19 @@
-const TOKEN_KEY = 'Authorization';
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 function isLogin() {
-  return sessionStorage.getItem(TOKEN_KEY) ? true : false;
+  return getCookie("token") ? true : false;
 }
 
 function getToken() {
-  return sessionStorage.getItem(TOKEN_KEY);
+  return getCookie("token");
 }
 
 function setToken(token: string) {
-  sessionStorage.setItem(TOKEN_KEY, token);
+  setCookie("token", token);
 }
 
 function clearToken() {
-  sessionStorage.removeItem(TOKEN_KEY);
+  deleteCookie("token");
 }
 
 export { isLogin, getToken, setToken, clearToken };

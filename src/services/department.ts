@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import { clientRequest } from "@/utils/request";
 
 export async function addDepartment(data: API.DepartmentParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/department",
     method: "post",
     data,
@@ -10,7 +10,7 @@ export async function addDepartment(data: API.DepartmentParams) {
 }
 
 export async function removeDepartment(ids: number[]) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/department",
     method: "delete",
     data: ids,
@@ -19,7 +19,7 @@ export async function removeDepartment(ids: number[]) {
 }
 
 export async function editDepartment(data: API.PostParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/department",
     method: "put",
     data,
@@ -28,7 +28,7 @@ export async function editDepartment(data: API.PostParams) {
 }
 
 export async function getDepartmentList(params?: API.DepartmentQuery) {
-  const res = await request<API.DepartmentDetailTree[]>({
+  const res = await clientRequest<API.DepartmentDetailTree[]>({
     url: "/api/v1/department/list",
     method: "get",
     params,
@@ -37,7 +37,7 @@ export async function getDepartmentList(params?: API.DepartmentQuery) {
 }
 
 export async function getDepartmentOptions() {
-  const res = await request<API.DepartmentOptions>({
+  const res = await clientRequest<API.DepartmentOptions>({
     url: "/api/v1/department/options",
     method: "get",
   });

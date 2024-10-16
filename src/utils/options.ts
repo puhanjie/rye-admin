@@ -1,5 +1,4 @@
-import { Route } from "@/router";
-import { t } from "i18next";
+import type { Route } from "@/config/route";
 
 export type SelectOptions = {
   label?: string;
@@ -97,11 +96,13 @@ export function getMenuPermissions(
 
 /**
  * 获取权限树选项数据
+ * @param t
  * @param route
  * @param permissions
  * @returns
  */
 export function getPermissionTreeData(
+  t: (key: string) => string,
   route?: Route[],
   permissions?: API.Permission[]
 ) {
@@ -112,13 +113,13 @@ export function getPermissionTreeData(
   const treeData: SelectTreeOptions[] = [];
   if (route) {
     route.map((item) => {
-      let tmp: SelectTreeOptions = {
+      const tmp: SelectTreeOptions = {
         key: item.path,
         value: item.path,
         title: t(`app.layout.menu.${item.name}`),
       };
       if (item?.children) {
-        tmp.children = getPermissionTreeData(item.children, permissions);
+        tmp.children = getPermissionTreeData(t, item.children, permissions);
       } else {
         tmp.children = getMenuPermissions(item.name, permissions);
       }
@@ -133,7 +134,7 @@ export function getPermissionTreeData(
  * @param route
  * @returns
  */
-export function getMenuTree(route?: Route[]) {
+export function getMenuTree(t: (key: string) => string, route?: Route[]) {
   if (!route) {
     return;
   }
@@ -145,7 +146,7 @@ export function getMenuTree(route?: Route[]) {
     };
     if (item.children) {
       tree.selectable = false;
-      tree.children = getMenuTree(item.children);
+      tree.children = getMenuTree(t, item.children);
     }
     return tree;
   });

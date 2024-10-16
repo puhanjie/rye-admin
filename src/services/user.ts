@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import { clientRequest, serverRequest } from "@/utils/request";
 
 export async function login(data: API.LoginParams) {
-  const res = await request<string>({
+  const res = await clientRequest<string>({
     url: "/api/v1/user/login",
     method: "post",
     data,
@@ -10,7 +10,7 @@ export async function login(data: API.LoginParams) {
 }
 
 export async function addUser(data: API.UserParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/user",
     method: "post",
     data,
@@ -19,7 +19,7 @@ export async function addUser(data: API.UserParams) {
 }
 
 export async function removeUser(ids: number[]) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/user",
     method: "delete",
     data: ids,
@@ -28,7 +28,7 @@ export async function removeUser(ids: number[]) {
 }
 
 export async function editUser(data: API.UserParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/user",
     method: "put",
     data,
@@ -37,7 +37,7 @@ export async function editUser(data: API.UserParams) {
 }
 
 export async function getInfo() {
-  const res = await request<API.UserBasicInfo>({
+  const res = await clientRequest<API.UserBasicInfo>({
     url: "/api/v1/user/info",
     method: "get",
   });
@@ -45,7 +45,7 @@ export async function getInfo() {
 }
 
 export async function editInfo(data: API.BasicInfoParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/user/info",
     method: "put",
     data,
@@ -54,7 +54,7 @@ export async function editInfo(data: API.BasicInfoParams) {
 }
 
 export async function getUserList(params?: API.UserQuery) {
-  const res = await request<API.Page<API.UserInfo[]>>({
+  const res = await clientRequest<API.Page<API.UserInfo[]>>({
     url: "/api/v1/user/list",
     method: "get",
     params,
@@ -63,7 +63,7 @@ export async function getUserList(params?: API.UserQuery) {
 }
 
 export async function updatePassword(data: API.PasswordParams) {
-  const res = await request<number>({
+  const res = await clientRequest<number>({
     url: "/api/v1/user/password",
     method: "put",
     data,
@@ -72,9 +72,20 @@ export async function updatePassword(data: API.PasswordParams) {
 }
 
 export async function getUserOptions() {
-  const res = await request<API.UserOptions>({
+  const res = await clientRequest<API.UserOptions>({
     url: "/api/v1/user/options",
     method: "get",
   });
   return res;
+}
+
+export async function getPermissions(token: string) {
+  const res = await serverRequest<API.UserBasicInfo>({
+    url: "/api/v1/user/info",
+    method: "get",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data?.permissions;
 }

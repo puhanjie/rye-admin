@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import { clientRequest } from "@/utils/request";
 
 export async function uploadFile(data: FormData) {
-  const res = await request<API.File[]>({
+  const res = await clientRequest<API.File[]>({
     url: "/api/v1/file",
     method: "post",
     data,
@@ -10,7 +10,7 @@ export async function uploadFile(data: FormData) {
 }
 
 export async function removeFile(path: string) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/file",
     method: "delete",
     data: path,
@@ -19,7 +19,7 @@ export async function removeFile(path: string) {
 }
 
 export async function downloadFile(path: string) {
-  const res = await request<Blob>({
+  const res = await clientRequest<Blob>({
     url: "/api/v1/file",
     method: "get",
     responseType: "blob",
@@ -29,7 +29,7 @@ export async function downloadFile(path: string) {
 }
 
 export async function getFileList(params?: API.FileQuery) {
-  const res = await request<API.Page<API.FileInfo[]>>({
+  const res = await clientRequest<API.Page<API.FileInfo[]>>({
     url: "/api/v1/file/list",
     method: "get",
     params,

@@ -1,13 +1,17 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { clearToken, getToken } from "./auth";
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API,
+/**
+ * 客户端请求对象
+ */
+const clientAxiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BASE_API,
   timeout: 5000,
+  withCredentials: true,
 });
 
 // 请求拦截器
-axiosInstance.interceptors.request.use(
+clientAxiosInstance.interceptors.request.use(
   (config) => {
     const token = getToken();
     if (token) {
@@ -24,17 +28,10 @@ axiosInstance.interceptors.request.use(
 );
 
 // 响应拦截器
-axiosInstance.interceptors.response.use(
+clientAxiosInstance.interceptors.response.use(
   (response) => {
     const res = response.data;
-    // 若响应为文件流,则保存文件描述信息到sessionStorage
-    if (res instanceof Blob && response.config.url == "/api/v1/file") {
-      sessionStorage.setItem(
-        "downloadInfo",
-        response.headers["content-disposition"]
-      );
-    }
-    return res;
+    return res instanceof Blob ? response : res;
   },
   (error) => {
     // 响应异常时处理
@@ -49,11 +46,50 @@ axiosInstance.interceptors.response.use(
 );
 
 // 封装请求对象,避免在借口文件中重复写axios的请求和响应类型定义
-function request<T>(params: AxiosRequestConfig) {
+export function clientRequest<T>(params: AxiosRequestConfig) {
   // http后的第一个泛型为请求参数类型,第二个为响应数据类型
-  return axiosInstance<AxiosRequestConfig, T extends Blob ? T : API.Result<T>>(
-    params
-  );
+  return clientAxiosInstance<
+    AxiosRequestConfig,
+    T extends Blob ? AxiosResponse<Blob> : API.Result<T>
+  >(params);
 }
 
-export default request;
+/**
+ * 服务端请求对象
+ */
+const serverAxiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BASE_API,
+  timeout: 5000,
+  withCredentials: true,
+});
+
+// 请求拦截器
+serverAxiosInstance.interceptors.request.use(
+  (config) => config,
+  (error) => {
+    // 请求错误时处理
+    return Promise.reject(error);
+  }
+);
+
+// 响应拦截器
+serverAxiosInstance.interceptors.response.use(
+  (response) => {
+    const res = response.data;
+    return res instanceof Blob ? response : res;
+  },
+  (error) => {
+    // 响应异常时处理
+    const res = error.response.data;
+    return res ? res : Promise.reject(error);
+  }
+);
+
+// 封装请求对象,避免在借口文件中重复写axios的请求和响应类型定义
+export function serverRequest<T>(params: AxiosRequestConfig) {
+  // http后的第一个泛型为请求参数类型,第二个为响应数据类型
+  return serverAxiosInstance<
+    AxiosRequestConfig,
+    T extends Blob ? T : API.Result<T>
+  >(params);
+}

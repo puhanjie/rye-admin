@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import { clientRequest } from "@/utils/request";
 
 export async function addPost(data: API.PostParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/post",
     method: "post",
     data,
@@ -10,7 +10,7 @@ export async function addPost(data: API.PostParams) {
 }
 
 export async function removePost(ids: number[]) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/post",
     method: "delete",
     data: ids,
@@ -19,7 +19,7 @@ export async function removePost(ids: number[]) {
 }
 
 export async function editPost(data: API.PostParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/post",
     method: "put",
     data,
@@ -28,7 +28,7 @@ export async function editPost(data: API.PostParams) {
 }
 
 export async function getPostList(params?: API.PostQuery) {
-  const res = await request<API.Page<API.PostInfo[]>>({
+  const res = await clientRequest<API.Page<API.PostInfo[]>>({
     url: "/api/v1/post/list",
     method: "get",
     params,
@@ -37,7 +37,7 @@ export async function getPostList(params?: API.PostQuery) {
 }
 
 export async function getPostOptions() {
-  const res = await request<API.PostOptions>({
+  const res = await clientRequest<API.PostOptions>({
     url: "/api/v1/post/options",
     method: "get",
   });

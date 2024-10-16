@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import { clientRequest } from "@/utils/request";
 
 export async function addDictionary(data: API.DictionaryParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/dictionary",
     method: "post",
     data,
@@ -10,7 +10,7 @@ export async function addDictionary(data: API.DictionaryParams) {
 }
 
 export async function removeDictionary(ids: number[]) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/dictionary",
     method: "delete",
     data: ids,
@@ -19,7 +19,7 @@ export async function removeDictionary(ids: number[]) {
 }
 
 export async function editDictionary(data: API.DictionaryParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/dictionary",
     method: "put",
     data,
@@ -28,7 +28,7 @@ export async function editDictionary(data: API.DictionaryParams) {
 }
 
 export async function getDictionaryList(params?: API.DictionaryQuery) {
-  const res = await request<API.Page<API.DictionaryInfo[]>>({
+  const res = await clientRequest<API.Page<API.DictionaryInfo[]>>({
     url: "/api/v1/dictionary/list",
     method: "get",
     params,
@@ -37,7 +37,7 @@ export async function getDictionaryList(params?: API.DictionaryQuery) {
 }
 
 export async function getDictionarys(params: { dictType: string }) {
-  const res = await request<API.DictionaryInfo[]>({
+  const res = await clientRequest<API.DictionaryInfo[]>({
     url: "/api/v1/dictionary/items",
     method: "get",
     params,

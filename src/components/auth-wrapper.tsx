@@ -1,4 +1,6 @@
-import { useAppSelector } from "@/store";
+"use client";
+
+import { useUserStore } from "@/store/user";
 
 export default function AuthWrapper({
   permission,
@@ -7,7 +9,7 @@ export default function AuthWrapper({
   permission: string;
   children: React.ReactNode;
 }) {
-  const { permissions } = useAppSelector((state) => state.user);
+  const permissions = useUserStore((state) => state.permissions);
 
   if (!permissions) {
     return null;

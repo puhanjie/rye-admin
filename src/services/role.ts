@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import { clientRequest } from "@/utils/request";
 
 export async function addRole(data: API.RoleParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/role",
     method: "post",
     data,
@@ -10,7 +10,7 @@ export async function addRole(data: API.RoleParams) {
 }
 
 export async function removeRole(ids: number[]) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/role",
     method: "delete",
     data: ids,
@@ -19,7 +19,7 @@ export async function removeRole(ids: number[]) {
 }
 
 export async function editRole(data: API.RoleParams) {
-  const res = await request<boolean>({
+  const res = await clientRequest<boolean>({
     url: "/api/v1/role",
     method: "put",
     data,
@@ -28,7 +28,7 @@ export async function editRole(data: API.RoleParams) {
 }
 
 export async function getRoleList(params?: API.RoleQuery) {
-  const res = await request<API.Page<API.RoleInfo[]>>({
+  const res = await clientRequest<API.Page<API.RoleInfo[]>>({
     url: "/api/v1/role/list",
     method: "get",
     params,
@@ -37,7 +37,7 @@ export async function getRoleList(params?: API.RoleQuery) {
 }
 
 export async function getRoleOptions() {
-  const res = await request<API.RoleOptions>({
+  const res = await clientRequest<API.RoleOptions>({
     url: "/api/v1/role/options",
     method: "get",
   });

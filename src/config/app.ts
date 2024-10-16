@@ -1,17 +1,11 @@
-export type App = {
-  language: string;
-  menuWidth: number;
-  headerHeight: number;
-  collapsedWidth: number;
-  menuTheme: "light" | "dark";
-};
+import { MenuTheme } from "antd";
 
-const app: App = {
-  language: "zhCN",
+const app = {
+  language: "zh",
   menuWidth: 210,
   headerHeight: 48,
   collapsedWidth: 48,
-  menuTheme: "dark",
+  menuTheme: "dark" as MenuTheme,
 };
 
 export default app;
