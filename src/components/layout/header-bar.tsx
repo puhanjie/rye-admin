@@ -68,25 +68,33 @@ export default function HeaderBar() {
       >
         <Breadcrumb
           className="!mx-8 hidden sm:inline-block"
-          items={pathname
-            .split("/")
-            .filter((item) => item.length !== 0)
-            .map((item) => ({ title: t(`app.layout.menu.${item}`) }))}
+          items={
+            pathname === "/"
+              ? []
+              : pathname
+                  .split("/")
+                  .filter((item) => item.length !== 0)
+                  .map((item) => ({ title: t(`app.layout.menu.${item}`) }))
+          }
         />
         <Breadcrumb
           className="!mx-8 sm:hidden"
-          items={[
-            {
-              title: t(
-                `app.layout.menu.${
-                  pathname
-                    .split("/")
-                    .filter((item) => item.length !== 0)
-                    .slice(-1)[0]
-                }`
-              ),
-            },
-          ]}
+          items={
+            pathname === "/"
+              ? []
+              : [
+                  {
+                    title: t(
+                      `app.layout.menu.${
+                        pathname
+                          .split("/")
+                          .filter((item) => item.length !== 0)
+                          .slice(-1)[0]
+                      }`
+                    ),
+                  },
+                ]
+          }
         />
         <Space align="center" size={0}>
           <Dropdown menu={{ items, onClick }} placement="bottom">

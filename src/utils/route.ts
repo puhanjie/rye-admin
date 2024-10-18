@@ -9,29 +9,19 @@ import type { NextRequest } from "next/server";
  * @param route
  * @returns
  */
-export function matchRoute(path: string, route: Route[]) {
-  let findRoute: Route = {
-    path: "",
-    name: "",
-  };
-
-  if (path === "/") {
-    return route[0];
-  }
-
+export function matchRoute(path: string, route: Route[]): Route | null {
   for (let i = 0; i < route.length; i++) {
     if (route[i].path === path) {
-      findRoute = route[i];
-      break;
+      return route[i];
     }
     if (route[i].children) {
-      findRoute = matchRoute(path, route[i].children as Route[]);
-      if (findRoute.path !== "") {
-        break;
+      const result = matchRoute(path, route[i].children as Route[]);
+      if (result) {
+        return result;
       }
     }
   }
-  return findRoute;
+  return null;
 }
 
 /**
@@ -99,43 +89,44 @@ export async function getAccessPath(request: NextRequest) {
   const pathname =
     locale === defaultLocale ? url : `/${urlArray.slice(1).join("/")}`;
 
-  // 登陆状态访问登陆页面重定向到首页
-  if (token && pathname === "/login") {
-    const path = locale === defaultLocale ? "/" : `/${locale}/`;
-    return `${request.nextUrl.origin}${path}`;
-  }
-
-  // 非登陆状态访问需要登录权限的页面,则重定向至登录页
-  if (!token && pathname !== "/login") {
-    const path = locale === defaultLocale ? "/login" : `/${locale}/login`;
-    return `${request.nextUrl.origin}${path}`;
-  }
-
-  const permissions = token && (await getPermissions(token));
-  const authRoute = permissions
-    ? getAuthRoute(
+  if (!token) {
+    // 非登录状态访问有权限路由,重定向至登录页
+    if (pathname !== "/login") {
+      const path = locale === defaultLocale ? "/login" : `/${locale}/login`;
+      return `${request.nextUrl.origin}${path}`;
+    }
+  } else {
+    const permissions = await getPermissions(token);
+    if (permissions) {
+      const authRoute = getAuthRoute(
         route,
         permissions.map((item) => item.code)
-      )
-    : [];
+      );
+      const routeByauth =
+        ["/", "/login"].indexOf(pathname) !== -1
+          ? authRoute[0]
+          : matchRoute(pathname, authRoute);
+      const routeByall = matchRoute(pathname, route);
 
-  // 访问的路由为分组,则跳转至该分组下第一个路由
-  const routeByauth = matchRoute(pathname, authRoute);
-  if (routeByauth.path !== "" && routeByauth.children) {
-    const path =
-      locale === defaultLocale
-        ? getDefaultPath(routeByauth)
-        : `/${locale}/${getDefaultPath(routeByauth)}`;
-    return `${request.nextUrl.origin}${path}`;
-  }
-
-  // 无路由访问权限则跳转至首页
-  const routeByall = matchRoute(pathname, route);
-  if (routeByauth.path === "" && routeByall.path !== "") {
-    const path =
-      locale === defaultLocale
-        ? getDefaultPath(routeByauth)
-        : `/${locale}/${getDefaultPath(routeByauth)}`;
-    return `${request.nextUrl.origin}${path}`;
+      // 登陆状态访问登陆页面重定向至首页
+      // 无路由访问权限则跳转至首页
+      // 访问的路由为分组,则跳转至该分组下第一个路由
+      if (
+        pathname === "/login" ||
+        (!routeByauth && routeByall) ||
+        (routeByauth && routeByauth.children)
+      ) {
+        const defaultPath = routeByauth ? getDefaultPath(routeByauth) : "/";
+        const path =
+          locale === defaultLocale ? defaultPath : `/${locale}/${defaultPath}`;
+        return `${request.nextUrl.origin}${path}`;
+      }
+    } else {
+      // token无效重定向至登录页
+      if (pathname !== "/login") {
+        const path = locale === defaultLocale ? "/login" : `/${locale}/login`;
+        return `${request.nextUrl.origin}${path}`;
+      }
+    }
   }
 }

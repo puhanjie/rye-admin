@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { clearToken, getToken } from "./auth";
+import { getCookie } from "cookies-next";
+import { defaultLocale } from "@/navigation";
 
 /**
  * 客户端请求对象
@@ -37,9 +39,11 @@ clientAxiosInstance.interceptors.response.use(
     // 响应异常时处理
     const res = error.response.data;
     if (res.code === 10000 && !(res instanceof Blob)) {
+      const locale = getCookie("NEXT_LOCALE");
+      const path = locale === defaultLocale ? "/login" : `/${locale}/login`;
       // token失效
       clearToken();
-      window.location.href = "/login";
+      window.location.href = path;
     }
     return res ? res : Promise.reject(error);
   }
