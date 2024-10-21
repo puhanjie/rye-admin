@@ -54,12 +54,10 @@ export default function Edit({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="dictionary:edit">
-        <Button icon={<EditOutlined />} onClick={handleEdit}>
-          {t("app.dictionaryPage.action.edit")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="dictionary:edit">
+      <Button icon={<EditOutlined />} onClick={handleEdit}>
+        {t("app.dictionaryPage.action.edit")}
+      </Button>
       <Modal
         title={t("app.dictionaryPage.action.modal.edit.title")}
         open={open}
@@ -120,6 +118,6 @@ export default function Edit({
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

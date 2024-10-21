@@ -51,12 +51,10 @@ export default function View({ data }: { data: API.DictionaryInfo[] }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="dictionary:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.dictionaryPage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="dictionary:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.dictionaryPage.action.view")}
+      </Button>
       <Modal
         title={t("app.dictionaryPage.action.modal.view.title")}
         open={isOpen}
@@ -73,6 +71,6 @@ export default function View({ data }: { data: API.DictionaryInfo[] }) {
       >
         <Descriptions bordered column={1} items={items} />
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

@@ -37,22 +37,20 @@ export default function Delete({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="dictionary:delete">
-        <Popconfirm
-          title={t("app.dictionaryPage.action.modal.delete.title")}
-          description={t(
-            "app.dictionaryPage.action.modal.delete.tip.description"
-          )}
-          onConfirm={handleConfirm}
-          okText={t("app.dictionaryPage.action.modal.delete.ok")}
-          cancelText={t("app.dictionaryPage.action.modal.delete.cancel")}
-        >
-          <Button danger icon={<DeleteOutlined />}>
-            {t("app.dictionaryPage.action.delete")}
-          </Button>
-        </Popconfirm>
-      </AuthWrapper>
-    </div>
+    <AuthWrapper permission="dictionary:delete">
+      <Popconfirm
+        title={t("app.dictionaryPage.action.modal.delete.title")}
+        description={t(
+          "app.dictionaryPage.action.modal.delete.tip.description"
+        )}
+        onConfirm={handleConfirm}
+        okText={t("app.dictionaryPage.action.modal.delete.ok")}
+        cancelText={t("app.dictionaryPage.action.modal.delete.cancel")}
+      >
+        <Button danger icon={<DeleteOutlined />}>
+          {t("app.dictionaryPage.action.delete")}
+        </Button>
+      </Popconfirm>
+    </AuthWrapper>
   );
 }

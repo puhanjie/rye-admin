@@ -66,12 +66,10 @@ export default function View({ data }: { data: API.PermissionInfo[] }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="permission:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.permissionPage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="permission:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.permissionPage.action.view")}
+      </Button>
       <Modal
         title={t("app.permissionPage.action.modal.view.title")}
         open={open}
@@ -88,6 +86,6 @@ export default function View({ data }: { data: API.PermissionInfo[] }) {
       >
         <Descriptions bordered column={1} items={items} />
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

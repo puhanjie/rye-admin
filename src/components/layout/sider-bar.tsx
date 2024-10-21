@@ -123,7 +123,7 @@ export default function SiderBar() {
         classNames={{
           body: styles["drawer-body"],
         }}
-        rootClassName="sm:hidden"
+        rootClassName="md:hidden"
       >
         <Logo collapsed={false} className="bg-[#001529]" />
         <Menu
@@ -153,7 +153,7 @@ export default function SiderBar() {
         collapsed={collapsed}
         collapsedWidth={collapsedWidth}
         onBreakpoint={(broken) => setCollapsed(broken)}
-        className="h-full hidden sm:block"
+        className="h-full hidden md:block"
       >
         <Logo collapsed={collapsed} className="bg-[#001529]" />
         <Menu

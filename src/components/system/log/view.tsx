@@ -51,12 +51,10 @@ export default function View({ data }: { data: API.LogInfo[] }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="log:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.logPage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="log:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.logPage.action.view")}
+      </Button>
       <Modal
         title={t("app.logPage.action.modal.view.title")}
         open={open}
@@ -73,6 +71,6 @@ export default function View({ data }: { data: API.LogInfo[] }) {
       >
         <Descriptions bordered column={1} items={items} />
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

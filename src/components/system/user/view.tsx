@@ -93,12 +93,10 @@ export default function View({ data }: { data: API.UserInfo[] }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="user:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.userPage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="user:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.userPage.action.view")}
+      </Button>
       <Modal
         title={t("app.userPage.action.modal.view.title")}
         open={open}
@@ -115,6 +113,6 @@ export default function View({ data }: { data: API.UserInfo[] }) {
       >
         <Descriptions bordered column={2} items={items} />
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

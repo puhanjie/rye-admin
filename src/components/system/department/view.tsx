@@ -76,12 +76,10 @@ export default function View({ data }: { data?: API.DepartmentDetailTree[] }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="department:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.departmentPage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="department:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.departmentPage.action.view")}
+      </Button>
       <Modal
         title={t("app.departmentPage.action.modal.view.title")}
         open={isOpen}
@@ -108,6 +106,6 @@ export default function View({ data }: { data?: API.DepartmentDetailTree[] }) {
           />
         )}
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

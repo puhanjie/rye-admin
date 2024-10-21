@@ -30,20 +30,18 @@ export default function Empty({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="log:empty">
-        <Popconfirm
-          title={t("app.logPage.action.modal.empty.title")}
-          description={t("app.logPage.action.modal.empty.tip.description")}
-          onConfirm={handleConfirm}
-          okText={t("app.logPage.action.modal.empty.ok")}
-          cancelText={t("app.logPage.action.modal.empty.cancel")}
-        >
-          <Button danger icon={<DeleteOutlined />}>
-            {t("app.logPage.action.empty")}
-          </Button>
-        </Popconfirm>
-      </AuthWrapper>
-    </div>
+    <AuthWrapper permission="log:empty">
+      <Popconfirm
+        title={t("app.logPage.action.modal.empty.title")}
+        description={t("app.logPage.action.modal.empty.tip.description")}
+        onConfirm={handleConfirm}
+        okText={t("app.logPage.action.modal.empty.ok")}
+        cancelText={t("app.logPage.action.modal.empty.cancel")}
+      >
+        <Button danger icon={<DeleteOutlined />}>
+          {t("app.logPage.action.empty")}
+        </Button>
+      </Popconfirm>
+    </AuthWrapper>
   );
 }

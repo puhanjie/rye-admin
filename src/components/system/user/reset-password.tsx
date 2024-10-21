@@ -66,12 +66,10 @@ export default function ResetPassword({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="user:resetPassword">
-        <Button icon={<ReloadOutlined />} onClick={handleReset}>
-          {t("app.userPage.action.reset")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="user:resetPassword">
+      <Button icon={<ReloadOutlined />} onClick={handleReset}>
+        {t("app.userPage.action.reset")}
+      </Button>
       <Modal
         title={t("app.userPage.action.modal.reset.title")}
         open={open}
@@ -105,6 +103,6 @@ export default function ResetPassword({
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

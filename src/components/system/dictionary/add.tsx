@@ -43,16 +43,14 @@ export default function Add({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="dictionary:add">
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setOpen(true)}
-        >
-          {t("app.dictionaryPage.action.add")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="dictionary:add">
+      <Button
+        type="primary"
+        icon={<PlusOutlined />}
+        onClick={() => setOpen(true)}
+      >
+        {t("app.dictionaryPage.action.add")}
+      </Button>
       <Modal
         title={t("app.dictionaryPage.action.modal.add.title")}
         open={open}
@@ -110,6 +108,6 @@ export default function Add({
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

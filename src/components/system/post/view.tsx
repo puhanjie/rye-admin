@@ -71,12 +71,10 @@ export default function View({ data }: { data: API.PostInfo[] }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="post:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.postPage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="post:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.postPage.action.view")}
+      </Button>
       <Modal
         title={t("app.postPage.action.modal.edit.title")}
         open={open}
@@ -93,6 +91,6 @@ export default function View({ data }: { data: API.PostInfo[] }) {
       >
         <Descriptions bordered column={1} items={items} />
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

@@ -71,10 +71,10 @@ export default function TablePro<T>({
       <Card size="small" bordered={false} className="!mb-3">
         <Form {...formProps}>
           <Row align="top" className="w-full">
-            <Col xs={24} sm={12} md={16}>
+            <Col xs={24} sm={12} md={15} lg={16}>
               <Row>{renderItems(formItemProps)}</Row>
             </Col>
-            <Col xs={24} sm={12} md={8} className="text-end my-1">
+            <Col xs={24} sm={12} md={9} lg={8} className="text-end my-1">
               <Space>
                 <Button
                   type="primary"
@@ -112,7 +112,7 @@ export default function TablePro<T>({
       <Card size="small" bordered={false} className="flex-1">
         {actions && (
           <Space wrap className="mb-3">
-            {...actions.map((item, index) => <div key={index}>{item}</div>)}
+            {...actions.filter((item) => item !== null)}
           </Space>
         )}
         <Table {...tableProps} />

@@ -27,12 +27,10 @@ export default function Download({ data }: { data: API.FileInfo }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="file:download">
-        <Button type="link" onClick={handleDownload} style={{ padding: 0 }}>
-          {t("app.filePage.action.download")}
-        </Button>
-      </AuthWrapper>
-    </div>
+    <AuthWrapper permission="file:download">
+      <Button type="link" onClick={handleDownload} style={{ padding: 0 }}>
+        {t("app.filePage.action.download")}
+      </Button>
+    </AuthWrapper>
   );
 }

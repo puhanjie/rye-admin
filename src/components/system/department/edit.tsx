@@ -80,12 +80,10 @@ export default function Edit({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="department:edit">
-        <Button icon={<EditOutlined />} onClick={handleEdit}>
-          {t("app.departmentPage.action.edit")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="department:edit">
+      <Button icon={<EditOutlined />} onClick={handleEdit}>
+        {t("app.departmentPage.action.edit")}
+      </Button>
       <Modal
         title={t("app.departmentPage.action.modal.edit.title")}
         open={open}
@@ -197,6 +195,6 @@ export default function Edit({
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

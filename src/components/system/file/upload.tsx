@@ -49,16 +49,14 @@ export default function Upload({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="file:upload">
-        <Button
-          type="primary"
-          icon={<UploadOutlined />}
-          onClick={() => setOpen(true)}
-        >
-          {t("app.filePage.action.upload")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="file:upload">
+      <Button
+        type="primary"
+        icon={<UploadOutlined />}
+        onClick={() => setOpen(true)}
+      >
+        {t("app.filePage.action.upload")}
+      </Button>
       <Modal
         title={t("app.filePage.action.modal.upload.title")}
         open={open}
@@ -100,6 +98,6 @@ export default function Upload({
           </p>
         </Dragger>
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

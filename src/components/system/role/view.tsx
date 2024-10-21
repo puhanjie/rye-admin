@@ -95,12 +95,10 @@ export default function View({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="role:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.rolePage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="role:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.rolePage.action.view")}
+      </Button>
       <Modal
         title={t("app.rolePage.action.modal.view.title")}
         open={open}
@@ -117,6 +115,6 @@ export default function View({
       >
         <Descriptions bordered column={1} items={items} />
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

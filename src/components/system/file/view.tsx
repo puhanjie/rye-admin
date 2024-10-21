@@ -46,12 +46,10 @@ export default function View({ data }: { data: API.FileInfo[] }) {
   };
 
   return (
-    <div>
-      <AuthWrapper permission="file:view">
-        <Button icon={<EyeOutlined />} onClick={handleView}>
-          {t("app.filePage.action.view")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="file:view">
+      <Button icon={<EyeOutlined />} onClick={handleView}>
+        {t("app.filePage.action.view")}
+      </Button>
       <Modal
         title={t("app.filePage.action.modal.view.title")}
         open={open}
@@ -68,6 +66,6 @@ export default function View({ data }: { data: API.FileInfo[] }) {
       >
         <Descriptions bordered column={1} items={items} />
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

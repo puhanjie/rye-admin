@@ -55,16 +55,14 @@ export default function Add({
   };
 
   return (
-    <div>
-      <AuthWrapper permission="department:add">
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setOpen(true)}
-        >
-          {t("app.departmentPage.action.add")}
-        </Button>
-      </AuthWrapper>
+    <AuthWrapper permission="department:add">
+      <Button
+        type="primary"
+        icon={<PlusOutlined />}
+        onClick={() => setOpen(true)}
+      >
+        {t("app.departmentPage.action.add")}
+      </Button>
       <Modal
         title={t("app.departmentPage.action.modal.add.title")}
         open={open}
@@ -160,6 +158,6 @@ export default function Add({
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </AuthWrapper>
   );
 }

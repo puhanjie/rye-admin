@@ -67,7 +67,7 @@ export default function HeaderBar() {
         className="!px-4 flex flex-row justify-between items-center"
       >
         <Breadcrumb
-          className="!mx-8 hidden sm:inline-block"
+          className="!mx-8"
           items={
             pathname === "/"
               ? []
@@ -75,25 +75,6 @@ export default function HeaderBar() {
                   .split("/")
                   .filter((item) => item.length !== 0)
                   .map((item) => ({ title: t(`app.layout.menu.${item}`) }))
-          }
-        />
-        <Breadcrumb
-          className="!mx-8 sm:hidden"
-          items={
-            pathname === "/"
-              ? []
-              : [
-                  {
-                    title: t(
-                      `app.layout.menu.${
-                        pathname
-                          .split("/")
-                          .filter((item) => item.length !== 0)
-                          .slice(-1)[0]
-                      }`
-                    ),
-                  },
-                ]
           }
         />
         <Space align="center" size={0}>
