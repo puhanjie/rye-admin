@@ -218,8 +218,8 @@ export default function Page() {
         formProps={{
           name: "userQuery",
           onFinish: handleQuery,
-          labelCol: { span: 6 },
-          wrapperCol: { span: 18 },
+          labelCol: { span: 8 },
+          wrapperCol: { span: 16 },
         }}
         tableProps={{
           bordered: true,
