@@ -107,12 +107,14 @@ export default function SiderBar() {
   };
 
   const onOpenChange = (openKeys: string[]) => {
-    const currentOpenKey: string = openKeys.find(
-      (key) => stateOpenKeys.indexOf(key) === -1
-    ) as string;
-    const parentOpenKeys = getOpenKeys(currentOpenKey, authRoute).openKeys;
+    const removeKey = stateOpenKeys.find((key) => openKeys.indexOf(key) === -1);
+    const addKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
+    const clickKey = (addKey ? addKey : removeKey) as string;
+    const parentOpenKeys = getOpenKeys(clickKey, authRoute).openKeys;
+    // 若点击已展开的菜单分组,则收起当前分组;若点击未展开的菜单分组,则展开新的分组
+    const newOpenKeys = addKey ? [...parentOpenKeys, clickKey] : parentOpenKeys;
     // 重新设置展开的菜单分组
-    setStateOpenKeys([...parentOpenKeys, currentOpenKey]);
+    setStateOpenKeys(newOpenKeys);
   };
 
   useEffect(() => {
