@@ -203,7 +203,7 @@ declare namespace API {
     updateUser: API.User;
     createTime: string;
     updateTime: string;
-    permissions?: API.Permission[];
+    permissions: API.Permission[];
   };
 
   type RoleOptions = {

@@ -15,7 +15,8 @@ import {
 } from "antd";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useAuthRoute } from "@/hooks/route";
+import route from "@/config/route";
+import { getAuthRoute } from "@/utils/route";
 
 export default function View({
   data,
@@ -26,7 +27,6 @@ export default function View({
 }) {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
-  const authRoute = useAuthRoute();
   const { message } = App.useApp();
 
   const items: DescriptionsProps["items"] =
@@ -69,7 +69,10 @@ export default function View({
                 )}
                 treeData={getPermissionTreeData(
                   t,
-                  authRoute,
+                  getAuthRoute(
+                    route,
+                    data[0].permissions.map((item) => item.code)
+                  ),
                   optionsData?.permissions
                 )}
                 rootClassName="overflow-auto"
