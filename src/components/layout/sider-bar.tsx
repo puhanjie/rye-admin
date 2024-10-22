@@ -2,7 +2,7 @@
 
 import { Drawer, Layout, Menu } from "antd";
 import Logo from "@/components/logo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createStyles } from "antd-style";
 import React from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
@@ -28,6 +28,30 @@ const useStyle = createStyles(() => ({
   },
 }));
 
+const getOpenKeys = (pathname: string, route: Route[]) => {
+  let openKeys: string[] = [];
+  let isFind = false;
+  for (let i = 0; i < route.length; i++) {
+    openKeys = [];
+    if (route[i].path === pathname) {
+      isFind = true;
+      break;
+    }
+    if (route[i].children) {
+      openKeys.push(route[i].path);
+      const result = getOpenKeys(pathname, route[i].children as Route[]);
+      for (let j = 0; j < result.openKeys.length; j++) {
+        openKeys.push(result.openKeys[j]);
+      }
+      if (result.isFind) {
+        isFind = true;
+        break;
+      }
+    }
+  }
+  return { openKeys, isFind };
+};
+
 export default function SiderBar() {
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
@@ -39,6 +63,9 @@ export default function SiderBar() {
   const locale = useLocale();
   const pathname = usePathname();
   const t = useTranslations();
+  const authRoute = useAuthRoute();
+  const defaultOpenKeys = getOpenKeys(pathname, authRoute).openKeys;
+  const [stateOpenKeys, setStateOpenKeys] = useState(defaultOpenKeys);
 
   const getMenu = (route: Route[]) => {
     const menus: MenuItem[] = [];
@@ -58,7 +85,6 @@ export default function SiderBar() {
 
     return menus;
   };
-  const authRoute = useAuthRoute();
   const menu = getMenu(authRoute);
 
   const onClose = () => {
@@ -80,36 +106,19 @@ export default function SiderBar() {
     );
   };
 
-  const getOpenKeys = (pathname: string, route: Route[]) => {
-    let openKeys: string[] = [];
-    let isFind = false;
-    for (let i = 0; i < route.length; i++) {
-      openKeys = [];
-      if (route[i].path === pathname) {
-        isFind = true;
-        break;
-      }
-      if (route[i].children) {
-        openKeys.push(route[i].path);
-        const result = getOpenKeys(pathname, route[i].children as Route[]);
-        for (let j = 0; j < result.openKeys.length; j++) {
-          openKeys.push(result.openKeys[j]);
-        }
-        if (result.isFind) {
-          isFind = true;
-          break;
-        }
-      }
-    }
-    return { openKeys, isFind };
+  const onOpenChange = (openKeys: string[]) => {
+    const currentOpenKey: string = openKeys.find(
+      (key) => stateOpenKeys.indexOf(key) === -1
+    ) as string;
+    const parentOpenKeys = getOpenKeys(currentOpenKey, authRoute).openKeys;
+    // 重新设置展开的菜单分组
+    setStateOpenKeys([...parentOpenKeys, currentOpenKey]);
   };
 
-  const getActiveKeys = (pathname: string, route: Route[]) => {
-    const { openKeys } = getOpenKeys(pathname, route);
-    return { openKeys, selectKeys: [pathname] };
-  };
-
-  const { openKeys, selectKeys } = getActiveKeys(pathname, authRoute);
+  useEffect(() => {
+    // pathname变化,菜单跟随展开对应菜单的分组
+    setStateOpenKeys(defaultOpenKeys);
+  }, [pathname]); // eslint-disable-line
 
   return (
     <div className="relative inline-block">
@@ -130,8 +139,10 @@ export default function SiderBar() {
           theme={menuTheme}
           mode="inline"
           items={menu}
-          defaultOpenKeys={openKeys}
-          selectedKeys={selectKeys}
+          defaultOpenKeys={stateOpenKeys}
+          openKeys={stateOpenKeys}
+          selectedKeys={[pathname]}
+          onOpenChange={onOpenChange}
           style={{
             height: `calc(100% - ${headerHeight}px)`,
             overflow: "auto",
@@ -160,8 +171,10 @@ export default function SiderBar() {
           theme={menuTheme}
           mode="inline"
           items={menu}
-          defaultOpenKeys={openKeys}
-          selectedKeys={selectKeys}
+          defaultOpenKeys={stateOpenKeys}
+          openKeys={stateOpenKeys}
+          selectedKeys={[pathname]}
+          onOpenChange={onOpenChange}
           style={{
             height: `calc(100% - ${headerHeight}px)`,
             overflow: "auto",
