@@ -80,7 +80,12 @@ export default function HeaderBar() {
         <Space align="center" size={0}>
           <Dropdown menu={{ items, onClick }} placement="bottom">
             <span className="h-12 leading-[48px] px-2 flex flex-row justify-between items-center cursor-pointer hover:bg-slate-200">
-              <Avatar src={avatar} size={28} alt="avatar" className="!mx-1" />
+              <Avatar
+                src={avatar ? avatar : "/avatar.png"}
+                size={28}
+                alt="avatar"
+                className="!mx-1"
+              />
               <span>{name}</span>
             </span>
           </Dropdown>

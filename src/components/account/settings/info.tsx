@@ -110,7 +110,7 @@ export default function Info() {
           <div className="flex flex-col justify-start items-center mb-4">
             <Avatar
               className="!mb-2"
-              src={user.avatar ? user.avatar : "/avator.png"}
+              src={user.avatar ? user.avatar : "/avatar.png"}
               size={128}
               alt="avatar"
             />
