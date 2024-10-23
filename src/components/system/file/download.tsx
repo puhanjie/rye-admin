@@ -12,7 +12,6 @@ export default function Download({ data }: { data: API.FileInfo }) {
 
   const handleDownload = async () => {
     const res = await downloadFile(data.path);
-    console.log(res.headers["content-disposition"]);
     if (res.data.type === "application/json") {
       // 相应为application/json类型说明下载失败
       const blob = new FileReader();
