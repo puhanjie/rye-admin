@@ -10,36 +10,27 @@ import { useEffect, useState } from "react";
 
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
-export type Tab = {
+type Tab = {
   key: string;
   label: string;
 };
 
-const getTabByPath = (route: Route[] | undefined, path: string) => {
-  let tab: Tab = {
-    key: "",
-    label: "",
-  };
-  if (!route) {
-    return tab;
-  }
-
+const getTabByPath = (route: Route[], path: string): Tab | null => {
   for (let i = 0; i < route.length; i++) {
     if (route[i].path === path) {
-      tab = {
+      return {
         key: path,
         label: route[i].name,
       };
     }
     if (route[i].children) {
-      tab = getTabByPath(route[i].children, path);
-    }
-    if (tab.key !== "") {
-      break;
+      const tab = getTabByPath(route[i].children as Route[], path);
+      if (tab) {
+        return tab;
+      }
     }
   }
-
-  return tab;
+  return null;
 };
 
 export default function TabNav() {
@@ -52,9 +43,10 @@ export default function TabNav() {
   const authRoute = useAuthRoute();
 
   const onEdit = (targetKey: TargetKey, action: "add" | "remove") => {
+    // 新增tab
     if (action === "add") {
       const tab = getTabByPath(authRoute, pathname);
-      if (tab.key === "") {
+      if (!tab) {
         return;
       }
       const hasTab = tabs.filter((item) => item.key === tab.key).length > 0;
@@ -65,6 +57,8 @@ export default function TabNav() {
       }));
       setTabs(langTabs);
     }
+
+    // 移除tab
     if (action === "remove") {
       if (tabs.length === 1) {
         return;

@@ -32,7 +32,6 @@ const getOpenKeys = (pathname: string, route: Route[]) => {
   let openKeys: string[] = [];
   let isFind = false;
   for (let i = 0; i < route.length; i++) {
-    openKeys = [];
     if (route[i].path === pathname) {
       isFind = true;
       break;
@@ -48,6 +47,8 @@ const getOpenKeys = (pathname: string, route: Route[]) => {
         break;
       }
     }
+    // children中未匹配到,则清空openKeys
+    openKeys = [];
   }
   return { openKeys, isFind };
 };
