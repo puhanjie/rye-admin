@@ -9,7 +9,6 @@ import { defaultLocale } from "@/navigation";
 const clientAxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API,
   timeout: 5000,
-  withCredentials: true,
 });
 
 // 请求拦截器
