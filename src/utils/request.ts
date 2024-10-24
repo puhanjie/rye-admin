@@ -44,13 +44,20 @@ clientAxiosInstance.interceptors.response.use(
       clearToken();
       window.location.href = path;
     }
+    // 文件下载失败则返回整个response对象
+    if (
+      error.response.config.url === "/api/v1/file" &&
+      error.response.config.method === "get"
+    ) {
+      return error.response;
+    }
     return res ? res : Promise.reject(error);
   }
 );
 
 // 封装请求对象,避免在借口文件中重复写axios的请求和响应类型定义
 export function clientRequest<T>(params: AxiosRequestConfig) {
-  // http后的第一个泛型为请求参数类型,第二个为响应数据类型
+  // 第一个泛型为请求参数类型,第二个为响应数据类型
   return clientAxiosInstance<
     AxiosRequestConfig,
     T extends Blob ? AxiosResponse<Blob> : API.Result<T>
