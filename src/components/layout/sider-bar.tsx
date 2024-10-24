@@ -120,8 +120,12 @@ export default function SiderBar() {
 
   useEffect(() => {
     // pathname变化,菜单跟随展开对应菜单的分组
+    if (collapsed) {
+      // 菜单为收缩状态,不设置openKeys
+      return;
+    }
     setStateOpenKeys(defaultOpenKeys);
-  }, [pathname]); // eslint-disable-line
+  }, [pathname, collapsed]); // eslint-disable-line
 
   return (
     <div className="relative inline-block">

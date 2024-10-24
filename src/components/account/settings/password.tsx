@@ -71,7 +71,7 @@ export default function Password() {
             >
               <Input.Password />
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 6 }}>
+            <Form.Item wrapperCol={{ sm: { offset: 6 }, md: { offset: 6 } }}>
               <Button type="primary" htmlType="submit">
                 {t("app.settingsPage.password.submit")}
               </Button>
