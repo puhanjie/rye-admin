@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AntProvider from "@/components/ant-provider";
 import NextIntlProvider from "@/components/next-intl-provider";
-import { defaultLocale } from "@/navigation";
 
 export const metadata: Metadata = {
   title: "Rye Admin",
@@ -17,7 +16,7 @@ export default function RootLayout({
   params: { locale: string };
 }>) {
   return (
-    <html lang={defaultLocale}>
+    <html lang={locale}>
       <body>
         <NextIntlProvider params={{ locale }}>
           <AntProvider>{children}</AntProvider>
