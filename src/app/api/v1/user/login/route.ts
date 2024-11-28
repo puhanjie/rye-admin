@@ -1,4 +1,4 @@
-import { userData } from "@/data/user";
+import { userData } from "@/../mock/user";
 import { fail, success } from "@/utils/unify";
 import { NextResponse, type NextRequest } from "next/server";
 

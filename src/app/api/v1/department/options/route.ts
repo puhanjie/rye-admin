@@ -1,4 +1,4 @@
-import { departmentOptions } from "@/data/department";
+import { departmentOptions } from "@/../mock/department";
 import { success } from "@/utils/unify";
 import { type NextRequest, NextResponse } from "next/server";
 

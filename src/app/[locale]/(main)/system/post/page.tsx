@@ -58,10 +58,6 @@ export default function Page() {
     setPostData(res.data);
   };
 
-  const handleQuery = (values: API.PostQuery) => {
-    queryData(values);
-  };
-
   const handleReset = () => {
     queryData();
   };
@@ -163,7 +159,7 @@ export default function Page() {
         formItemProps={queryItems}
         formProps={{
           name: "postQuery",
-          onFinish: handleQuery,
+          onFinish: queryData,
           labelCol: { span: 8 },
           wrapperCol: { span: 16 },
         }}

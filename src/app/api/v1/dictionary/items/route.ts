@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { success } from "@/utils/unify";
-import { dictionaryData } from "@/data/dictionary";
+import { dictionaryData } from "@/../mock/dictionary";
 
 export function GET(request: NextRequest) {
   const url = new URL(request.url);

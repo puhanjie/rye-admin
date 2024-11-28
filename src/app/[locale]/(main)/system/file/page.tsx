@@ -53,10 +53,6 @@ export default function Page() {
     setFileData(res.data);
   };
 
-  const handleQuery = (values: API.FileQuery) => {
-    queryData(values);
-  };
-
   const handleReset = () => {
     queryData();
   };
@@ -141,7 +137,7 @@ export default function Page() {
         formItemProps={queryItems}
         formProps={{
           name: "fileQuery",
-          onFinish: handleQuery,
+          onFinish: queryData,
           labelCol: { span: 8 },
           wrapperCol: { span: 16 },
         }}

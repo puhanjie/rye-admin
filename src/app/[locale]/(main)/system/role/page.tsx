@@ -58,10 +58,6 @@ export default function Page() {
     setRoleData(res.data);
   };
 
-  const handleQuery = (values: API.RoleQuery) => {
-    queryData(values);
-  };
-
   const handleReset = () => {
     queryData();
   };
@@ -149,7 +145,7 @@ export default function Page() {
         formItemProps={queryItems}
         formProps={{
           name: "roleQuery",
-          onFinish: handleQuery,
+          onFinish: queryData,
           labelCol: { span: 8 },
           wrapperCol: { span: 16 },
         }}

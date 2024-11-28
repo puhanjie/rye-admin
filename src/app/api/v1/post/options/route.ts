@@ -1,4 +1,4 @@
-import { postOptions } from "@/data/post";
+import { postOptions } from "@/../mock/post";
 import { success } from "@/utils/unify";
 import { type NextRequest, NextResponse } from "next/server";
 

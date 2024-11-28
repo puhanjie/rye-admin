@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { fail, success } from "@/utils/unify";
-import { userData } from "@/data/user";
+import { userData } from "@/../mock/user";
 
 export function GET(request: NextRequest) {
   const token = request.headers.get("Authorization");

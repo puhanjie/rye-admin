@@ -52,11 +52,6 @@ export default function Page() {
     setLogData(res.data);
   };
 
-  const handleQuery = (values: API.LogQuery) => {
-    // 获取查询数据
-    queryData(values);
-  };
-
   const handleReset = () => {
     queryData();
   };
@@ -116,7 +111,7 @@ export default function Page() {
         formItemProps={queryItems}
         formProps={{
           name: "logQuery",
-          onFinish: handleQuery,
+          onFinish: queryData,
           labelCol: { span: 8 },
           wrapperCol: { span: 16 },
         }}

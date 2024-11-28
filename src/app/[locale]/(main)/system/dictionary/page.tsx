@@ -58,10 +58,6 @@ export default function Page() {
     setDictionaryData(res.data);
   };
 
-  const handleQuery = (values: API.DictionaryQuery) => {
-    queryData(values);
-  };
-
   const handleReset = () => {
     queryData();
   };
@@ -173,7 +169,7 @@ export default function Page() {
         formItemProps={queryItems}
         formProps={{
           name: "dictionaryQuery",
-          onFinish: handleQuery,
+          onFinish: queryData,
           labelCol: { span: 8 },
           wrapperCol: { span: 16 },
         }}

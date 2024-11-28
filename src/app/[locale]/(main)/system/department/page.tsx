@@ -73,11 +73,6 @@ export default function Page() {
     setDeptData(res.data);
   };
 
-  const handleQuery = (values: API.DepartmentQuery) => {
-    // 获取查询数据
-    queryData(values);
-  };
-
   const handleReset = () => {
     queryData();
   };
@@ -191,7 +186,7 @@ export default function Page() {
         formItemProps={queryItems}
         formProps={{
           name: "deptQuery",
-          onFinish: handleQuery,
+          onFinish: queryData,
           labelCol: { span: 8 },
           wrapperCol: { span: 16 },
         }}

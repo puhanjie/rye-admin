@@ -1,4 +1,4 @@
-import { permissionOptions } from "@/data/permission";
+import { permissionOptions } from "@/../mock/permission";
 import { success } from "@/utils/unify";
 import { type NextRequest, NextResponse } from "next/server";
 

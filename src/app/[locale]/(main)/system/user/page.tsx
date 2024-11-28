@@ -73,10 +73,6 @@ export default function Page() {
     setUserData(res.data);
   };
 
-  const handleQuery = (values: API.UserQuery) => {
-    queryData(values);
-  };
-
   const handleReset = () => {
     queryData();
   };
@@ -217,7 +213,7 @@ export default function Page() {
         formItemProps={queryItems}
         formProps={{
           name: "userQuery",
-          onFinish: handleQuery,
+          onFinish: queryData,
           labelCol: { span: 8 },
           wrapperCol: { span: 16 },
         }}
