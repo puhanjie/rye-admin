@@ -36,7 +36,7 @@ export default function Layout({
       <SiderBar />
       <AntLayout className="h-full">
         <HeaderBar />
-        <Content className="w-full h-full px-3 pt-3 overflow-auto">
+        <Content className="w-full h-full px-3 pt-3">
           {children}
         </Content>
         <Footer />

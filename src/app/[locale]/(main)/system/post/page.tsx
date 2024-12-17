@@ -200,7 +200,7 @@ export default function Page() {
           scroll: { x: "max-content" },
           pagination: {
             current: postData?.current,
-            defaultPageSize: 10,
+            pageSize: postData?.size,
             total: postData?.total,
             showSizeChanger: true,
             showTotal: (total, range) =>

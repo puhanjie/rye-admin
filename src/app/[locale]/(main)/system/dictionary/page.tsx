@@ -210,7 +210,7 @@ export default function Page() {
           scroll: { x: "max-content" },
           pagination: {
             current: dictionaryData?.current,
-            defaultPageSize: 10,
+            pageSize: dictionaryData?.size,
             total: dictionaryData?.total,
             showSizeChanger: true,
             showTotal: (total, range) =>

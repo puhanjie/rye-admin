@@ -203,7 +203,7 @@ export default function Page() {
           scroll: { x: "max-content" },
           pagination: {
             current: permissionData?.current,
-            defaultPageSize: 10,
+            pageSize: permissionData?.size,
             total: permissionData?.total,
             showSizeChanger: true,
             showTotal: (total, range) =>

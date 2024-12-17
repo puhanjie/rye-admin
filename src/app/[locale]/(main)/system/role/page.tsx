@@ -186,7 +186,7 @@ export default function Page() {
           scroll: { x: "max-content" },
           pagination: {
             current: roleData?.current,
-            defaultPageSize: 10,
+            pageSize: roleData?.size,
             total: roleData?.total,
             showSizeChanger: true,
             showTotal: (total, range) =>

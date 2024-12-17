@@ -178,7 +178,7 @@ export default function Page() {
           scroll: { x: "max-content" },
           pagination: {
             current: fileData?.current,
-            defaultPageSize: 10,
+            pageSize: fileData?.size,
             total: fileData?.total,
             showSizeChanger: true,
             showTotal: (total, range) =>

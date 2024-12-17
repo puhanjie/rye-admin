@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DownOutlined,
   ReloadOutlined,
@@ -17,6 +19,7 @@ import {
 } from "antd";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
+import React from "react";
 import { useState } from "react";
 
 const { Item } = Form;
@@ -109,7 +112,7 @@ export default function TablePro<T>({
           </Row>
         </Form>
       </Card>
-      <Card size="small" bordered={false} className="flex-1">
+      <Card size="small" bordered={false} className="flex-1 overflow-auto">
         {actions && (
           <Space wrap className="mb-3">
             {...actions.filter((item) => item !== null)}
