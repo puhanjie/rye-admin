@@ -165,7 +165,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.DictionaryInfo>
         formItemProps={queryItems}
         formProps={{
           name: "dictionaryQuery",

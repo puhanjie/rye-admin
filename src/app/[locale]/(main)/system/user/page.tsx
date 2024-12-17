@@ -209,7 +209,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.UserInfo>
         formItemProps={queryItems}
         formProps={{
           name: "userQuery",

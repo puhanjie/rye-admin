@@ -182,7 +182,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.DepartmentDetailTree>
         formItemProps={queryItems}
         formProps={{
           name: "deptQuery",

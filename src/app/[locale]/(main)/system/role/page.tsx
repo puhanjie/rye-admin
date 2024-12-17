@@ -141,7 +141,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.RoleInfo>
         formItemProps={queryItems}
         formProps={{
           name: "roleQuery",

@@ -107,7 +107,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.LogInfo>
         formItemProps={queryItems}
         formProps={{
           name: "logQuery",

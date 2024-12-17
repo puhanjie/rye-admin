@@ -118,7 +118,7 @@ export default function TablePro<T>({
             {...actions.filter((item) => item !== null)}
           </Space>
         )}
-        <Table {...tableProps} />
+        <Table<T> {...tableProps} />
       </Card>
     </div>
   );

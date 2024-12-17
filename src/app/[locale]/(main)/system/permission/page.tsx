@@ -158,7 +158,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.PermissionInfo>
         formItemProps={queryItems}
         formProps={{
           name: "permissionQuery",

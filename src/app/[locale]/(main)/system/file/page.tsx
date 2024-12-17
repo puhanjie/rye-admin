@@ -133,7 +133,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.FileInfo>
         formItemProps={queryItems}
         formProps={{
           name: "fileQuery",

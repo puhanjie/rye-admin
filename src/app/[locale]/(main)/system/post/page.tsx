@@ -155,7 +155,7 @@ export default function Page() {
 
   return (
     <div className="h-full">
-      <TablePro
+      <TablePro<API.PostInfo>
         formItemProps={queryItems}
         formProps={{
           name: "postQuery",
